@@ -1,0 +1,20 @@
+{
+  "name": "@kyndrahq/dispatch",
+  "version": "1.0.0",
+  "module": "src/index.ts",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./adapters/react": "./src/adapters/react.ts",
+    "./adapters/vue": "./src/adapters/vue.ts"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "^0.34.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
