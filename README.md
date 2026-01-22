@@ -1,15 +1,11 @@
-# @juicyway/api-sdk
+# @kyndrahq/dispatch
 
-To install dependencies:
+Framework-agnostic API client and caching layer (TanStack Query–style, TypeBox contract-first). Usable from React, Vue, Node, workers, and edge runtimes.
+
+## Commands
 
 ```bash
 bun install
-```
-
-To run:
-
-```bash
+bun test
 bun run main.ts
 ```
-
-This project was created using `bun init` in bun v1.2.13. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
