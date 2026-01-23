@@ -1,4 +1,4 @@
-# @kyndrahq/dispatch
+# Kweri
 
 Framework-agnostic API client and caching layer (TanStack Query–style, TypeBox contract-first). Usable from React, Vue, Node, workers, and edge runtimes.
 
