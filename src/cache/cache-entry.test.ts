@@ -7,7 +7,7 @@ import {
   defaultCacheOptions,
   type CacheEntry,
   type CachedError,
-} from "./";
+} from "./cache-entry";
 
 describe("Cache Entry Model", () => {
   describe("createCacheEntry", () => {
