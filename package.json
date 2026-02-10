@@ -1,18 +1,39 @@
 {
-  "name": "Kweri",
+  "name": "kweri",
   "version": "1.0.0",
-  "module": "src/index.ts",
   "type": "module",
-  "exports": {
-    ".": "./src/index.ts",
-    "./adapters/react": "./src/adapters/react.ts",
-    "./adapters/vue": "./src/adapters/vue.ts"
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "kweri-gen": "./cli/generate.js"
   },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./generated": {
+      "types": "./.generated/client.d.ts",
+      "import": "./.generated/client.js",
+      "default": "./.generated/client.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "bun run build"
+  },
+  "files": ["dist", "cli", ".generated", "tsconfig.build.json", "tsconfig.generated.json"],
   "dependencies": {
-    "@sinclair/typebox": "^0.34.0"
+    "@sinclair/typebox": "^0.34.0",
+    "typed-openapi": "^2.2.4",
+    "@apidevtools/swagger-parser": "^12.1.0"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/json-schema": "^7.0.15",
+    "typescript": "^5"
   },
   "peerDependencies": {
     "typescript": "^5"
