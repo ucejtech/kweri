@@ -17,7 +17,7 @@ This creates `.kweri/client.ts` with:
 ### 2. Use the Generated Client
 
 ```typescript
-import { createClient } from './.kweri/client'
+import { createClient } from 'kweri'
 
 const api = createClient({ 
   baseURL: 'https://petstore3.swagger.io/api/v3'
