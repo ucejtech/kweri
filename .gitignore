@@ -36,5 +36,10 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # misc
 misc/*
 
-# kweri generated
-.generated/
+# kweri generator temp (deleted after each run)
+.kweri-temp/
+
+# kweri generated schemas (overwritten by kweri-gen, stub client.* is committed)
+.generated/schemas.js
+.generated/schemas.d.ts
+.kweri/
