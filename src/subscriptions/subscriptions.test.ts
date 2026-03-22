@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, mock } from "bun:test";
-import { ObserverRegistry } from "./subscriptions";
-import { createCacheEntry } from "./cache";
+import { ObserverRegistry } from "./index.js";
+import { createCacheEntry } from "../cache/index.js";
 
 describe("ObserverRegistry", () => {
   let registry: ObserverRegistry;

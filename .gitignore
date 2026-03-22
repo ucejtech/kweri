@@ -43,3 +43,8 @@ misc/*
 .generated/schemas.js
 .generated/schemas.d.ts
 .kweri/
+
+# auto-generated version from package.json
+src/version.ts
+
+demo/*

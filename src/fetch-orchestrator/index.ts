@@ -22,6 +22,10 @@ export class FetchOrchestrator {
     return this.inFlight.has(key)
   }
 
+  keys(): IterableIterator<string> {
+    return this.inFlight.keys()
+  }
+
   get size(): number {
     return this.inFlight.size
   }

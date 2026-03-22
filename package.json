@@ -1,6 +1,6 @@
 {
   "name": "kweri",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -21,14 +21,26 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "prebuild": "node scripts/generate-version.js",
+    "build": "npm run prebuild && tsc -p tsconfig.build.json",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "test:coverage": "bun test --coverage",
+    "pack": "bun run build && npm pack",
     "prepublishOnly": "bun run build"
   },
-  "files": ["dist", "cli", ".generated", "tsconfig.build.json", "tsconfig.generated.json"],
+  "files": [
+    "dist",
+    "cli",
+    ".generated",
+    "tsconfig.build.json",
+    "tsconfig.generated.json"
+  ],
   "dependencies": {
     "@sinclair/typebox": "^0.34.0",
     "typed-openapi": "^2.2.4",
-    "@apidevtools/swagger-parser": "^12.1.0"
+    "@apidevtools/swagger-parser": "^12.1.0",
+    "ajv": "^8.0.0"
   },
   "devDependencies": {
     "@types/bun": "latest",

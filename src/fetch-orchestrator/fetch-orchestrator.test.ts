@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, mock } from "bun:test";
-import { FetchOrchestrator } from "./fetch-orchestrator";
+import { FetchOrchestrator } from "./index.js";
 
 describe("FetchOrchestrator", () => {
   let orchestrator: FetchOrchestrator;

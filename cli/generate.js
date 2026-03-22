@@ -65,6 +65,17 @@ Note: Add to package.json scripts for auto-regeneration:
 const source = positionals[0];
 
 function findKweriPackagePath() {
+  // When running from within the kweri package itself (development)
+  const cwdPkg = join(process.cwd(), 'package.json');
+  if (existsSync(cwdPkg)) {
+    try {
+      const pkg = JSON.parse(readFileSync(cwdPkg, 'utf-8'));
+      if (pkg.name === 'kweri') {
+        return process.cwd();
+      }
+    } catch {}
+  }
+
   let current = process.cwd();
   const maxDepth = 10;
   let depth = 0;
@@ -147,11 +158,37 @@ async function main() {
     let specSource = source;
 
     if (values.bundle) {
-      const SwaggerParser = (await import('@apidevtools/swagger-parser'))
-        .default;
-      spec = await SwaggerParser.bundle(source);
-      writeFileSync(tempSpecPath, JSON.stringify(spec, null, 0));
+      // Run bundling in a child process so module resolution uses kweri's
+      // node_modules only. We put the runner inside kweri/node_modules so
+      // Node's resolution (walking up from script path) stops at kweri's
+      // node_modules. Also set NODE_PATH as fallback for non-bundled installs.
+      const kweriNodeModules = join(kweriRealPath, 'node_modules');
+      mkdirSync(kweriNodeModules, { recursive: true });
+      const bundleRunnerPath = join(
+        kweriNodeModules,
+        '.kweri-bundle-runner.mjs'
+      );
+      const bundleRunnerCode = `
+import SwaggerParser from '@apidevtools/swagger-parser';
+import { writeFileSync } from 'fs';
+const [source, outputPath] = process.argv.slice(2);
+const spec = await SwaggerParser.bundle(source);
+writeFileSync(outputPath, JSON.stringify(spec, null, 0));
+`;
+      writeFileSync(bundleRunnerPath, bundleRunnerCode);
+      const sourceAbs = source.startsWith('http')
+        ? source
+        : resolve(process.cwd(), source);
+      const nodePath = process.env.NODE_PATH
+        ? `${kweriNodeModules}${process.platform === 'win32' ? ';' : ':'}${process.env.NODE_PATH}`
+        : kweriNodeModules;
+      execSync(`node "${bundleRunnerPath}" "${sourceAbs}" "${tempSpecPath}"`, {
+        stdio: 'inherit',
+        cwd: kweriRealPath,
+        env: { ...process.env, NODE_PATH: nodePath }
+      });
       specSource = tempSpecPath;
+      spec = JSON.parse(readFileSync(tempSpecPath, 'utf-8'));
     } else {
       if (source.startsWith('http://') || source.startsWith('https://')) {
         const controller = new AbortController();
@@ -181,17 +218,23 @@ async function main() {
     }
 
     const typedOpenApiBin = resolveTypedOpenApiBin(kweriRealPath);
-    const cwd = process.cwd();
+    const specSourceAbs =
+      specSource.startsWith('http') || specSource.startsWith('/')
+        ? specSource
+        : resolve(process.cwd(), specSource);
+    const kweriNodeModules = join(kweriRealPath, 'node_modules');
+    const nodePath = process.env.NODE_PATH
+      ? `${kweriNodeModules}${process.platform === 'win32' ? ';' : ':'}${process.env.NODE_PATH}`
+      : kweriNodeModules;
 
-    try {
-      process.chdir(srcDir);
-      execSync(
-        `node "${typedOpenApiBin}" "${specSource}" -o "schemas.ts" -r typebox`,
-        { stdio: 'inherit' }
-      );
-    } finally {
-      process.chdir(cwd);
-    }
+    execSync(
+      `node "${typedOpenApiBin}" "${specSourceAbs}" -o "schemas.ts" -r typebox`,
+      {
+        stdio: 'inherit',
+        cwd: srcDir,
+        env: { ...process.env, NODE_PATH: nodePath }
+      }
+    );
 
     console.log(`🔧 Generating typed client`);
 
@@ -253,6 +296,15 @@ async function main() {
 
     if (existsSync(tempSpecPath)) {
       unlinkSync(tempSpecPath);
+    }
+
+    const bundleRunnerPath = join(
+      kweriRealPath,
+      'node_modules',
+      '.kweri-bundle-runner.mjs'
+    );
+    if (existsSync(bundleRunnerPath)) {
+      unlinkSync(bundleRunnerPath);
     }
 
     console.log(`✅ Successfully generated client`);

@@ -1,5 +1,5 @@
 import { Type, type TSchema, type Static } from '@sinclair/typebox'
-import type { HttpMethod } from './types.js'
+import type { HttpMethod } from '../types/index.js'
 
 export interface Endpoint<
   TParams extends TSchema = TSchema,

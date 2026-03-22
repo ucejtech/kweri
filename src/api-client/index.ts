@@ -1,6 +1,6 @@
 import { Value } from '@sinclair/typebox/value'
-import type { Endpoint } from '../contract.js'
-import { ValidationError, type Fetcher } from '../types.js'
+import type { Endpoint } from '../contract/index.js'
+import { ValidationError, type Fetcher } from '../types/index.js'
 
 export class ApiClient {
   constructor(

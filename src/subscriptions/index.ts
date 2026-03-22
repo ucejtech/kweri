@@ -1,10 +1,21 @@
-import type { CacheEntry } from './cache'
+import type { CacheEntry } from '../cache/index.js'
 
 export type Callback = (entry: CacheEntry) => void
 export type Unsubscribe = () => void
 
+export type GlobalNotifyCallback = (key: string, entry: CacheEntry) => void
+
 export class ObserverRegistry {
   private observers = new Map<string, Set<Callback>>()
+  private globalListeners = new Set<GlobalNotifyCallback>()
+
+  /** Fires after every per-key notify (devtools, logging). */
+  subscribeAll(callback: GlobalNotifyCallback): Unsubscribe {
+    this.globalListeners.add(callback)
+    return () => {
+      this.globalListeners.delete(callback)
+    }
+  }
 
   subscribe(key: string, callback: Callback): Unsubscribe {
     const callbacks = this.observers.get(key)
@@ -40,6 +51,19 @@ export class ObserverRegistry {
         console.error(`Observer error for key "${key}":`, error)
       }
     }
+
+    const globalsCopy = Array.from(this.globalListeners)
+    for (const callback of globalsCopy) {
+      try {
+        callback(key, entry)
+      } catch (error) {
+        console.error(`Global observer error for key "${key}":`, error)
+      }
+    }
+  }
+
+  keys(): IterableIterator<string> {
+    return this.observers.keys()
   }
 
   // Used by GC to check if entry can be evicted
@@ -57,5 +81,6 @@ export class ObserverRegistry {
 
   clearAll(): void {
     this.observers.clear()
+    this.globalListeners.clear()
   }
 }
