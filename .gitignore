@@ -48,3 +48,5 @@ misc/*
 src/version.ts
 
 demo/*
+
+examples/*
