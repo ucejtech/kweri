@@ -6,7 +6,7 @@ WORKDIR /docs
 
 COPY . .
 
-RUN mintlify build
+RUN mintlify export
 
 EXPOSE 3000
 
