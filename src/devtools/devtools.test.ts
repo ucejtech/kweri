@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'bun:test'
-import { mountKweriDevTools } from './mount.js'
+import { mountKweriDevTools, loadDevToolsSettings, saveDevToolsSettings } from './mount.js'
 import { Kweri } from '../kweri/index.js'
 import { defineEndpoint } from '../contract/index.js'
 import { Type } from '@sinclair/typebox'
@@ -98,11 +98,96 @@ describe('DevTools', () => {
 
     it('should handle invalidation operations', () => {
       unmount = mountKweriDevTools(kweri)
-      
+
       // Should not throw when invalidating
       expect(() => {
         kweri.invalidateByPath(/.*/)
       }).not.toThrow()
+    })
+  })
+
+  describe('loadDevToolsSettings', () => {
+    beforeEach(() => {
+      // Provide a minimal localStorage mock
+      const store: Record<string, string> = {}
+      global.localStorage = {
+        getItem: (k: string) => store[k] ?? null,
+        setItem: (k: string, v: string) => { store[k] = v },
+        removeItem: (k: string) => { delete store[k] },
+        clear: () => { Object.keys(store).forEach(k => delete store[k]) },
+        length: 0,
+        key: () => null,
+      } as any
+    })
+
+    afterEach(() => {
+      delete (global as any).localStorage
+    })
+
+    it('returns defaults when localStorage is empty', () => {
+      const s = loadDevToolsSettings()
+      expect(s).toEqual({ autoRefresh: true })
+    })
+
+    it('returns stored settings when present', () => {
+      localStorage.setItem('kweri-devtools-settings', JSON.stringify({ autoRefresh: false }))
+      const s = loadDevToolsSettings()
+      expect(s.autoRefresh).toBe(false)
+    })
+
+    it('returns defaults when stored JSON is corrupt', () => {
+      localStorage.setItem('kweri-devtools-settings', 'not-json{{{')
+      const s = loadDevToolsSettings()
+      expect(s).toEqual({ autoRefresh: true })
+    })
+
+    it('returns defaults when stored value is not an object', () => {
+      localStorage.setItem('kweri-devtools-settings', '"a string"')
+      const s = loadDevToolsSettings()
+      expect(s).toEqual({ autoRefresh: true })
+    })
+
+    it('returns defaults when localStorage is unavailable', () => {
+      delete (global as any).localStorage
+      const s = loadDevToolsSettings()
+      expect(s).toEqual({ autoRefresh: true })
+    })
+  })
+
+  describe('saveDevToolsSettings', () => {
+    beforeEach(() => {
+      const store: Record<string, string> = {}
+      global.localStorage = {
+        getItem: (k: string) => store[k] ?? null,
+        setItem: (k: string, v: string) => { store[k] = v },
+        removeItem: (k: string) => { delete store[k] },
+        clear: () => { Object.keys(store).forEach(k => delete store[k]) },
+        length: 0,
+        key: () => null,
+      } as any
+    })
+
+    afterEach(() => {
+      delete (global as any).localStorage
+    })
+
+    it('writes correct JSON to localStorage', () => {
+      saveDevToolsSettings({ autoRefresh: false })
+      const raw = localStorage.getItem('kweri-devtools-settings')
+      expect(JSON.parse(raw!)).toEqual({ autoRefresh: false })
+    })
+
+    it('does not throw when localStorage.setItem throws', () => {
+      global.localStorage = {
+        ...global.localStorage,
+        setItem: () => { throw new Error('QuotaExceededError') },
+      } as any
+      expect(() => saveDevToolsSettings({ autoRefresh: true })).not.toThrow()
+    })
+
+    it('does not throw when localStorage is unavailable', () => {
+      delete (global as any).localStorage
+      expect(() => saveDevToolsSettings({ autoRefresh: true })).not.toThrow()
     })
   })
 })

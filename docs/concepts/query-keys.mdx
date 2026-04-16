@@ -1,0 +1,82 @@
+---
+title: Query Keys
+description: How kweri identifies, normalizes, and hashes cache entries.
+icon: key
+---
+
+## What is a query key?
+
+Every cache entry is identified by a **query key** — a deterministic string derived from the endpoint method, path, and parameters:
+
+```
+METHOD:path:serializedParams
+```
+
+For example:
+
+```
+GET:/users:{}
+GET:/users/1:{"path":{"id":1}}
+POST:/users/search:{"body":{"role":"admin"}}
+```
+
+Keys are generated automatically — you never construct them manually unless you're building custom tooling.
+
+## Stable serialization
+
+Parameters are JSON-serialized with **alphabetically sorted keys**, ensuring that `{ b: 2, a: 1 }` and `{ a: 1, b: 2 }` produce the same cache key:
+
+```ts
+stableSerialize({ z: 3, a: 1, m: 2 })
+// → '{"a":1,"m":2,"z":3}'
+```
+
+Additional behaviors:
+
+- `undefined` values are dropped from objects
+- `Date` objects are serialized to ISO strings
+- `NaN` and `Infinity` are preserved as `"NaN"` / `"Infinity"`
+- `null` is preserved
+- Arrays preserve order
+- Functions and symbols throw in development
+
+## Hashing for large keys
+
+When a serialized key exceeds **1024 characters**, kweri hashes it with `crypto.subtle.digest('SHA-256')` and stores the hash instead. The original key is kept alongside for display in DevTools.
+
+This keeps memory usage bounded when params contain large objects (e.g., full filter sets).
+
+## Reading a key
+
+```ts
+const key = kweri.getQueryKey(getUsers, { role: 'admin' })
+// → 'GET:/users:{"role":"admin"}'
+```
+
+## Key-based invalidation
+
+The `invalidateByKey` and `removeByKey` methods accept the serialized key string directly — primarily used by DevTools:
+
+```ts
+kweri.invalidateQueryByKey('GET:/users:{}')
+```
+
+For application code, prefer `invalidateByPath` or `invalidateQuery` since they don't require you to construct the key string.
+
+## How params are flattened
+
+When you call `kweri.query(endpoint, params)`, params in the nested `{ path, query, body }` shape are **flattened** before being passed to the `ApiClient`:
+
+```ts
+// Input
+{ path: { id: 1 }, query: { expand: true }, body: { name: 'Alice' } }
+
+// Flattened for URL building
+{ id: 1, expand: true, body: { name: 'Alice' } }
+```
+
+- `path.*` keys merge to the top level (used for `{id}` substitution)
+- `query.*` keys merge to the top level (appended as query string)
+- `body` stays as `body` (JSON-encoded as the request body)
+
+The **cache key** is computed from the original (un-flattened) params to avoid collisions.

@@ -15,6 +15,38 @@ import {
 } from './helpers.js';
 import { buildEntryDetail } from './json-tree.js';
 
+const DEVTOOLS_SETTINGS_KEY = 'kweri-devtools-settings'
+
+interface DevToolsSettings {
+  autoRefresh: boolean
+}
+
+/** Load persisted devtools settings from localStorage. Returns defaults on any failure. */
+export function loadDevToolsSettings(): DevToolsSettings {
+  if (typeof localStorage === 'undefined') return { autoRefresh: true }
+  try {
+    const raw = localStorage.getItem(DEVTOOLS_SETTINGS_KEY)
+    if (!raw) return { autoRefresh: true }
+    const parsed = JSON.parse(raw) as unknown
+    if (typeof parsed !== 'object' || parsed === null) return { autoRefresh: true }
+    return {
+      autoRefresh: typeof (parsed as any).autoRefresh === 'boolean'
+        ? (parsed as any).autoRefresh
+        : true,
+    }
+  } catch {
+    return { autoRefresh: true }
+  }
+}
+
+/** Persist devtools settings to localStorage. Non-fatal on any failure. */
+export function saveDevToolsSettings(s: DevToolsSettings): void {
+  if (typeof localStorage === 'undefined') return
+  try {
+    localStorage.setItem(DEVTOOLS_SETTINGS_KEY, JSON.stringify(s))
+  } catch { /* non-fatal */ }
+}
+
 /**
  * Mount a floating devtools panel for inspecting kweri query cache, observers, and in-flight fetches.
  * Framework-agnostic (vanilla DOM). Returns an unmount function.
@@ -26,6 +58,8 @@ export function mountKweriDevTools(
   if (typeof document === 'undefined') {
     return () => {};
   }
+
+  const settings = loadDevToolsSettings()
 
   // UI state - declare early since used in DOM creation
   let activeTab: string = 'QUERIES';
@@ -582,10 +616,11 @@ export function mountKweriDevTools(
     refreshControl.className = 'setting-control';
 
     const refreshToggle = document.createElement('div');
-    refreshToggle.className = 'toggle-switch active';
+    refreshToggle.className = `toggle-switch${settings.autoRefresh ? ' active' : ''}`;
     refreshToggle.addEventListener('click', () => {
       refreshToggle.classList.toggle('active');
-      // TODO: Implement setting persistence
+      settings.autoRefresh = refreshToggle.classList.contains('active');
+      saveDevToolsSettings(settings);
     });
 
     refreshControl.append(refreshToggle);

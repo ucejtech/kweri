@@ -42,22 +42,22 @@ describe('React Adapter', () => {
 
   describe('createReactQueryHooks', () => {
     it('should create useQuery hook', () => {
-      const { useQuery } = createReactQueryHooks(mockUseSyncExternalStore)
-      
+      const { useQuery } = createReactQueryHooks(mockUseSyncExternalStore, kweri)
+
       expect(typeof useQuery).toBe('function')
     })
 
     it('should create useMutation hook', () => {
-      const { useMutation } = createReactQueryHooks(mockUseSyncExternalStore)
-      
+      const { useMutation } = createReactQueryHooks(mockUseSyncExternalStore, kweri)
+
       expect(typeof useMutation).toBe('function')
     })
 
     it('useQuery should return query result structure', () => {
-      const { useQuery } = createReactQueryHooks(mockUseSyncExternalStore)
-      
-      const result = useQuery(kweri, testEndpoint, {})
-      
+      const { useQuery } = createReactQueryHooks(mockUseSyncExternalStore, kweri)
+
+      const result = useQuery(testEndpoint, {})
+
       expect(result).toHaveProperty('data')
       expect(result).toHaveProperty('status')
       expect(result).toHaveProperty('error')
@@ -67,10 +67,10 @@ describe('React Adapter', () => {
     })
 
     it('useMutation should return mutation result structure', () => {
-      const { useMutation } = createReactQueryHooks(mockUseSyncExternalStore)
-      
-      const result = useMutation(kweri, mutationEndpoint)
-      
+      const { useMutation } = createReactQueryHooks(mockUseSyncExternalStore, kweri)
+
+      const result = useMutation(mutationEndpoint)
+
       expect(result).toHaveProperty('mutate')
       expect(result).toHaveProperty('status')
       expect(result).toHaveProperty('error')
@@ -81,28 +81,28 @@ describe('React Adapter', () => {
     })
 
     it('should subscribe to cache changes', () => {
-      const { useQuery } = createReactQueryHooks(mockUseSyncExternalStore)
-      
-      useQuery(kweri, testEndpoint, {})
-      
+      const { useQuery } = createReactQueryHooks(mockUseSyncExternalStore, kweri)
+
+      useQuery(testEndpoint, {})
+
       expect(mockSubscribers.size).toBeGreaterThan(0)
       expect(mockUseSyncExternalStore).toHaveBeenCalled()
     })
 
     it('should handle loading states', () => {
-      const { useQuery } = createReactQueryHooks(mockUseSyncExternalStore)
-      
-      const result = useQuery(kweri, testEndpoint, {})
-      
+      const { useQuery } = createReactQueryHooks(mockUseSyncExternalStore, kweri)
+
+      const result = useQuery(testEndpoint, {})
+
       // Initially should be in loading or idle state
       expect(['idle', 'loading'].includes(result.status)).toBe(true)
     })
 
     it('should respect enabled option', () => {
-      const { useQuery } = createReactQueryHooks(mockUseSyncExternalStore)
-      
-      const result = useQuery(kweri, testEndpoint, {}, { enabled: false })
-      
+      const { useQuery } = createReactQueryHooks(mockUseSyncExternalStore, kweri)
+
+      const result = useQuery(testEndpoint, {}, { enabled: false })
+
       expect(result.status).toBe('idle')
     })
   })

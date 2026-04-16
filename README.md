@@ -1,393 +1,254 @@
 # Kweri
 
-**A modern, framework-agnostic query caching and API client library.**
+**A framework-agnostic API client with stale-while-revalidate caching.**
 
-Kweri provides TanStack Query-style caching with TypeBox contract-first API definitions. Works seamlessly with React, Vue, vanilla JavaScript, Node.js, workers, and edge runtimes.
+Kweri gives you TanStack Query-style ergonomics — smart caching, request deduplication, background refetching — without locking you into any framework. The same instance works in React, Vue, vanilla JS, Node.js, and edge runtimes.
 
-## ✨ Features
-
-- 🚀 **Smart Caching**: Automatic request deduplication, background refetching, and intelligent cache invalidation
-- 🔧 **Framework Agnostic**: Use with React, Vue, or any JavaScript environment
-- 📝 **Type-Safe**: Full TypeScript support with auto-generated types from OpenAPI specs
-- 🛠 **Developer Experience**: Built-in DevTools for inspecting cache state and network requests
-- ⚡ **Performance**: Optimized for modern JavaScript runtimes including Bun, Node.js, and edge functions
-- 🎯 **Zero Dependencies**: No external runtime dependencies
-
-## 📦 Installation
+## Installation
 
 ```bash
 npm install kweri
 # or
-yarn add kweri
-# or
 bun add kweri
 ```
 
-## 🚀 Quick Start
+## Quick start
 
-### Basic Usage
+### With an OpenAPI spec (recommended)
 
-```typescript
+Generate typed hooks directly from your spec:
+
+```bash
+npx kweri-gen https://api.example.com/openapi.json
+```
+
+Then set up path-based hooks and start fetching:
+
+```ts
+// src/lib/kweri.ts
 import { Kweri } from 'kweri'
 
-// Create a Kweri instance
-const kweri = new Kweri({
+export const kweri = new Kweri({
   baseURL: 'https://api.example.com',
-  enableDevTools: true, // Enables DevTools in development
-})
-
-// Simple query
-const user = await kweri.query('/users/{id}', { path: { id: '123' } })
-
-// Query with caching options
-const posts = await kweri.query('/posts', {
-  staleTime: 5000, // Consider fresh for 5 seconds
-  cacheTime: 30000, // Keep in cache for 30 seconds
-})
-
-// Mutations
-const newPost = await kweri.mutate('/posts', {
-  method: 'POST',
-  body: { title: 'Hello World', content: 'My first post!' },
-  onSuccess: () => {
-    // Invalidate posts cache after successful creation
-    kweri.invalidateByPath('/posts')
-  }
+  staleTime: 30_000,
+  cacheTime: 300_000,
 })
 ```
 
-## 🎨 Framework Integration
-
-### React
-
-```typescript
-import { createReactQueryHooks } from 'kweri/adapters/react'
+```ts
+// src/hooks/useKweri.ts (React)
 import { useSyncExternalStore } from 'react'
+import { createReactPathHooks } from 'kweri'
+import { EndpointByMethod } from 'kweri/generated'
+import { kweri } from '@/lib/kweri'
 
-const { useQuery, useMutation } = createReactQueryHooks({ useSyncExternalStore })
+export const { useGet, usePost, usePut, usePatch, useDelete } =
+  createReactPathHooks(useSyncExternalStore, kweri, EndpointByMethod)
 
-function UserProfile({ userId }) {
-  const { data: user, status, error } = useQuery(kweri, '/users/{id}', {
-    path: { id: userId }
-  })
+export { kweri }
+```
 
-  const updateUser = useMutation(kweri, '/users/{id}', {
-    method: 'PATCH',
-    onSuccess: () => {
-      // Automatically invalidates and refetches user data
-      kweri.invalidateByPath('/users')
-    }
-  })
+```tsx
+function UserList() {
+  const { data, isLoading } = useGet('/users', {})
 
-  if (status === 'loading') return <div>Loading...</div>
-  if (status === 'error') return <div>Error: {error?.message}</div>
+  if (isLoading) return <p>Loading...</p>
+  return <ul>{data?.map(u => <li key={u.id}>{u.name}</li>)}</ul>
+}
+
+function CreateUser() {
+  const { mutateAsync, isLoading } = usePost('/users')
 
   return (
-    <div>
-      <h1>{user?.name}</h1>
-      <button onClick={() => updateUser.mutate({ name: 'New Name' })}>
-        Update Name
-      </button>
-    </div>
+    <button onClick={() => mutateAsync({ body: { name: 'Alice' } })} disabled={isLoading}>
+      Create
+    </button>
   )
 }
 ```
 
-### Vue
+### Without an OpenAPI spec
 
-```typescript
-import { createVueQueryHooks } from 'kweri/adapters/vue'
-import { ref, watch, onUnmounted } from 'vue'
+Define endpoints manually with `defineEndpoint`:
 
-const { useQuery, useMutation } = createVueQueryHooks({ 
-  ref, 
-  watch, 
-  onUnmounted 
+```ts
+import { Type, defineEndpoint } from 'kweri'
+
+const getUsers = defineEndpoint({
+  method: 'GET',
+  path: '/users',
+  params: Type.Object({}),
+  response: Type.Array(Type.Object({ id: Type.Number(), name: Type.String() }))
 })
 
-// In your Vue component
-export default {
-  setup() {
-    const userId = ref('123')
-    
-    const { data: user, status, error } = useQuery(kweri, '/users/{id}', {
-      path: { id: userId }
-    })
+const createUser = defineEndpoint({
+  method: 'POST',
+  path: '/users',
+  params: Type.Object({ body: Type.Object({ name: Type.String() }) }),
+  response: Type.Object({ id: Type.Number(), name: Type.String() })
+})
+```
 
-    const updateUser = useMutation(kweri, '/users/{id}', {
-      method: 'PATCH'
-    })
+```ts
+// src/hooks/useKweri.ts (React)
+import { useSyncExternalStore } from 'react'
+import { createReactQueryHooks } from 'kweri'
+import { kweri } from '@/lib/kweri'
 
-    return {
-      user,
-      status,
-      error,
-      updateUser,
-      async handleUpdate() {
-        await updateUser.mutate({ 
-          path: { id: userId.value },
-          body: { name: 'Updated Name' }
-        })
-      }
-    }
-  }
+export const { useQuery, useMutation } =
+  createReactQueryHooks(useSyncExternalStore, kweri)
+
+export { kweri }
+```
+
+```tsx
+function UserList() {
+  const { data, isLoading } = useQuery(getUsers, {})
+  // ...
+}
+
+function CreateUser() {
+  const { mutateAsync } = useMutation(createUser)
+  // ...
 }
 ```
 
-## 🔧 API Client Generation
+## Vue
 
-Generate a fully-typed API client from OpenAPI specifications:
+```ts
+// src/composables/useKweri.ts — with codegen
+import { ref, watch, onUnmounted } from 'vue'
+import { createVuePathHooks } from 'kweri'
+import { EndpointByMethod } from 'kweri/generated'
+import { kweri } from '@/lib/kweri'
 
-```bash
-# Install the CLI globally (optional)
-npm install -g kweri
+export const { useGet, usePost, usePut, usePatch, useDelete } =
+  createVuePathHooks({ ref, watch, onUnmounted }, kweri, EndpointByMethod)
 
-# Generate client from OpenAPI spec
-kweri-gen https://api.example.com/openapi.json
+export { kweri }
 ```
 
-This creates a typed client in `node_modules/kweri/.generated/` with two usage patterns:
+Without codegen:
 
-### Method-Based API (Generated)
+```ts
+// src/composables/useKweri.ts — without codegen
+import { ref, watch, onUnmounted } from 'vue'
+import { createVueQueryHooks } from 'kweri'
+import { kweri } from '@/lib/kweri'
 
-```typescript
-import { createClient } from 'kweri'
+export const { useQuery, useMutation } =
+  createVueQueryHooks({ ref, watch, onUnmounted }, kweri)
 
-const api = createClient({ baseURL: 'https://api.example.com' })
-
-// Auto-generated, fully-typed methods
-const user = await api.getUser({ id: '123' })
-const post = await api.createPost({ title: 'Hello', body: 'World' })
-const updatedUser = await api.updateUser({ id: '123', name: 'John' })
+export { kweri }
 ```
 
-### Path-Based API (Generic)
+```vue
+<script setup lang="ts">
+import { useGet } from '@/composables/useKweri'
 
-```typescript
-import { createClient } from 'kweri'
+const { data, isLoading } = useGet('/users')
+</script>
+```
 
-const api = createClient({ baseURL: 'https://api.example.com' })
+## Vanilla JS / Node.js
 
-// Generic methods with full type inference
-const user = await api.get('/users/{id}', { path: { id: '123' } })
-const post = await api.post('/posts', { body: { title: 'Hello', body: 'World' } })
-const updated = await api.patch('/users/{id}', { 
-  path: { id: '123' }, 
-  body: { name: 'John' } 
+```ts
+import { kweri } from './lib/kweri'
+import { getUsers } from './api/users'
+
+// Subscribe to cache changes
+const unsubscribe = kweri.subscribe(getUsers, {}, (entry) => {
+  console.log(entry.data)
+})
+
+// Trigger a fetch
+await kweri.query(getUsers, {})
+
+unsubscribe()
+```
+
+## Kweri instance options
+
+```ts
+const kweri = new Kweri({
+  baseURL: 'https://api.example.com', // required
+  staleTime: 30_000,                  // how long data is considered fresh (default: 0)
+  cacheTime: 300_000,                 // how long stale data stays in memory (default: 5 min)
+  maxRetries: 3,                      // retries for server/network errors (default: 0)
+  gcInterval: 60_000,                 // garbage collection interval in ms
+  enableDevTools: true,               // floating cache inspector (auto-off in production)
+  fetcher: async ({ method, url, body }) => { /* custom HTTP transport */ },
+  persistence: myStorageAdapter,      // restore cache across page reloads
 })
 ```
 
-### Auto-Regeneration
+## Cache invalidation
 
-Keep your API client in sync automatically:
+```ts
+// Invalidate a specific endpoint + params
+kweri.invalidateQuery(getUsers, {})
+
+// Invalidate all keys matching a path (most common after a mutation)
+kweri.invalidateByPath('/users')
+
+// Regex patterns work too
+kweri.invalidateByPath(/\/users\/\d+/)
+```
+
+## Direct cache access
+
+```ts
+// Read cached data without a network call
+const users = kweri.getCachedData(getUsers, {})
+
+// Write directly into cache (useful for optimistic updates)
+kweri.setCachedData(getUsers, {}, [...users, newUser])
+
+// Remove an entry entirely
+kweri.removeQuery(getUsers, {})
+```
+
+## DevTools
+
+```ts
+const kweri = new Kweri({
+  baseURL: 'https://api.example.com',
+  enableDevTools: true, // mounts a floating overlay in development
+})
+```
+
+Or mount manually:
+
+```ts
+import { mountKweriDevTools } from 'kweri'
+
+const unmount = mountKweriDevTools(kweri)
+// unmount() to remove
+```
+
+## Code generation
+
+```bash
+# From a URL
+kweri-gen https://api.example.com/openapi.json
+
+# From a local file
+kweri-gen ./openapi.json
+
+# Bundle external $refs first
+kweri-gen ./openapi.yaml --bundle
+```
+
+Output is written to `.generated/client.js` and importable via `kweri/generated`. Add to your `package.json` scripts to regenerate on install:
 
 ```json
 {
   "scripts": {
-    "postinstall": "kweri-gen https://api.example.com/openapi.json"
+    "generate-api": "kweri-gen https://api.example.com/openapi.json"
   }
 }
 ```
 
-## 🛠 Configuration
+## License
 
-### Kweri Instance Options
-
-```typescript
-const kweri = new Kweri({
-  // Base URL for all requests
-  baseURL: 'https://api.example.com',
-  
-  // Default cache settings
-  defaultStaleTime: 5 * 60 * 1000, // 5 minutes
-  defaultCacheTime: 10 * 60 * 1000, // 10 minutes
-  
-  // Enable DevTools (auto-disabled in production)
-  enableDevTools: true,
-  
-  // Garbage collection interval
-  gcInterval: 5 * 60 * 1000, // 5 minutes
-  
-  // Custom headers
-  headers: {
-    'Authorization': 'Bearer token',
-    'Content-Type': 'application/json'
-  },
-  
-  // Request interceptor
-  onRequest: (url, options) => {
-    console.log(`Making request to ${url}`)
-    return options
-  },
-  
-  // Response interceptor
-  onResponse: (response) => {
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`)
-    }
-    return response
-  }
-})
-```
-
-### Query Options
-
-```typescript
-// Per-query configuration
-const data = await kweri.query('/endpoint', {
-  // Cache timing
-  staleTime: 30000,    // Consider fresh for 30 seconds
-  cacheTime: 300000,   // Keep in cache for 5 minutes
-  
-  // Request options
-  headers: { 'X-Custom': 'header' },
-  signal: abortController.signal,
-  
-  // Retry configuration
-  retry: 3,
-  retryDelay: (attempt) => Math.pow(2, attempt) * 1000,
-  
-  // Background refetch
-  refetchOnWindowFocus: true,
-  refetchInterval: 60000, // Refetch every minute
-})
-```
-
-## 🔍 DevTools
-
-Kweri includes powerful DevTools for debugging and monitoring your queries:
-
-```typescript
-import { mountKweriDevTools } from 'kweri/devtools'
-
-// Mount DevTools (automatically disabled in production)
-const unmount = mountKweriDevTools(kweri, {
-  position: 'bottom-right' // or 'bottom-left'
-})
-
-// Unmount when done
-// unmount()
-```
-
-### DevTools Features
-
-- **Query Inspector**: View all cached queries, their status, and data
-- **Network Monitor**: Track in-flight requests and their timing
-- **Event Log**: See cache mutations, invalidations, and refetches in real-time
-- **Cache Invalidation**: Manually invalidate queries during development
-- **JSON Viewer**: Inspect query data with syntax highlighting and collapsible trees
-
-![DevTools Interface](https://via.placeholder.com/800x400?text=Kweri+DevTools+Interface)
-
-## 🎯 Advanced Usage
-
-### Custom Cache Keys
-
-```typescript
-// Custom cache key generation
-const data = await kweri.query('/users/{id}', {
-  path: { id: userId },
-  queryKey: ['user', userId, { version: 'v2' }] // Custom cache key
-})
-```
-
-### Optimistic Updates
-
-```typescript
-const mutation = kweri.mutate('/posts/{id}', {
-  method: 'PATCH',
-  onMutate: async (variables) => {
-    // Cancel outgoing refetches
-    await kweri.cancelQuery(['posts', variables.path.id])
-    
-    // Snapshot previous value
-    const previousPost = kweri.getCachedData(['posts', variables.path.id])
-    
-    // Optimistically update
-    kweri.setCachedData(['posts', variables.path.id], {
-      ...previousPost,
-      ...variables.body
-    })
-    
-    return { previousPost }
-  },
-  onError: (error, variables, context) => {
-    // Rollback on error
-    if (context?.previousPost) {
-      kweri.setCachedData(['posts', variables.path.id], context.previousPost)
-    }
-  },
-  onSettled: () => {
-    // Refetch after mutation
-    kweri.invalidateByPath('/posts')
-  }
-})
-```
-
-### Background Sync
-
-```typescript
-// Setup periodic background refetch
-const subscription = kweri.subscribe(['posts'], () => {
-  console.log('Posts updated!')
-})
-
-// Refetch stale queries on window focus
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden) {
-    kweri.refetchStaleQueries()
-  }
-})
-```
-
-## 📋 API Reference
-
-### Kweri Instance Methods
-
-| Method | Description |
-|--------|-------------|
-| `query(endpoint, options)` | Execute a GET request with caching |
-| `mutate(endpoint, options)` | Execute a mutation (POST, PUT, PATCH, DELETE) |
-| `getCachedData(key)` | Retrieve data from cache |
-| `setCachedData(key, data)` | Set data in cache |
-| `invalidateQuery(key)` | Mark specific query as stale |
-| `invalidateByPath(pattern)` | Invalidate queries matching a pattern |
-| `removeQuery(key)` | Remove query from cache entirely |
-| `subscribe(key, callback)` | Subscribe to cache changes |
-| `isInFlight(key)` | Check if query is currently executing |
-
-### Hook Return Values
-
-#### useQuery
-
-```typescript
-{
-  data: T | undefined,
-  status: 'idle' | 'loading' | 'success' | 'error',
-  error: Error | null,
-  isLoading: boolean,
-  isSuccess: boolean,
-  isError: boolean
-}
-```
-
-#### useMutation
-
-```typescript
-{
-  mutate: (variables) => Promise<T>,
-  status: 'idle' | 'loading' | 'success' | 'error',
-  error: Error | null,
-  isLoading: boolean,
-  isSuccess: boolean,
-  isError: boolean
-}
-```
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) for details.
+MIT — see [LICENSE](LICENSE) for details.

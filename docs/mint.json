@@ -1,0 +1,90 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Kweri",
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#7C3AED",
+    "light": "#A78BFA",
+    "dark": "#5B21B6",
+    "background": {
+      "dark": "#0a0e0e"
+    },
+    "anchors": {
+      "from": "#7C3AED",
+      "to": "#C084FC"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "GitHub",
+      "url": "https://github.com/KyndraHQ/packages"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "icon": "rocket",
+      "pages": [
+        "introduction",
+        "quickstart",
+        "installation"
+      ]
+    },
+    {
+      "group": "Core Concepts",
+      "icon": "lightbulb",
+      "pages": [
+        "concepts/caching",
+        "concepts/query-keys",
+        "concepts/error-handling"
+      ]
+    },
+    {
+      "group": "Core API",
+      "icon": "cube",
+      "pages": [
+        "core/kweri",
+        "core/endpoints",
+        "core/mutations"
+      ]
+    },
+    {
+      "group": "Framework Adapters",
+      "icon": "puzzle-piece",
+      "pages": [
+        "frameworks/react",
+        "frameworks/vue"
+      ]
+    },
+    {
+      "group": "CLI",
+      "icon": "terminal",
+      "pages": [
+        "cli/kweri-gen"
+      ]
+    },
+    {
+      "group": "Advanced",
+      "icon": "sliders",
+      "pages": [
+        "advanced/devtools",
+        "advanced/persistence",
+        "advanced/custom-fetcher",
+        "advanced/eviction"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "icon": "book",
+      "pages": [
+        "api-reference/kweri-class",
+        "api-reference/query-client",
+        "api-reference/cache",
+        "api-reference/types"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/KyndraHQ/packages"
+  }
+}

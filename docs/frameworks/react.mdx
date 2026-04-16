@@ -1,0 +1,251 @@
+---
+title: React
+description: Use kweri in React with hooks built on useSyncExternalStore.
+icon: react
+---
+
+Kweri supports two React usage patterns. If your backend has an OpenAPI spec, use **path-based hooks** with generated types. If you're defining endpoints manually, use `useQuery` and `useMutation` directly.
+
+---
+
+## With code generation (recommended)
+
+After running `kweri-gen`, bind hooks to the generated `EndpointByMethod` map. You get fully-typed `useGet`, `usePost`, `usePut`, `usePatch`, and `useDelete` hooks without writing any endpoint definitions yourself.
+
+### Setup
+
+```ts
+// src/hooks/useKweri.ts
+import { useSyncExternalStore } from 'react'
+import { createReactPathHooks } from 'kweri'
+import { EndpointByMethod } from 'kweri/generated'
+import { kweri } from '@/lib/kweri'
+
+export const { useGet, usePost, usePut, usePatch, useDelete } =
+  createReactPathHooks(useSyncExternalStore, kweri, EndpointByMethod)
+
+export { kweri }
+```
+
+<Note>
+Create the hook factory once and export it. Don't call `createReactPathHooks` inside a component.
+</Note>
+
+### useGet
+
+```ts
+function useGet(
+  path: string,
+  params?: any,
+  options?: ReactQueryOptions
+): ReactQueryResult
+```
+
+```tsx
+import { useGet } from '@/hooks/useKweri'
+
+function UserList() {
+  const { data, isLoading, isError, error } = useGet('/users', {})
+
+  if (isLoading) return <p>Loading...</p>
+  if (isError)   return <p>Error: {error?.message}</p>
+
+  return <ul>{data?.map(user => <li key={user.id}>{user.name}</li>)}</ul>
+}
+```
+
+### Mutation hooks
+
+```ts
+function usePost(path: string):   ReactMutationResult
+function usePut(path: string):    ReactMutationResult
+function usePatch(path: string):  ReactMutationResult
+function useDelete(path: string): ReactMutationResult
+```
+
+### Full CRUD example
+
+```tsx
+import { useGet, usePost, useDelete, kweri } from '@/hooks/useKweri'
+
+function UserManager() {
+  const { data: users } = useGet('/users', {})
+  const createMutation = usePost('/users')
+  const deleteMutation = useDelete('/users/{id}')
+
+  async function addUser(name: string) {
+    await createMutation.mutateAsync({ body: { name } })
+    kweri.invalidateByPath('/users')
+  }
+
+  async function removeUser(id: number) {
+    await deleteMutation.mutateAsync({ path: { id: String(id) } })
+    kweri.invalidateByPath('/users')
+  }
+
+  return (
+    <ul>
+      {users?.map(user => (
+        <li key={user.id}>
+          {user.name}
+          <button onClick={() => removeUser(user.id)}>Delete</button>
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+<Tip>
+Path hooks resolve the endpoint schema at call time. If the path isn't in the generated map, they throw `[kweri] No endpoint registered for GET /unknown-path`.
+</Tip>
+
+---
+
+## Without code generation
+
+Use `useQuery` and `useMutation` when you're defining endpoints manually with `defineEndpoint`.
+
+### Setup
+
+```ts
+// src/hooks/useKweri.ts
+import { useSyncExternalStore } from 'react'
+import { createReactQueryHooks } from 'kweri'
+import { kweri } from '@/lib/kweri'
+
+export const { useQuery, useMutation } =
+  createReactQueryHooks(useSyncExternalStore, kweri)
+
+export { kweri }
+```
+
+<Note>
+Create the hooks once and export them. Don't call `createReactQueryHooks` inside a component.
+</Note>
+
+---
+
+## useQuery
+
+```ts
+function useQuery<E extends Endpoint>(
+  kweri: Kweri,
+  endpoint: E,
+  params: InferParams<E>,
+  options?: ReactQueryOptions
+): ReactQueryResult<InferResponse<E>, Error>
+```
+
+### ReactQueryOptions
+
+```ts
+interface ReactQueryOptions {
+  enabled?: boolean  // default: true — set false to skip the fetch
+}
+```
+
+### ReactQueryResult
+
+```ts
+interface ReactQueryResult<TData, TError> {
+  data:       TData | undefined
+  status:     'idle' | 'loading' | 'success' | 'error'
+  error:      TError | undefined
+  refetch:    () => Promise<void>
+  isFetching: boolean   // true while a request is in flight
+  isLoading:  boolean   // status === 'loading'
+  isSuccess:  boolean   // status === 'success'
+  isError:    boolean   // status === 'error'
+}
+```
+
+### Example
+
+```tsx
+import { useQuery } from '@/hooks/useKweri'
+import { getUsers } from '@/api/users'
+
+function UserList() {
+  const { data, isLoading, isError, error, refetch } = useQuery(getUsers, {})
+
+  if (isLoading) return <p>Loading...</p>
+  if (isError)   return <p>Error: {error?.message} <button onClick={refetch}>Retry</button></p>
+
+  return (
+    <ul>
+      {data?.map(user => <li key={user.id}>{user.name}</li>)}
+    </ul>
+  )
+}
+```
+
+### Conditional fetching
+
+```tsx
+function UserProfile({ userId }: { userId?: number }) {
+  const { data } = useQuery(
+    getUserById,
+    { path: { id: userId ?? 0 } },
+    { enabled: userId !== undefined }
+  )
+
+  return <div>{data?.name}</div>
+}
+```
+
+---
+
+## useMutation
+
+```ts
+function useMutation<E extends Endpoint>(
+  kweri: Kweri,
+  endpoint: E
+): ReactMutationResult<InferResponse<E>, Error>
+```
+
+### ReactMutationResult
+
+```ts
+interface ReactMutationResult<TData, TError> {
+  mutate:      (vars?: unknown) => void            // fire-and-forget
+  mutateAsync: (vars?: unknown) => Promise<TData>  // awaitable
+  status:      'idle' | 'loading' | 'success' | 'error'
+  error:       TError | undefined
+  reset:       () => void
+  isLoading:   boolean
+  isSuccess:   boolean
+  isError:     boolean
+}
+```
+
+### Example
+
+```tsx
+import { useMutation, kweri } from '@/hooks/useKweri'
+import { createUser } from '@/api/users'
+
+function CreateUserForm() {
+  const { mutateAsync, isLoading, isError, error, reset } = useMutation(createUser)
+  const [name, setName] = useState('')
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    try {
+      await mutateAsync({ body: { name, email: `${name}@example.com` } })
+      kweri.invalidateByPath('/users')
+    } catch {}
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={name} onChange={e => setName(e.target.value)} />
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? 'Creating...' : 'Create User'}
+      </button>
+      {isError && <p onClick={reset}>{error?.message} (click to dismiss)</p>}
+    </form>
+  )
+}
+```

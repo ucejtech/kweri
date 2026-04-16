@@ -69,6 +69,8 @@ describe('EvictionEngine', () => {
       const engine = new EvictionEngine(store, getObserverCount, {
         setInterval: () => 0,
         clearInterval: () => {},
+        setTimeout: () => 0,
+        clearTimeout: () => {},
         now: () => now,
       })
       engine.sweep()
@@ -89,6 +91,8 @@ describe('EvictionEngine', () => {
       const engine = new EvictionEngine(store, getObserverCount, {
         setInterval: () => 0,
         clearInterval: () => {},
+        setTimeout: () => 0,
+        clearTimeout: () => {},
         now: () => now,
       })
       engine.sweep()
@@ -108,6 +112,8 @@ describe('EvictionEngine', () => {
       const engine = new EvictionEngine(store, getObserverCount, {
         setInterval: () => 0,
         clearInterval: () => {},
+        setTimeout: () => 0,
+        clearTimeout: () => {},
         now: () => now,
       })
       engine.sweep()
@@ -134,6 +140,8 @@ describe('EvictionEngine', () => {
       const engine = new EvictionEngine(store, getObserverCount, {
         setInterval: () => 0,
         clearInterval: () => {},
+        setTimeout: () => 0,
+        clearTimeout: () => {},
         now: () => now,
       })
       engine.sweep()
@@ -161,6 +169,8 @@ describe('EvictionEngine', () => {
           return 123 as any
         },
         clearInterval: () => {},
+        setTimeout: () => 0,
+        clearTimeout: () => {},
         now: () => now,
       }
       const engine = new EvictionEngine(store, getObserverCount, {
@@ -189,6 +199,8 @@ describe('EvictionEngine', () => {
         clearInterval: (h) => {
           if (h === 456) cleared = true
         },
+        setTimeout: () => 0,
+        clearTimeout: () => {},
         now: () => Date.now(),
       }
       const engine = new EvictionEngine(store, getObserverCount, timer)

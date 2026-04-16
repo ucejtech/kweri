@@ -1,3 +1,4 @@
+import { Type } from '@sinclair/typebox'
 import type { Endpoint, InferParams, InferResponse } from '../contract/index.js'
 import type { Kweri } from '../kweri/index.js'
 import type { CacheEntryStatus } from '../cache/cache-entry.js'
@@ -35,9 +36,8 @@ export interface ReactMutationResult<TData = unknown, TError = unknown> {
   isError: boolean;
 }
 
-export function createReactQueryHooks(useSyncExternalStore: UseSyncExternalStore) {
+export function createReactQueryHooks(useSyncExternalStore: UseSyncExternalStore, kweri: Kweri) {
   function useQuery<E extends Endpoint>(
-    kweri: Kweri,
     endpoint: E,
     params: InferParams<E>,
     options: ReactQueryOptions = {}
@@ -73,7 +73,11 @@ export function createReactQueryHooks(useSyncExternalStore: UseSyncExternalStore
         onStoreChange();
       });
 
-      kweri.query(endpoint, params).catch(() => {})
+      kweri.query(endpoint, params).catch((err) => {
+        if (typeof console !== 'undefined') {
+          console.error('[kweri] background query failed:', err)
+        }
+      })
 
       return unsubscribe;
     };
@@ -98,7 +102,6 @@ export function createReactQueryHooks(useSyncExternalStore: UseSyncExternalStore
   }
 
   function useMutation<E extends Endpoint>(
-    kweri: Kweri,
     endpoint: E
   ): ReactMutationResult<InferResponse<E>, Error> {
     type TData = InferResponse<E>;
@@ -153,4 +156,55 @@ export function createReactQueryHooks(useSyncExternalStore: UseSyncExternalStore
   }
 
   return { useQuery, useMutation };
+}
+
+/**
+ * Create path-based hooks bound to a kweri instance and a generated EndpointByMethod map.
+ * Usage mirrors the rise-api pattern: useGet('/users', {}) instead of useQuery(kweri, endpoint, {}).
+ *
+ * @param useSyncExternalStore - React's useSyncExternalStore
+ * @param kweri                - Kweri instance
+ * @param endpointByMethod     - EndpointByMethod from the generated contract (kweri/generated)
+ */
+export function createReactPathHooks(
+  useSyncExternalStore: UseSyncExternalStore,
+  kweri: Kweri,
+  endpointByMethod: Record<string, Record<string, any>>
+) {
+  const { useQuery, useMutation } = createReactQueryHooks(useSyncExternalStore, kweri)
+
+  function resolveEndpoint(method: string, path: string): Endpoint {
+    // EndpointByMethod uses lowercase keys ('get', 'post', …)
+    const schema = endpointByMethod[method.toLowerCase()]?.[path]
+    if (!schema) throw new Error(`[kweri] No endpoint registered for ${method} ${path}`)
+    const responsesProps = schema.properties?.responses?.properties
+    const response =
+      responsesProps?.['200'] ??
+      responsesProps?.['201'] ??
+      schema.properties?.response ??
+      Type.Unknown()
+    return { method: method as Endpoint['method'], path, params: Type.Any(), response }
+  }
+
+  function useGet(path: string, params: any = {}, options: ReactQueryOptions = {}) {
+    return useQuery(resolveEndpoint('GET', path), params, options)
+  }
+
+  function usePost(path: string) {
+    return useMutation(resolveEndpoint('POST', path))
+  }
+
+  function usePut(path: string) {
+    return useMutation(resolveEndpoint('PUT', path))
+  }
+
+  function usePatch(path: string) {
+    return useMutation(resolveEndpoint('PATCH', path))
+  }
+
+  function useDelete(path: string) {
+    return useMutation(resolveEndpoint('DELETE', path))
+  }
+
+  return { useGet, usePost, usePut, usePatch, useDelete }
 }

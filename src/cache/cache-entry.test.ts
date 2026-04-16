@@ -8,6 +8,7 @@ import {
   type CacheEntry,
   type CachedError,
 } from "./cache-entry";
+import { ValidationError } from "../types/index.js";
 
 describe("Cache Entry Model", () => {
   describe("createCacheEntry", () => {
@@ -151,6 +152,17 @@ describe("Cache Entry Model", () => {
   });
 
   describe("categorizeError", () => {
+    it("categorizes ValidationError as validation type and non-retryable", () => {
+      const error = new ValidationError("Invalid response for GET /users", [
+        { path: "/0/id", message: "Expected number" },
+      ]);
+      const categorized = categorizeError(error);
+
+      expect(categorized.type).toBe("validation");
+      expect(categorized.retryable).toBe(false);
+      expect(categorized.message).toContain("Invalid response");
+    });
+
     it("categorizes 4xx errors as validation errors", () => {
       const error = { status: 404, message: "Not found" };
       const categorized = categorizeError(error);

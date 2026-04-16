@@ -1,0 +1,181 @@
+---
+title: kweri-gen
+description: Generate type-safe client code from any OpenAPI specification.
+icon: wand-magic-sparkles
+---
+
+## Overview
+
+`kweri-gen` takes an OpenAPI 3.x specification and generates a `.generated/client.js` file containing:
+
+- **TypeBox schemas** for every endpoint (method, path, parameters, responses)
+- **Method-grouped maps** (`GetEndpoints`, `PostEndpoints`, etc.)
+- **`EndpointByMethod`** — the unified map used by `createReactPathHooks` and `createVuePathHooks`
+
+## Usage
+
+```bash
+kweri-gen <openapi-source> [options]
+
+Arguments:
+  <openapi-source>    URL or local file path to an OpenAPI JSON or YAML spec
+
+Options:
+  -b, --bundle        Bundle $ref pointers before generating
+                      (use when your spec has external $refs)
+  -h, --help          Show help
+```
+
+### Examples
+
+```bash
+# From a URL
+kweri-gen https://api.example.com/openapi.json
+
+# From a local file
+kweri-gen ./openapi.json
+
+# With bundling for complex specs
+kweri-gen https://petstore3.swagger.io/api/v3/openapi.json --bundle
+
+# As an npm script
+```
+
+```json package.json
+{
+  "scripts": {
+    "generate-api": "kweri-gen https://api.example.com/openapi.json"
+  }
+}
+```
+
+## Output
+
+The generated file is written to `.generated/client.js` (relative to `cwd`). It is importable via the `kweri/generated` package export.
+
+### File structure
+
+```ts
+// .generated/client.js (abbreviated)
+
+import { Type, type Static } from "kweri"
+
+// One TypeBox schema per endpoint
+export type get__users = Static<typeof get__users>
+export const get__users = Type.Object({
+  method:     Type.Literal("GET"),
+  path:       Type.Literal("/users"),
+  parameters: Type.Object({ ... }),
+  responses:  Type.Object({ 200: UserList })
+})
+
+export type post__users = Static<typeof post__users>
+export const post__users = Type.Object({
+  method:     Type.Literal("POST"),
+  path:       Type.Literal("/users"),
+  parameters: Type.Object({ body: UserCreate }),
+  responses:  Type.Object({ 201: User })
+})
+
+// ...more schemas...
+
+// Method-grouped maps
+export const GetEndpoints = {
+  '/users':    get__users,
+  '/users/{id}': get__users_id,
+  // ...
+}
+
+export const PostEndpoints = {
+  '/users': post__users,
+  // ...
+}
+
+// ...PutEndpoints, PatchEndpoints, DeleteEndpoints...
+
+// Unified map used by path hooks
+export const EndpointByMethod = {
+  get:    GetEndpoints,
+  post:   PostEndpoints,
+  put:    PutEndpoints,
+  patch:  PatchEndpoints,
+  delete: DeleteEndpoints,
+}
+```
+
+## Importing the generated client
+
+```ts
+import { EndpointByMethod } from 'kweri/generated'
+```
+
+<Note>
+The `kweri/generated` import path is configured in kweri's `package.json` exports. It points to `.generated/client.js`. Run `kweri-gen` at least once before importing from it.
+</Note>
+
+## Using with path-based hooks
+
+The generated `EndpointByMethod` is designed to work directly with `createReactPathHooks` and `createVuePathHooks`:
+
+<Tabs>
+  <Tab title="React">
+    ```ts
+    import { useSyncExternalStore } from 'react'
+    import { createReactPathHooks } from 'kweri'
+    import { EndpointByMethod } from 'kweri/generated'
+    import { kweri } from '@/lib/kweri'
+
+    export const { useGet, usePost, usePut, usePatch, useDelete } =
+      createReactPathHooks(useSyncExternalStore, kweri, EndpointByMethod)
+    ```
+  </Tab>
+  <Tab title="Vue">
+    ```ts
+    import { ref, watch, onUnmounted } from 'vue'
+    import { createVuePathHooks } from 'kweri'
+    import { EndpointByMethod } from 'kweri/generated'
+    import { kweri } from '@/lib/kweri'
+
+    export const { useGet, usePost, usePut, usePatch, useDelete } =
+      createVuePathHooks({ ref, watch, onUnmounted }, kweri, EndpointByMethod)
+    ```
+  </Tab>
+</Tabs>
+
+## How endpoint resolution works
+
+When you call `useGet('/users', {})`, the path hook:
+
+1. Lowercases the method: `'get'`
+2. Looks up `EndpointByMethod['get']['/users']` → the TypeBox schema
+3. Extracts the `responses.200` (or `responses.201`) schema as the response type
+4. Constructs a temporary `Endpoint` object with `params: Type.Any()` (skips runtime param validation)
+5. Delegates to the underlying `useQuery`
+
+If the path isn't found in the map, the hook throws:
+```
+[kweri] No endpoint registered for GET /unknown-path
+```
+
+## --bundle flag
+
+Some OpenAPI specs use `$ref` pointers to external files or URLs:
+
+```yaml
+components:
+  schemas:
+    User:
+      $ref: './schemas/user.yaml'
+```
+
+Pass `--bundle` to dereference all `$ref` pointers before generating:
+
+```bash
+kweri-gen ./openapi.yaml --bundle
+```
+
+## Regenerating
+
+Re-run `kweri-gen` whenever your API spec changes. The output file is completely regenerated each time — don't edit `.generated/client.js` manually, changes will be overwritten.
+
+Add `.generated/` to your `.gitignore` if you prefer to generate on-the-fly, or commit it if you want deterministic builds without needing the API to be available.

@@ -38,6 +38,10 @@ export type { MutationOptions } from './mutations/index.js'
 export { EvictionEngine, isEligibleForEviction } from './eviction/index.js'
 export type { TimerAdapter } from './eviction/index.js'
 
+// Persistence
+export type { PersistenceAdapter, SerializedCache } from './persistence/index.js'
+export { CACHE_VERSION } from './persistence/index.js'
+
 // Kweri facade (single entry point)
 export { Kweri } from './kweri/index.js'
 export type { KweriOptions, KweriDevToolsSnapshot } from './kweri/index.js'
@@ -47,7 +51,7 @@ export { mountKweriDevTools } from './devtools/index.js'
 export type { MountKweriDevToolsOptions } from './devtools/index.js'
 
 // Framework adapters (optional; pass your framework's APIs)
-export { createReactQueryHooks } from './adapters/react.js'
+export { createReactQueryHooks, createReactPathHooks } from './adapters/react.js'
 export type { UseSyncExternalStore, ReactQueryOptions, ReactQueryResult, ReactMutationResult } from './adapters/react.js'
-export { createVueQueryHooks } from './adapters/vue.js'
+export { createVueQueryHooks, createVuePathHooks } from './adapters/vue.js'
 export type { Ref, VueEffectAPI, VueQueryResult } from './adapters/vue.js'

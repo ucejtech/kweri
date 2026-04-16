@@ -1,0 +1,138 @@
+---
+title: Error Handling
+description: How kweri classifies errors, caches them, and retries automatically.
+icon: triangle-exclamation
+---
+
+## Error categories
+
+When a request fails, kweri categorizes the error before caching it. The category determines whether the error is retryable:
+
+| Type | Condition | Retryable |
+|---|---|---|
+| `validation` | `ValidationError` or HTTP `4xx` response | No |
+| `server` | HTTP `5xx` response | Yes |
+| `network` | `TypeError`, `AbortError`, network unreachable | Yes |
+| `unknown` | Anything else | Yes |
+
+```ts
+interface CachedError {
+  message: string
+  type: 'network' | 'validation' | 'server' | 'unknown'
+  status?: number   // HTTP status code, if available
+  retryable: boolean
+}
+```
+
+## Automatic retry
+
+Retries only fire for errors marked `retryable: true`. The delay uses **exponential backoff with jitter**:
+
+```
+delay = min(1000ms × 2^attempt, 30_000ms) + random(0, 1000ms)
+```
+
+| Attempt | Base delay | With jitter |
+|---|---|---|
+| 1 | 2s | ~2–3s |
+| 2 | 4s | ~4–5s |
+| 3 | 8s | ~8–9s |
+| 4 | 16s | ~16–17s |
+| 5+ | 30s (cap) | ~30–31s |
+
+Configure the maximum number of retries on the `Kweri` instance:
+
+```ts
+const kweri = new Kweri({
+  baseURL: 'https://api.example.com',
+  maxRetries: 3  // default: 0 (no retries)
+})
+```
+
+<Warning>
+Setting `maxRetries` to `0` disables retries entirely. The default is intentionally conservative — enable retries explicitly for your use case.
+</Warning>
+
+## Error caching
+
+Errors are cached for a short window (default **5 seconds**). During this window, subsequent calls to `kweri.query()` for the same key return the cached error immediately rather than hammering the server.
+
+After the error cache expires, the next query call fires a fresh request.
+
+## Accessing errors in hooks
+
+<Tabs>
+  <Tab title="React">
+    ```tsx
+    const { data, error, isError, status } = useQuery(kweri, getUsers, {})
+
+    if (isError) {
+      return <p>Failed: {error?.message}</p>
+    }
+    ```
+  </Tab>
+  <Tab title="Vue">
+    ```vue
+    <script setup>
+    const { data, error, isError } = useGet('/users')
+    </script>
+
+    <template>
+      <p v-if="isError.value">Failed: {{ error.value?.message }}</p>
+    </template>
+    ```
+  </Tab>
+</Tabs>
+
+## ValidationError
+
+`ValidationError` is thrown when the **server response** doesn't match the endpoint's `response` schema — i.e. a contract mismatch between your definition and what the server actually returned:
+
+```ts
+import { ValidationError } from 'kweri'
+
+try {
+  await kweri.query(getUsers, {})
+} catch (err) {
+  if (err instanceof ValidationError) {
+    console.log(err.errors)
+    // [{ path: '/0/email', message: 'Expected string' }]
+  }
+}
+```
+
+`ValidationError` is not retryable.
+
+<Note>
+Params are **not** validated at runtime. The endpoint `params` schema drives TypeScript type inference only. Passing wrong params is a compile-time error, not a runtime one.
+</Note>
+
+## Custom error handling with a custom fetcher
+
+If your API returns errors in a non-standard shape (e.g., `{ error: '...' }` with a `200` status), use a custom fetcher to normalize them:
+
+```ts
+const kweri = new Kweri({
+  baseURL: 'https://api.example.com',
+  fetcher: async ({ method, url, body }) => {
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined
+    })
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`)
+    }
+
+    const json = await res.json()
+
+    // Unwrap API-level errors
+    if (json.error) {
+      throw new Error(json.error)
+    }
+
+    return res  // kweri expects a Response-like object
+  }
+})
+```

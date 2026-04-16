@@ -1,0 +1,201 @@
+---
+title: Types
+description: All exported TypeScript types and interfaces.
+icon: shapes
+---
+
+## Core
+
+```ts
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+
+interface FetcherOptions {
+  method: string
+  url:    string
+  body?:  any
+}
+
+type Fetcher = (options: FetcherOptions) => Promise<Response>
+```
+
+## ValidationError
+
+Thrown when request params fail TypeBox schema validation (before any network call).
+
+```ts
+class ValidationError extends Error {
+  errors: Array<{ path: string; message: string }>
+}
+```
+
+## Endpoint
+
+```ts
+interface Endpoint<
+  TParams extends TSchema = TSchema,
+  TResponse extends TSchema = TSchema
+> {
+  method:   HttpMethod
+  path:     string
+  params:   TParams
+  response: TResponse
+}
+
+type InferParams<T extends Endpoint>   = Static<T['params']>
+type InferResponse<T extends Endpoint> = Static<T['response']>
+```
+
+## KweriOptions
+
+```ts
+interface KweriOptions {
+  baseURL:        string
+  fetcher?:       Fetcher
+  staleTime?:     number
+  cacheTime?:     number
+  maxRetries?:    number
+  gcInterval?:    number
+  persistence?:   PersistenceAdapter
+  enableDevTools?: boolean
+  devtools?:      MountKweriDevToolsOptions
+}
+```
+
+## MutationOptions
+
+```ts
+interface MutationOptions<TParams = unknown, TResponse = unknown, TContext = unknown> {
+  onMutate?:  (params: TParams) => TContext | Promise<TContext>
+  onSuccess?: (data: TResponse, params: TParams, context: TContext) => void
+  onError?:   (error: Error, params: TParams, context: TContext) => void
+  onSettled?: (
+    data: TResponse | undefined,
+    error: Error | undefined,
+    params: TParams,
+    context: TContext
+  ) => void
+  invalidates?: Endpoint[]
+}
+```
+
+## React adapter
+
+```ts
+interface UseSyncExternalStore {
+  <Snapshot>(
+    subscribe:   (onStoreChange: () => void) => () => void,
+    getSnapshot: () => Snapshot
+  ): Snapshot
+}
+
+interface ReactQueryOptions {
+  enabled?: boolean
+}
+
+interface ReactQueryResult<TData = unknown, TError = unknown> {
+  data:       TData | undefined
+  status:     CacheEntryStatus
+  error:      TError | undefined
+  refetch:    () => Promise<void>
+  isFetching: boolean
+  isLoading:  boolean
+  isSuccess:  boolean
+  isError:    boolean
+}
+
+interface ReactMutationResult<TData = unknown, TError = unknown> {
+  mutate:      (vars?: unknown) => void
+  mutateAsync: (vars?: unknown) => Promise<TData>
+  status:      CacheEntryStatus
+  error:       TError | undefined
+  reset:       () => void
+  isLoading:   boolean
+  isSuccess:   boolean
+  isError:     boolean
+}
+```
+
+## Vue adapter
+
+```ts
+interface Ref<T> {
+  value: T
+}
+
+interface VueEffectAPI {
+  ref<T>(value: T): Ref<T>
+  watch<T>(
+    source:  T | (() => T) | Ref<T>,
+    cb:      (value: T, oldValue?: T) => void,
+    options?: { immediate?: boolean }
+  ): () => void
+  onUnmounted(cb: () => void): void
+}
+
+interface VueQueryOptions {
+  enabled?: boolean | Ref<boolean>
+}
+
+interface VueQueryResult<TData = unknown, TError = unknown> {
+  data:      Ref<TData | undefined>
+  status:    Ref<CacheEntryStatus>
+  error:     Ref<TError | undefined>
+  refetch:   () => Promise<void>
+  isLoading: Ref<boolean>
+  isSuccess: Ref<boolean>
+  isError:   Ref<boolean>
+}
+
+interface VueMutationResult<TData = unknown, TError = unknown> {
+  mutate:      (vars?: unknown) => void
+  mutateAsync: (vars?: unknown) => Promise<TData>
+  status:      Ref<CacheEntryStatus>
+  error:       Ref<TError | undefined>
+  reset:       () => void
+  isLoading:   Ref<boolean>
+  isSuccess:   Ref<boolean>
+  isError:     Ref<boolean>
+}
+```
+
+## Persistence
+
+```ts
+interface SerializedCache {
+  version: number
+  entries: Array<[string, CacheEntry]>
+}
+
+interface PersistenceAdapter {
+  save(data: SerializedCache): Promise<void>
+  restore(): Promise<SerializedCache | null>
+  clear(): Promise<void>
+}
+
+const CACHE_VERSION: number  // currently 1
+```
+
+## Eviction
+
+```ts
+interface TimerAdapter {
+  setInterval(fn: () => void, ms: number): number | NodeJS.Timeout
+  clearInterval(handle: number | NodeJS.Timeout): void
+  setTimeout(fn: () => void, ms: number): number | NodeJS.Timeout
+  clearTimeout(handle: number | NodeJS.Timeout): void
+}
+```
+
+## DevTools
+
+```ts
+interface MountKweriDevToolsOptions {
+  position?: 'bottom-right' | 'bottom-left'
+}
+
+interface KweriDevToolsSnapshot {
+  cache:     Array<{ key: string; entry: CacheEntry }>
+  observers: Array<{ key: string; count: number }>
+  inFlight:  string[]
+}
+```

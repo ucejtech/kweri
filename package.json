@@ -1,6 +1,11 @@
 {
   "name": "kweri",
   "version": "0.1.0",
+  "license": "MIT",
+  "author": {
+    "name": "Jeremiah Uchenna",
+    "url": "https://github.com/ucejtech"
+  },
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",

@@ -1,0 +1,196 @@
+---
+title: Endpoints
+description: Define type-safe API endpoints with TypeBox schemas.
+icon: plug
+---
+
+<Note>
+`defineEndpoint` is for teams **without an OpenAPI spec**. If you have one, run [`kweri-gen`](/cli/kweri-gen) instead — it generates all endpoint definitions automatically and you can skip this page entirely.
+</Note>
+
+## What is an endpoint?
+
+An endpoint is a plain object that describes an API route — its HTTP method, path, parameter schema, and response schema:
+
+```ts
+interface Endpoint<TParams extends TSchema, TResponse extends TSchema> {
+  method:   'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+  path:     string
+  params:   TParams   // TypeBox schema
+  response: TResponse // TypeBox schema
+}
+```
+
+Kweri uses the schemas at runtime to **validate request params** before any network call fires, and at the TypeScript level to infer the types of `params` and `response`.
+
+## defineEndpoint
+
+`defineEndpoint` is an identity function that provides type inference:
+
+```ts
+import { Type, defineEndpoint } from 'kweri'
+
+const getUsers = defineEndpoint({
+  method: 'GET',
+  path: '/users',
+  params: Type.Object({}),
+  response: Type.Array(
+    Type.Object({
+      id:    Type.Number(),
+      name:  Type.String(),
+      email: Type.String()
+    })
+  )
+})
+```
+
+You can also define the endpoint inline anywhere — `defineEndpoint` is entirely optional. It only exists to surface TypeScript errors closer to the definition site.
+
+## Path parameters
+
+Use `{name}` placeholders in the path. The matching `path` object in params provides the values:
+
+```ts
+const getUserById = defineEndpoint({
+  method: 'GET',
+  path: '/users/{id}',
+  params: Type.Object({
+    path: Type.Object({ id: Type.Number() })
+  }),
+  response: Type.Object({
+    id:    Type.Number(),
+    name:  Type.String(),
+    email: Type.String()
+  })
+})
+
+// Usage
+await kweri.query(getUserById, { path: { id: 42 } })
+// → GET /users/42
+```
+
+## Query parameters
+
+Keys in a `query` object are appended as query string parameters:
+
+```ts
+const listUsers = defineEndpoint({
+  method: 'GET',
+  path: '/users',
+  params: Type.Object({
+    query: Type.Object({
+      page:  Type.Optional(Type.Number()),
+      limit: Type.Optional(Type.Number()),
+      role:  Type.Optional(Type.String())
+    })
+  }),
+  response: Type.Array(Type.Object({ id: Type.Number(), name: Type.String() }))
+})
+
+await kweri.query(listUsers, { query: { page: 2, limit: 10, role: 'admin' } })
+// → GET /users?page=2&limit=10&role=admin
+```
+
+## Request body
+
+Use a `body` key for POST/PUT/PATCH payloads:
+
+```ts
+const createUser = defineEndpoint({
+  method: 'POST',
+  path: '/users',
+  params: Type.Object({
+    body: Type.Object({
+      name:  Type.String(),
+      email: Type.String()
+    })
+  }),
+  response: Type.Object({
+    id:    Type.Number(),
+    name:  Type.String(),
+    email: Type.String()
+  })
+})
+
+await kweri.mutate(createUser, {
+  body: { name: 'Alice', email: 'alice@example.com' }
+})
+```
+
+## Combined path, query, and body
+
+```ts
+const updateUser = defineEndpoint({
+  method: 'PUT',
+  path: '/users/{id}',
+  params: Type.Object({
+    path:  Type.Object({ id: Type.Number() }),
+    query: Type.Object({ notify: Type.Optional(Type.Boolean()) }),
+    body:  Type.Object({ name: Type.String(), email: Type.String() })
+  }),
+  response: Type.Object({ id: Type.Number(), name: Type.String() })
+})
+
+await kweri.mutate(updateUser, {
+  path:  { id: 1 },
+  query: { notify: true },
+  body:  { name: 'Alice', email: 'alice@example.com' }
+})
+// → PUT /users/1?notify=true  (body: JSON)
+```
+
+## Type inference
+
+Use `InferParams` and `InferResponse` to extract the TypeScript types from an endpoint:
+
+```ts
+import type { InferParams, InferResponse } from 'kweri'
+
+type GetUserParams   = InferParams<typeof getUserById>
+// → { path: { id: number } }
+
+type GetUserResponse = InferResponse<typeof getUserById>
+// → { id: number; name: string; email: string }
+```
+
+## TypeBox schema reference
+
+Kweri re-exports `Type` and `Static` from `@sinclair/typebox`:
+
+```ts
+import { Type, type Static } from 'kweri'
+
+// Common schema helpers
+Type.String()
+Type.Number()
+Type.Boolean()
+Type.Object({ ... })
+Type.Array(Type.String())
+Type.Optional(Type.String())    // makes a field optional
+Type.Union([Type.String(), Type.Number()])
+Type.Literal('admin')
+Type.Any()                       // disables validation for that field
+Type.Unknown()                   // unknown response shape
+```
+
+## Runtime validation
+
+**Params are not validated at runtime.** When `kweri.query()` and `kweri.mutate()` call the API client internally, they replace the endpoint's `params` schema with `Type.Any()` before executing the request. This means the TypeBox `params` schema is purely a TypeScript-level construct — it drives type inference for `InferParams<E>` but is never evaluated against your actual values at runtime.
+
+**Responses are validated at runtime.** After a successful fetch, kweri checks the server's response against the endpoint's `response` schema. If the shape doesn't match, a `ValidationError` is thrown:
+
+```ts
+import { ValidationError } from 'kweri'
+
+try {
+  await kweri.query(getUsers, {})
+} catch (err) {
+  if (err instanceof ValidationError) {
+    // The server returned a shape that doesn't match the response schema
+    console.log(err.errors)
+    // [{ path: '/0/email', message: 'Expected string' }]
+  }
+}
+```
+
+For params, TypeScript is your enforcement layer — passing the wrong type is a compile error, not a runtime error.

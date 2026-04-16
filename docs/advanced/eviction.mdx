@@ -1,0 +1,88 @@
+---
+title: Eviction & GC
+description: Configure garbage collection to keep memory usage bounded.
+icon: trash-can-arrow-up
+---
+
+## Overview
+
+Kweri's `EvictionEngine` periodically sweeps the cache and removes entries that are no longer needed. An entry is eligible for eviction when:
+
+1. It has **no active observers** (no components are subscribed to it), AND
+2. Its cache lifetime has expired (`now > updatedAt + cacheTime`) — or it was never populated (`updatedAt === 0`)
+
+Entries that still have subscribers are never evicted, regardless of age.
+
+## Enabling GC
+
+Pass `gcInterval` to `KweriOptions` to start GC automatically:
+
+```ts
+const kweri = new Kweri({
+  baseURL: 'https://api.example.com',
+  cacheTime: 300_000,  // entries eligible for eviction after 5 minutes
+  gcInterval: 60_000   // sweep every 60 seconds
+})
+```
+
+## Manual control
+
+```ts
+// Start GC after construction
+kweri.startGC(60_000)
+
+// Stop GC (e.g., during tests)
+kweri.stopGC()
+```
+
+## isEligibleForEviction
+
+The core eviction predicate is exported if you need to implement custom eviction logic:
+
+```ts
+import { isEligibleForEviction } from 'kweri'
+
+function isEligibleForEviction(
+  entry: CacheEntry,
+  observerCount: number,
+  now?: number   // defaults to Date.now()
+): boolean
+```
+
+An entry is eligible when:
+```
+observerCount === 0  AND  (entry.updatedAt === 0  OR  now > entry.updatedAt + entry.cacheTime)
+```
+
+## Custom timer (testing)
+
+For unit tests, inject a `TimerAdapter` to control time:
+
+```ts
+import { EvictionEngine, type TimerAdapter } from 'kweri'
+
+const mockTimer: TimerAdapter = {
+  setInterval: (fn, ms) => { /* store fn */ return 1 },
+  clearInterval: () => {},
+  setTimeout: (fn, ms) => { fn(); return 1 },
+  clearTimeout: () => {},
+  now: () => Date.now()
+}
+
+// Inject via the second Kweri constructor argument
+const kweri = new Kweri({ baseURL: '...' }, mockTimer)
+```
+
+## Memory model
+
+| Situation | Result |
+|---|---|
+| Component subscribed, data fresh | Entry kept, no network request |
+| Component subscribed, data stale | Entry kept, background refetch |
+| No subscribers, within cacheTime | Entry kept in memory |
+| No subscribers, past cacheTime | Entry eligible for next GC sweep |
+| No subscribers, GC disabled | Entry stays in memory indefinitely |
+
+<Tip>
+If your app navigates frequently between views, set a generous `cacheTime` (5–10 minutes) and a reasonable `gcInterval` (60 seconds). This keeps recently-visited data warm for instant navigation while still reclaiming memory for old queries.
+</Tip>

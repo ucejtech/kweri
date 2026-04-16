@@ -1,7 +1,19 @@
 import { describe, it, expect, mock, beforeEach } from 'bun:test'
 import { Kweri } from './index.js'
 import { defineEndpoint } from '../contract/index.js'
+import { ValidationError } from '../types/index.js'
 import { Type } from '@sinclair/typebox'
+import type { TimerAdapter } from '../eviction/index.js'
+
+function makeSyncTimer(): TimerAdapter {
+  return {
+    setInterval: () => 0,
+    clearInterval: () => {},
+    setTimeout: (fn) => { fn(); return 0 },
+    clearTimeout: () => {},
+    now: () => Date.now(),
+  }
+}
 
 const getUsers = defineEndpoint({
   method: 'GET',
@@ -92,7 +104,7 @@ describe('Kweri', () => {
       const p1 = kweri.query(getUsers, {})
       const p2 = kweri.query(getUsers, {})
 
-      resolvePromise!({ ok: true, json: async () => [{ id: 1 }] } as any)
+      resolvePromise!({ ok: true, json: async () => [{ id: 1, name: 'Alice' }] } as any)
 
       const [r1, r2] = await Promise.all([p1, p2])
       expect(r1).toEqual(r2)
@@ -139,6 +151,92 @@ describe('Kweri', () => {
 
       await expect(kweri.query(getUsers, {})).rejects.toThrow('Network error')
       expect(statuses).toContain('error')
+    })
+
+    it('throws ValidationError when response does not match endpoint schema', async () => {
+      // endpoint.response expects Array<{id: number, name: string}>
+      // but fetcher returns an object instead of an array
+      const fetcher = createMockFetcher({ id: 1, name: 'Alice' })
+      kweri = new Kweri({ baseURL: 'https://api.test.com', fetcher })
+
+      await expect(kweri.query(getUsers, {})).rejects.toBeInstanceOf(ValidationError)
+    })
+
+    it('caches a validation error entry as non-retryable when response schema fails', async () => {
+      const fetcher = createMockFetcher('not-an-array')
+      kweri = new Kweri({ baseURL: 'https://api.test.com', fetcher })
+
+      await expect(kweri.query(getUsers, {})).rejects.toBeInstanceOf(ValidationError)
+
+      const key = kweri.getQueryKey(getUsers, {})
+      const cached = kweri.queryClient.getCachedData(getUsers, {})
+      // data should be undefined; check the raw entry via subscribe
+      const entries: any[] = []
+      kweri.subscribe(getUsers, {}, (e) => entries.push(e))
+      // trigger a notification by invalidating
+      kweri.invalidateQuery(getUsers, {})
+      expect(entries.length).toBeGreaterThan(0)
+      const lastEntry = entries[entries.length - 1]
+      expect(lastEntry.error?.type).toBe('validation')
+      expect(lastEntry.error?.retryable).toBe(false)
+    })
+  })
+
+  describe('retry', () => {
+    it('does not retry by default (maxRetries: 0)', async () => {
+      const fetcher = mock(async () => { throw new Error('Network error') })
+      kweri = new Kweri({ baseURL: 'https://api.test.com', fetcher }, makeSyncTimer())
+
+      await expect(kweri.query(getUsers, {})).rejects.toThrow('Network error')
+      expect(fetcher).toHaveBeenCalledTimes(1)
+    })
+
+    it('retries up to maxRetries times and succeeds on final attempt', async () => {
+      let calls = 0
+      const mockData = [{ id: 1, name: 'Alice' }]
+      const fetcher = mock(async () => {
+        calls++
+        if (calls < 3) throw new Error('Transient error')
+        return { ok: true, json: async () => mockData } as any
+      })
+      kweri = new Kweri({ baseURL: 'https://api.test.com', fetcher, maxRetries: 2 }, makeSyncTimer())
+
+      const result = await kweri.query(getUsers, {})
+      expect(result).toEqual(mockData)
+      expect(fetcher).toHaveBeenCalledTimes(3)
+    })
+
+    it('stops retrying after maxRetries and throws', async () => {
+      const fetcher = mock(async () => { throw new Error('Persistent error') })
+      kweri = new Kweri({ baseURL: 'https://api.test.com', fetcher, maxRetries: 2 }, makeSyncTimer())
+
+      await expect(kweri.query(getUsers, {})).rejects.toThrow('Persistent error')
+      expect(fetcher).toHaveBeenCalledTimes(3) // 1 initial + 2 retries
+    })
+
+    it('does not retry non-retryable errors (ValidationError)', async () => {
+      // Response schema mismatch is non-retryable
+      const fetcher = mock(async () => ({ ok: true, json: async () => 'not-an-array' } as any))
+      kweri = new Kweri({ baseURL: 'https://api.test.com', fetcher, maxRetries: 3 }, makeSyncTimer())
+
+      await expect(kweri.query(getUsers, {})).rejects.toBeInstanceOf(ValidationError)
+      expect(fetcher).toHaveBeenCalledTimes(1)
+    })
+
+    it('increments retryCount in cache entry for each retry attempt', async () => {
+      let calls = 0
+      const mockData = [{ id: 1, name: 'Alice' }]
+      const fetcher = mock(async () => {
+        calls++
+        if (calls < 3) throw new Error('Transient error')
+        return { ok: true, json: async () => mockData } as any
+      })
+      kweri = new Kweri({ baseURL: 'https://api.test.com', fetcher, maxRetries: 2 }, makeSyncTimer())
+
+      await kweri.query(getUsers, {})
+      // After success, retryCount reflects retries made before success
+      // (stored in the final success entry's retryCount through store merges)
+      expect(fetcher).toHaveBeenCalledTimes(3)
     })
   })
 

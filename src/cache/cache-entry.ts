@@ -1,3 +1,5 @@
+import { ValidationError } from '../types/index.js'
+
 export type CacheEntryStatus = 'idle' | 'loading' | 'success' | 'error'
 
 export interface CachedError {
@@ -73,8 +75,14 @@ export function isErrorExpired(
 /** Categorizes errors by type and determines retry behavior */
 export function categorizeError(error: unknown): CachedError {
   const message = error instanceof Error ? error.message : String(error)
+
+  // Schema validation failures (response mismatch) are non-retryable
+  if (error instanceof ValidationError) {
+    return { message, type: 'validation', retryable: false }
+  }
+
   const status = (error as any)?.status ?? (error as any)?.statusCode
-  
+
   // 4xx errors are client validation issues (non-retryable)
   if (status >= 400 && status < 500) {
     return { message, type: 'validation', status, retryable: false }

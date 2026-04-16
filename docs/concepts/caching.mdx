@@ -1,0 +1,128 @@
+---
+title: Caching
+description: How kweri stores, ages, and invalidates data.
+icon: database
+---
+
+## Cache entry lifecycle
+
+Every query result is stored as a **cache entry** keyed by `METHOD:path:params`. An entry moves through these states:
+
+```
+idle → loading → success → (stale after staleTime) → evicted after cacheTime
+                    └→ error → retried or evicted after errorCacheTime
+```
+
+| State | Description |
+|---|---|
+| `idle` | No fetch has been attempted yet |
+| `loading` | A fetch is in progress |
+| `success` | Data is available; may be fresh or stale |
+| `error` | The last fetch failed |
+
+## staleTime and cacheTime
+
+These two values control the freshness lifecycle:
+
+```ts
+const kweri = new Kweri({
+  staleTime: 30_000,   // data is fresh for 30 seconds after last fetch
+  cacheTime: 300_000,  // keep the entry in memory for 5 minutes after going stale
+})
+```
+
+- **`staleTime`** — how long data is considered fresh. While fresh, `kweri.query()` returns the cached data without hitting the network. Default: `0` (immediately stale).
+- **`cacheTime`** — how long an entry is kept in memory after it becomes stale **and has no active observers**. Once this expires the entry is eligible for garbage collection. Default: `5 minutes`.
+
+<Info>
+`staleTime` and `cacheTime` are set globally on the `Kweri` instance. Per-query overrides are not currently supported.
+</Info>
+
+### Stale-while-revalidate
+
+When a query is called for data that exists in cache but is **stale**:
+
+1. The cached data is returned immediately (no loading state)
+2. A background network request is fired to refresh it
+3. Subscribers are notified when the fresh data arrives
+
+This means your UI never blocks on network latency for data you've already seen.
+
+## Cache structure
+
+Each entry stores:
+
+```ts
+interface CacheEntry<T = unknown> {
+  data: T | undefined
+  status: 'idle' | 'loading' | 'success' | 'error'
+  error: CachedError | undefined
+
+  updatedAt: number       // timestamp when data was last set
+  staleTime: number       // copied from KweriOptions at fetch time
+  cacheTime: number       // copied from KweriOptions at fetch time
+
+  errorUpdatedAt: number  // timestamp when error was last set
+  errorCacheTime: number  // how long to keep the error (default: 5s)
+  retryCount: number
+}
+```
+
+### isFresh
+
+Data is considered fresh when:
+
+```
+updatedAt !== 0  AND  now < updatedAt + staleTime
+```
+
+If `staleTime` is `0` (the default), data is **always** stale and a background refetch will always fire when the query is called.
+
+## Invalidation
+
+Invalidation marks an entry as stale **without removing it**. The cached data is still returned immediately; a refetch fires in the background.
+
+```ts
+// Invalidate a specific query
+kweri.invalidateQuery(getUsers, {})
+
+// Invalidate all queries whose cache key contains '/users'
+kweri.invalidateByPath('/users')
+
+// Invalidate with a regex
+kweri.invalidateByPath(/\/users\/\d+/)
+```
+
+<Tip>
+`invalidateByPath` is the most common pattern after a mutation — it catches all variants (e.g., `/users`, `/users/1`, `/users?page=2`) without you needing to enumerate every param combination.
+</Tip>
+
+## Cache removal
+
+Removal deletes the entry from memory entirely. The next query call starts from scratch.
+
+```ts
+kweri.removeQuery(getUsers, {})
+```
+
+## Direct cache manipulation
+
+You can read and write the cache directly without going through the network — useful for optimistic updates:
+
+```ts
+// Read cached data
+const users = kweri.getCachedData(getUsers, {})
+
+// Write data directly into cache
+kweri.setCachedData(getUsers, {}, [...users, newUser])
+```
+
+<Warning>
+Data written with `setCachedData` bypasses schema validation. It is marked as a `success` entry with `updatedAt` set to now, so it will remain fresh for `staleTime` milliseconds.
+</Warning>
+
+## Error caching
+
+Errors are also cached, but with a much shorter lifetime (default: **5 seconds**). This prevents retry storms while still allowing the UI to recover quickly.
+
+When an error entry expires, the next call to `kweri.query()` will attempt a fresh fetch.

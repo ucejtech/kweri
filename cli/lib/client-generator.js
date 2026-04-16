@@ -4,12 +4,10 @@ function generateClientCode(spec, schemas, outputPath, cwd) {
   const endpointExports = generateEndpointExports(methods);
 
   const kweriImports = `import { ApiClient, defineEndpoint } from 'kweri'`;
-  const typeboxImport = `import { Type, type Static } from 'kweri'`;
 
   return `${schemas}
 
 ${kweriImports}
-${typeboxImport}
 
 ${endpointMaps}
 
@@ -114,8 +112,11 @@ function generateTypeForParam(param) {
   let typeExpr;
 
   if (schema.enum && Array.isArray(schema.enum)) {
-    const literals = schema.enum.map((v) => `Type.Literal(${JSON.stringify(v)})`).join(', ');
-    typeExpr = schema.enum.length === 1 ? literals : `Type.Union([${literals}])`;
+    const literals = schema.enum
+      .map((v) => `Type.Literal(${JSON.stringify(v)})`)
+      .join(', ');
+    typeExpr =
+      schema.enum.length === 1 ? literals : `Type.Union([${literals}])`;
   } else if (schema.type === 'integer' || schema.type === 'number') {
     typeExpr = 'Type.Number()';
   } else if (schema.type === 'boolean') {
@@ -124,8 +125,11 @@ function generateTypeForParam(param) {
     const itemSchema = schema.items || {};
     let itemType;
     if (itemSchema.enum && Array.isArray(itemSchema.enum)) {
-      const literals = itemSchema.enum.map((v) => `Type.Literal(${JSON.stringify(v)})`).join(', ');
-      itemType = itemSchema.enum.length === 1 ? literals : `Type.Union([${literals}])`;
+      const literals = itemSchema.enum
+        .map((v) => `Type.Literal(${JSON.stringify(v)})`)
+        .join(', ');
+      itemType =
+        itemSchema.enum.length === 1 ? literals : `Type.Union([${literals}])`;
     } else if (itemSchema.type === 'number' || itemSchema.type === 'integer') {
       itemType = 'Type.Number()';
     } else {
@@ -244,9 +248,9 @@ function extractMethods(spec) {
 
       const op = operation;
       const operationId =
-        op.operationId || `${method}${path.replace(/\//g, '_')}`;
-      const endpointSchemaName =
-        `${method.toLowerCase()}_${operationId.charAt(0).toUpperCase() + operationId.slice(1)}`;
+        op.operationId || `${method}${path.replace(/[\/{}]/g, '_')}`;
+      const sanitizedOperationId = operationId.replace(/[^a-zA-Z0-9]/g, '_');
+      const endpointSchemaName = `${method.toLowerCase()}${path.replace(/[\/{}:\-]/g, '_')}`;
 
       const methodName = operationId
         .replace(/[^a-zA-Z0-9]/g, '_')
@@ -335,7 +339,7 @@ function generateMethodCode(method) {
       response: ${responseSchemaName}
     }
 
-    return this.client.execute(endpoint${method.hasParams ? ', params' : ', {}'})
+    return this.client.execute(endpoint${method.hasParams ? ', params' : ''})
   }`;
 }
 
@@ -343,9 +347,7 @@ function generateEndpointExports(methods) {
   const exports = [];
 
   for (const m of methods) {
-    const paramsExpr = m.hasParams
-      ? m.endpointParamsSchema
-      : 'Type.Object({})';
+    const paramsExpr = m.hasParams ? m.endpointParamsSchema : 'Type.Object({})';
 
     const responseExpr = m.successCode
       ? `${m.endpointSchemaName}.properties.responses.properties[${m.successCode}]`

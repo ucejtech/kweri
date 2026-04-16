@@ -13,7 +13,7 @@ import {
 } from 'fs';
 import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { generateClientCode } from './lib/client-generator.js';
+import { optimizeContractSourceForKweri } from './lib/kweri-client-generator.js';
 
 const { values, positionals } = parseArgs({
   args: process.argv.slice(2),
@@ -154,7 +154,6 @@ async function main() {
     const tempClientPath = join(srcDir, 'client.ts');
     const tempSpecPath = join(srcDir, 'spec.tmp.json');
 
-    let spec;
     let specSource = source;
 
     if (values.bundle) {
@@ -188,33 +187,6 @@ writeFileSync(outputPath, JSON.stringify(spec, null, 0));
         env: { ...process.env, NODE_PATH: nodePath }
       });
       specSource = tempSpecPath;
-      spec = JSON.parse(readFileSync(tempSpecPath, 'utf-8'));
-    } else {
-      if (source.startsWith('http://') || source.startsWith('https://')) {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 30000);
-        try {
-          const response = await fetch(source, { signal: controller.signal });
-          clearTimeout(timeout);
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-          }
-          spec = await response.json();
-        } catch (err) {
-          if (err instanceof Error) {
-            if (err.name === 'AbortError') {
-              throw new Error(
-                `Timeout fetching ${source} (30s). Check network or try a local file.`
-              );
-            }
-            throw new Error(`Failed to fetch OpenAPI spec: ${err.message}`);
-          }
-          throw err;
-        }
-      } else {
-        const content = readFileSync(source, 'utf-8');
-        spec = JSON.parse(content);
-      }
     }
 
     const typedOpenApiBin = resolveTypedOpenApiBin(kweriRealPath);
@@ -227,6 +199,7 @@ writeFileSync(outputPath, JSON.stringify(spec, null, 0));
       ? `${kweriNodeModules}${process.platform === 'win32' ? ';' : ':'}${process.env.NODE_PATH}`
       : kweriNodeModules;
 
+    console.log(`🔍 Generating schemas with typed-openapi`);
     execSync(
       `node "${typedOpenApiBin}" "${specSourceAbs}" -o "schemas.ts" -r typebox`,
       {
@@ -236,44 +209,17 @@ writeFileSync(outputPath, JSON.stringify(spec, null, 0));
       }
     );
 
-    console.log(`🔧 Generating typed client`);
+    console.log(`🔧 Optimizing contract source for Kweri`);
 
-    let schemas = readFileSync(tempSchemasPath, 'utf-8');
+    let generatedSource = readFileSync(tempSchemasPath, 'utf-8');
+    const optimizedSource = optimizeContractSourceForKweri(generatedSource);
 
-    schemas = schemas.replace(
-      /import \{ Type, Static \} from ["']@sinclair\/typebox["'];?/g,
-      'import { Type } from "@sinclair/typebox";\nimport type { Static } from "@sinclair/typebox";'
-    );
+    writeFileSync(tempClientPath, optimizedSource);
 
-    const lines = schemas.split('\n');
-    const schemasOnly = [];
-    let inClientCode = false;
-
-    for (const line of lines) {
-      if (
-        line.includes('export type MaybeOptionalArg') ||
-        line.includes('export type Fetcher') ||
-        line.includes('export class ApiClient') ||
-        line.includes('export function createApiClient')
-      ) {
-        inClientCode = true;
-      }
-
-      if (!inClientCode) {
-        schemasOnly.push(line);
-      }
-    }
-
-    const cleanSchemas = schemasOnly.join('\n').trim();
-
-    const clientCode = generateClientCode(
-      spec,
-      cleanSchemas,
-      tempClientPath,
-      process.cwd()
-    );
-
-    writeFileSync(tempClientPath, clientCode);
+    // Remove the raw typed-openapi output — only client.ts should be compiled.
+    // tsconfig.generated.json includes *.ts so leaving schemas.ts would cause
+    // TypeScript errors from the unpatched TEndpoint constraints.
+    unlinkSync(tempSchemasPath);
 
     if (existsSync(generatedDir)) {
       console.log(`🧹 Cleaning up old generated files`);
@@ -288,7 +234,7 @@ writeFileSync(outputPath, JSON.stringify(spec, null, 0));
       throw new Error(`tsconfig.generated.json not found at ${tsconfigPath}`);
     }
 
-    execSync(`npx tsc --noCheck -p "${tsconfigPath}"`, { stdio: 'inherit' });
+    execSync(`npx tsc --skipLibCheck -p "${tsconfigPath}"`, { stdio: 'inherit' });
 
     console.log(`🧹 Cleaning up temporary files...`);
 

@@ -1,0 +1,106 @@
+---
+title: Persistence
+description: Restore cache across page reloads using a pluggable storage adapter.
+icon: floppy-disk
+---
+
+## Overview
+
+By default, kweri's cache lives in memory and is lost on page reload. A `PersistenceAdapter` lets you save the cache to any storage medium and restore it on the next session.
+
+## PersistenceAdapter interface
+
+```ts
+interface PersistenceAdapter {
+  save(data: SerializedCache): Promise<void>
+  restore(): Promise<SerializedCache | null>
+  clear(): Promise<void>
+}
+
+interface SerializedCache {
+  version: number
+  entries: Array<[string, CacheEntry]>
+}
+
+const CACHE_VERSION = 1
+```
+
+## localStorage example
+
+```ts
+import { CACHE_VERSION, type PersistenceAdapter } from 'kweri'
+
+const localStorageAdapter: PersistenceAdapter = {
+  async save(data) {
+    localStorage.setItem('kweri-cache', JSON.stringify(data))
+  },
+  async restore() {
+    const raw = localStorage.getItem('kweri-cache')
+    if (!raw) return null
+    return JSON.parse(raw)
+  },
+  async clear() {
+    localStorage.removeItem('kweri-cache')
+  }
+}
+
+const kweri = new Kweri({
+  baseURL: 'https://api.example.com',
+  persistence: localStorageAdapter
+})
+```
+
+## How hydration works
+
+1. On construction, kweri calls `adapter.restore()`
+2. If the returned data's `version` doesn't match `CACHE_VERSION`, it's discarded
+3. Matching entries are loaded into the `CacheStore`
+4. All restored entries have `updatedAt` forced to `0` — they are immediately stale and will background-refetch on first access
+
+This means the user sees data instantly on page load (from cache), while fresh data is fetched silently in the background.
+
+## What gets persisted
+
+Only `success` entries are saved. Errors, loading states, and idle entries are excluded.
+
+## Versioning
+
+`CACHE_VERSION` is a constant (`1`) that guards against restoring cache from an incompatible schema. Bump it whenever the `CacheEntry` structure changes in a breaking way:
+
+```ts
+import { CACHE_VERSION } from 'kweri'
+// → 1
+```
+
+If the persisted cache has a different version, `restore()` should return `null`.
+
+## Selective persistence
+
+To persist only specific queries, wrap the adapter:
+
+```ts
+const PERSIST_KEYS = ['/users', '/config']
+
+const selectivePersistenceAdapter: PersistenceAdapter = {
+  async save(data) {
+    const filtered = {
+      ...data,
+      entries: data.entries.filter(([key]) =>
+        PERSIST_KEYS.some(p => key.includes(p))
+      )
+    }
+    localStorage.setItem('kweri-cache', JSON.stringify(filtered))
+  },
+  async restore() {
+    const raw = localStorage.getItem('kweri-cache')
+    return raw ? JSON.parse(raw) : null
+  },
+  async clear() {
+    localStorage.removeItem('kweri-cache')
+  }
+}
+```
+
+## Error handling
+
+All exceptions thrown by `save()` and `restore()` are silently caught by kweri. A failing persistence adapter will never crash your application.

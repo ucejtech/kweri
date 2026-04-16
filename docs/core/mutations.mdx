@@ -1,0 +1,196 @@
+---
+title: Mutations
+description: Execute writes with lifecycle hooks, optimistic updates, and automatic cache invalidation.
+icon: pen-to-square
+---
+
+## Overview
+
+Mutations are non-idempotent requests — POST, PUT, PATCH, DELETE. Unlike queries, mutations:
+
+- Do not cache their results
+- Do not deduplicate concurrent calls
+- Support lifecycle hooks (`onMutate`, `onSuccess`, `onError`, `onSettled`)
+- Can automatically invalidate related queries after success
+
+## Basic mutation
+
+```ts
+await kweri.mutate(createUser, {
+  body: { name: 'Alice', email: 'alice@example.com' }
+})
+```
+
+## MutationOptions
+
+```ts
+interface MutationOptions<TParams, TResponse, TContext = unknown> {
+  onMutate?:  (params: TParams) => TContext | Promise<TContext>
+  onSuccess?: (data: TResponse, params: TParams, context: TContext) => void
+  onError?:   (error: Error, params: TParams, context: TContext) => void
+  onSettled?: (
+    data: TResponse | undefined,
+    error: Error | undefined,
+    params: TParams,
+    context: TContext
+  ) => void
+  invalidates?: Endpoint[]
+}
+```
+
+### Execution order
+
+```
+onMutate() → [network request] → onSuccess() or onError() → onSettled()
+```
+
+`onMutate` runs **before** the request. Its return value becomes `context`, which is passed to all subsequent hooks. This is the standard pattern for optimistic updates with rollback.
+
+`onSettled` always fires regardless of success or error — use it for cleanup.
+
+## Optimistic updates
+
+```ts
+await kweri.mutate(deleteUser, { path: { id: userId } }, {
+  onMutate: (params) => {
+    // 1. Snapshot current data
+    const previous = kweri.getCachedData(getUsers, {})
+
+    // 2. Optimistically remove the user
+    kweri.setCachedData(getUsers, {}, previous?.filter(u => u.id !== params.path.id))
+
+    // 3. Return snapshot for rollback
+    return { previous }
+  },
+  onError: (_err, _params, context) => {
+    // Rollback on failure
+    if (context?.previous) {
+      kweri.setCachedData(getUsers, {}, context.previous)
+    }
+  },
+  onSuccess: () => {
+    // Confirm with fresh server data
+    kweri.invalidateByPath('/users')
+  }
+})
+```
+
+## Automatic invalidation
+
+Use `invalidates` to specify endpoints that should be invalidated after a successful mutation. Kweri calls `invalidateQuery(ep, {})` for each — suitable when the endpoint doesn't require params.
+
+```ts
+await kweri.mutate(createPost, { body: newPost }, {
+  invalidates: [getPosts]
+})
+```
+
+## In React hooks
+
+The `useMutation` hook wraps `kweri.mutate` with reactive status tracking:
+
+```tsx
+import { useMutation } from '@/hooks/useKweri'
+import { kweri } from '@/lib/kweri'
+import { createUser } from '@/api/users'
+
+function CreateUserForm() {
+  const mutation = useMutation(kweri, createUser)
+
+  async function handleSubmit(data) {
+    try {
+      const user = await mutation.mutateAsync({ body: data })
+      console.log('Created:', user)
+    } catch (err) {
+      console.error('Failed:', err)
+    }
+  }
+
+  return (
+    <button
+      onClick={() => handleSubmit(formData)}
+      disabled={mutation.isLoading}
+    >
+      {mutation.isLoading ? 'Saving...' : 'Create User'}
+    </button>
+  )
+}
+```
+
+### ReactMutationResult
+
+```ts
+interface ReactMutationResult<TData, TError> {
+  mutate:       (vars?: unknown) => void           // fire-and-forget
+  mutateAsync:  (vars?: unknown) => Promise<TData> // awaitable
+  status:       CacheEntryStatus
+  error:        TError | undefined
+  reset:        () => void                         // clear status/error
+  isLoading:    boolean
+  isSuccess:    boolean
+  isError:      boolean
+}
+```
+
+## In Vue composables
+
+```vue
+<script setup lang="ts">
+import { usePost } from '@/composables/useKweri'
+
+const mutation = usePost('/users')
+
+async function createUser(data) {
+  try {
+    await mutation.mutateAsync({ body: data })
+  } catch (err) {
+    // mutation.error.value is also set
+  }
+}
+</script>
+
+<template>
+  <button @click="createUser(formData)" :disabled="mutation.isLoading.value">
+    {{ mutation.isLoading.value ? 'Saving...' : 'Create User' }}
+  </button>
+  <p v-if="mutation.isError.value">{{ mutation.error.value?.message }}</p>
+</template>
+```
+
+### VueMutationResult
+
+```ts
+interface VueMutationResult<TData, TError> {
+  mutate:      (vars?: unknown) => void
+  mutateAsync: (vars?: unknown) => Promise<TData>
+  status:      Ref<CacheEntryStatus>
+  error:       Ref<TError | undefined>
+  reset:       () => void
+  isLoading:   Ref<boolean>
+  isSuccess:   Ref<boolean>
+  isError:     Ref<boolean>
+}
+```
+
+## Optimistic updates with path-based hooks
+
+When using `usePost`, `usePut`, `usePatch`, `useDelete`, lifecycle hooks are handled inline in your action functions since the path hooks don't accept callback options:
+
+```ts
+const deleteUserMutation = useDelete('/users/{id}')
+const usersQuery = useGet('/users')
+
+async function deleteUser(user) {
+  const prev = usersQuery.data.value ?? []
+
+  // Optimistic remove
+  usersQuery.data.value = prev.filter(u => u.id !== user.id)
+
+  try {
+    await deleteUserMutation.mutateAsync({ path: { id: String(user.id) } })
+    kweri.invalidateByPath('/users')
+  } catch {
+    usersQuery.data.value = prev  // rollback
+  }
+}
+```

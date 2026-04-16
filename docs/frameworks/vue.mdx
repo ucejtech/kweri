@@ -1,0 +1,278 @@
+---
+title: Vue
+description: Use kweri in Vue 3 with reactive refs and composables.
+icon: vuejs
+---
+
+Kweri supports two Vue usage patterns. If your backend has an OpenAPI spec, use **path-based hooks** with generated types. If you're defining endpoints manually, use `useQuery` and `useMutation` directly.
+
+---
+
+## With code generation (recommended)
+
+After running `kweri-gen`, bind composables to the generated `EndpointByMethod` map. You get fully-typed `useGet`, `usePost`, `usePut`, `usePatch`, and `useDelete` composables without writing any endpoint definitions yourself.
+
+### Setup
+
+```ts
+// src/composables/useKweri.ts
+import { ref, watch, onUnmounted } from 'vue'
+import { createVuePathHooks } from 'kweri'
+import { EndpointByMethod } from 'kweri/generated'
+import { kweri } from '@/lib/kweri'
+
+export const { useGet, usePost, usePut, usePatch, useDelete } =
+  createVuePathHooks({ ref, watch, onUnmounted }, kweri, EndpointByMethod)
+
+export { kweri }
+```
+
+<Note>
+Create the composables once and export them. Don't call `createVuePathHooks` inside a component.
+</Note>
+
+### useGet
+
+```ts
+function useGet(
+  path: string,
+  params?: any,
+  options?: VueQueryOptions
+): VueQueryResult
+```
+
+```vue
+<script setup lang="ts">
+import { useGet } from '@/composables/useKweri'
+
+const { data, isLoading, isError, error } = useGet('/users')
+</script>
+
+<template>
+  <p v-if="isLoading.value">Loading...</p>
+  <p v-else-if="isError.value">Error: {{ error.value?.message }}</p>
+  <ul v-else>
+    <li v-for="user in data.value" :key="user.id">{{ user.name }}</li>
+  </ul>
+</template>
+```
+
+### Mutation hooks
+
+```ts
+function usePost(path: string):   VueMutationResult
+function usePut(path: string):    VueMutationResult
+function usePatch(path: string):  VueMutationResult
+function useDelete(path: string): VueMutationResult
+```
+
+### Full CRUD example
+
+```vue
+<script setup lang="ts">
+import { useGet, usePost, useDelete, kweri } from '@/composables/useKweri'
+
+const usersQuery  = useGet('/users')
+const createMutation = usePost('/users')
+const deleteMutation = useDelete('/users/{id}')
+
+async function createUser(name: string) {
+  await createMutation.mutateAsync({ body: { name } })
+  kweri.invalidateByPath('/users')
+}
+
+async function deleteUser(id: number) {
+  // Optimistic remove
+  const prev = usersQuery.data.value ?? []
+  usersQuery.data.value = prev.filter(u => u.id !== id)
+
+  try {
+    await deleteMutation.mutateAsync({ path: { id: String(id) } })
+    kweri.invalidateByPath('/users')
+  } catch {
+    usersQuery.data.value = prev  // rollback
+  }
+}
+</script>
+```
+
+<Tip>
+Path hooks resolve the endpoint schema at call time. If the path isn't in the generated map, they throw `[kweri] No endpoint registered for GET /unknown-path`.
+</Tip>
+
+---
+
+## Without code generation
+
+Use `useQuery` and `useMutation` when you're defining endpoints manually with `defineEndpoint`.
+
+### Setup
+
+```ts
+// src/composables/useKweri.ts
+import { ref, watch, onUnmounted } from 'vue'
+import { createVueQueryHooks } from 'kweri'
+import { kweri } from '@/lib/kweri'
+
+export const { useQuery, useMutation } =
+  createVueQueryHooks({ ref, watch, onUnmounted }, kweri)
+
+export { kweri }
+```
+
+<Note>
+Create the composables once and export them. Don't call `createVueQueryHooks` inside a component.
+</Note>
+
+---
+
+## useQuery
+
+```ts
+function useQuery<E extends Endpoint>(
+  kweri: Kweri,
+  endpoint: E,
+  params: InferParams<E> | Ref<InferParams<E>>,
+  options?: VueQueryOptions
+): VueQueryResult<InferResponse<E>, Error>
+```
+
+### VueQueryOptions
+
+```ts
+interface VueQueryOptions {
+  enabled?: boolean | Ref<boolean>  // default: true
+}
+```
+
+### VueQueryResult
+
+```ts
+interface VueQueryResult<TData, TError> {
+  data:      Ref<TData | undefined>
+  status:    Ref<'idle' | 'loading' | 'success' | 'error'>
+  error:     Ref<TError | undefined>
+  refetch:   () => Promise<void>
+  isLoading: Ref<boolean>
+  isSuccess: Ref<boolean>
+  isError:   Ref<boolean>
+}
+```
+
+### Example
+
+```vue
+<script setup lang="ts">
+import { useQuery } from '@/composables/useKweri'
+import { getUsers } from '@/api/users'
+
+const { data, isLoading, isError, error, refetch } = useQuery(getUsers, {})
+</script>
+
+<template>
+  <p v-if="isLoading.value">Loading...</p>
+  <p v-else-if="isError.value">
+    Error: {{ error.value?.message }}
+    <button @click="refetch()">Retry</button>
+  </p>
+  <ul v-else>
+    <li v-for="user in data.value" :key="user.id">{{ user.name }}</li>
+  </ul>
+</template>
+```
+
+### Reactive params
+
+Pass a `Ref` as params and the query re-executes automatically when the ref changes:
+
+```vue
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useQuery, kweri } from '@/composables/useKweri'
+import { getUserById } from '@/api/users'
+
+const userId = ref(1)
+const { data } = useQuery(getUserById, computed(() => ({ path: { id: userId.value } })))
+
+function viewUser(id: number) {
+  userId.value = id  // query re-fires automatically
+}
+</script>
+```
+
+### Conditional fetching
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useQuery, kweri } from '@/composables/useKweri'
+import { getProfile } from '@/api/profile'
+
+const isLoggedIn = ref(false)
+const { data } = useQuery(getProfile, {}, { enabled: isLoggedIn })
+</script>
+```
+
+---
+
+## useMutation
+
+```ts
+function useMutation<E extends Endpoint>(
+  kweri: Kweri,
+  endpoint: E
+): VueMutationResult<InferResponse<E>, Error>
+```
+
+### VueMutationResult
+
+```ts
+interface VueMutationResult<TData, TError> {
+  mutate:      (vars?: unknown) => void
+  mutateAsync: (vars?: unknown) => Promise<TData>
+  status:      Ref<'idle' | 'loading' | 'success' | 'error'>
+  error:       Ref<TError | undefined>
+  reset:       () => void
+  isLoading:   Ref<boolean>
+  isSuccess:   Ref<boolean>
+  isError:     Ref<boolean>
+}
+```
+
+### Example
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useMutation, kweri } from '@/composables/useKweri'
+import { createUser } from '@/api/users'
+
+const name = ref('')
+const mutation = useMutation(createUser)
+
+async function handleSubmit() {
+  try {
+    await mutation.mutateAsync({ body: { name: name.value } })
+    kweri.invalidateByPath('/users')
+  } catch {}
+}
+</script>
+
+<template>
+  <form @submit.prevent="handleSubmit">
+    <input v-model="name" />
+    <button type="submit" :disabled="mutation.isLoading.value">
+      {{ mutation.isLoading.value ? 'Saving...' : 'Create User' }}
+    </button>
+    <p v-if="mutation.isError.value" @click="mutation.reset()">
+      {{ mutation.error.value?.message }}
+    </p>
+  </form>
+</template>
+```
+
+---
+
+## Cleanup
+
+`useQuery` automatically unsubscribes from the kweri cache when the component is unmounted (via `onUnmounted`). No manual cleanup needed.

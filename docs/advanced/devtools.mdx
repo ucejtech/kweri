@@ -1,0 +1,104 @@
+---
+title: DevTools
+description: A floating overlay for inspecting cache, observers, and network activity in real time.
+icon: bug
+---
+
+## Overview
+
+Kweri ships a built-in DevTools panel — a floating DOM overlay that shows:
+
+- Live cache entries with their status, data, and timestamps
+- Observer counts per query key
+- In-flight (pending) requests
+- A structured event log
+
+DevTools are **automatically disabled in production**. Kweri checks `NODE_ENV`, `BUN_ENV`, `VITE_MODE`, and `VERCEL_ENV` — if any indicates production, the panel is a no-op.
+
+## Enabling DevTools
+
+Set `enableDevTools: true` in `KweriOptions`:
+
+```ts
+const kweri = new Kweri({
+  baseURL: 'https://api.example.com',
+  enableDevTools: true,
+  devtools: {
+    position: 'bottom-right'  // or 'bottom-left'
+  }
+})
+```
+
+The panel mounts to `document.body` when the `Kweri` instance is created.
+
+## MountKweriDevToolsOptions
+
+```ts
+interface MountKweriDevToolsOptions {
+  position?: 'bottom-right' | 'bottom-left'  // default: 'bottom-right'
+}
+```
+
+## Manual mounting
+
+You can also mount DevTools manually using `mountKweriDevTools`, which returns an unmount function:
+
+```ts
+import { mountKweriDevTools } from 'kweri'
+
+const unmount = mountKweriDevTools(kweri, { position: 'bottom-left' })
+
+// To remove the panel:
+unmount()
+```
+
+This is useful when you want to conditionally mount the panel (e.g., only for certain users):
+
+```ts
+if (user.role === 'developer') {
+  mountKweriDevTools(kweri)
+}
+```
+
+## DevTools features
+
+### Queries tab
+
+Shows all cache entries. For each entry:
+
+- **Key** — the serialized query key (`METHOD:path:params`)
+- **Status** — `idle`, `loading`, `success`, or `error` with color coding
+- **Data** — prettified JSON of the cached value
+- **Age** — how long since `updatedAt`
+- **Observers** — number of active subscribers
+- **Actions** — invalidate or remove individual entries
+
+A search bar filters entries by key substring.
+
+### Logs tab
+
+A chronological event log showing:
+
+- Fetch start / complete / error events
+- Cache hits and invalidations
+- Mutation lifecycle events
+
+Auto-refresh can be toggled on/off. The setting is persisted to `localStorage`.
+
+## DevTools snapshot
+
+If you're building custom tooling (browser extension, CI reporter, etc.), `getDevToolsSnapshot()` returns a point-in-time view of the cache:
+
+```ts
+const snapshot = kweri.getDevToolsSnapshot()
+
+snapshot.cache     // [{ key, entry }]
+snapshot.observers // [{ key, count }]
+snapshot.inFlight  // ['GET:/users:{}', ...]
+```
+
+## Production build
+
+DevTools are compiled into the bundle but guarded by runtime environment checks. They add minimal overhead in production (a single `if` that short-circuits immediately).
+
+If bundle size is critical, you can tree-shake DevTools by not calling `enableDevTools` or `mountKweriDevTools` in your production entry point.

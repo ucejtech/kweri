@@ -1,1556 +1,6059 @@
-import type { Static } from "@sinclair/typebox";
-export type Order = Static<typeof Order>;
-export declare const Order: import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    petId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    shipDate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"placed">, import("@sinclair/typebox").TLiteral<"approved">, import("@sinclair/typebox").TLiteral<"delivered">]>>;
-    complete: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
-}>;
-export type Category = Static<typeof Category>;
-export declare const Category: import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-}>;
+import { type Static } from "kweri";
 export type User = Static<typeof User>;
 export declare const User: import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-}>;
-export type Tag = Static<typeof Tag>;
-export declare const Tag: import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-}>;
-export type Pet = Static<typeof Pet>;
-export declare const Pet: import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-    name: import("@sinclair/typebox").TString;
-    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+    id: import("@sinclair/typebox").TNumber;
+    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
     }>, import("@sinclair/typebox").TUndefined]>>;
-    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+    preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+        language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+            security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+            updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+        }>>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+}>;
+export type UserList = Static<typeof UserList>;
+export declare const UserList: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+        language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+            security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+            updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+        }>>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+}>>;
+export type Post = Static<typeof Post>;
+export declare const Post: import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+}>;
+export type PostList = Static<typeof PostList>;
+export declare const PostList: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+}>>;
+export type Comment = Static<typeof Comment>;
+export declare const Comment: import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+    likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+}>;
+export type CommentList = Static<typeof CommentList>;
+export declare const CommentList: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+    likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+}>>;
+export type Categorie = Static<typeof Categorie>;
+export declare const Categorie: import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+}>;
+export type CategorieList = Static<typeof CategorieList>;
+export declare const CategorieList: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+}>>;
+export type Product = Static<typeof Product>;
+export declare const Product: import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+    specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+        warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+    ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        }>>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+}>;
+export type ProductList = Static<typeof ProductList>;
+export declare const ProductList: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+    specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+        warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+    ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        }>>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+}>>;
+export type Order = Static<typeof Order>;
+export declare const Order: import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+        productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
     }>>, import("@sinclair/typebox").TUndefined]>>;
-    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-}>;
-export type ApiResponse = Static<typeof ApiResponse>;
-export declare const ApiResponse: import("@sinclair/typebox").TObject<{
-    code: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-}>;
-export type put_UpdatePet = Static<typeof put_UpdatePet>;
-export declare const put_UpdatePet: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"PUT">;
-    path: import("@sinclair/typebox").TLiteral<"/pet">;
-    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        body: import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-            name: import("@sinclair/typebox").TString;
-            category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>, import("@sinclair/typebox").TUndefined]>>;
-            photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>>, import("@sinclair/typebox").TUndefined]>>;
-            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-        }>;
-    }>;
-    responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-            name: import("@sinclair/typebox").TString;
-            category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>, import("@sinclair/typebox").TUndefined]>>;
-            photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>>, import("@sinclair/typebox").TUndefined]>>;
-            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-        }>;
-        400: import("@sinclair/typebox").TUnknown;
-        404: import("@sinclair/typebox").TUnknown;
-        422: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
-    }>;
-}>;
-export type post_AddPet = Static<typeof post_AddPet>;
-export declare const post_AddPet: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"POST">;
-    path: import("@sinclair/typebox").TLiteral<"/pet">;
-    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        body: import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-            name: import("@sinclair/typebox").TString;
-            category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>, import("@sinclair/typebox").TUndefined]>>;
-            photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>>, import("@sinclair/typebox").TUndefined]>>;
-            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-        }>;
-    }>;
-    responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-            name: import("@sinclair/typebox").TString;
-            category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>, import("@sinclair/typebox").TUndefined]>>;
-            photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>>, import("@sinclair/typebox").TUndefined]>>;
-            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-        }>;
-        400: import("@sinclair/typebox").TUnknown;
-        422: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
-    }>;
-}>;
-export type get_FindPetsByStatus = Static<typeof get_FindPetsByStatus>;
-export declare const get_FindPetsByStatus: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"GET">;
-    path: import("@sinclair/typebox").TLiteral<"/pet/findByStatus">;
-    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        query: import("@sinclair/typebox").TObject<{
-            status: import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>;
-        }>;
-    }>;
-    responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-            name: import("@sinclair/typebox").TString;
-            category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>, import("@sinclair/typebox").TUndefined]>>;
-            photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>>, import("@sinclair/typebox").TUndefined]>>;
-            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-        }>>;
-        400: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
-    }>;
-}>;
-export type get_FindPetsByTags = Static<typeof get_FindPetsByTags>;
-export declare const get_FindPetsByTags: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"GET">;
-    path: import("@sinclair/typebox").TLiteral<"/pet/findByTags">;
-    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        query: import("@sinclair/typebox").TObject<{
-            tags: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-        }>;
-    }>;
-    responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-            name: import("@sinclair/typebox").TString;
-            category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>, import("@sinclair/typebox").TUndefined]>>;
-            photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>>, import("@sinclair/typebox").TUndefined]>>;
-            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-        }>>;
-        400: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
-    }>;
-}>;
-export type get_GetPetById = Static<typeof get_GetPetById>;
-export declare const get_GetPetById: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"GET">;
-    path: import("@sinclair/typebox").TLiteral<"/pet/{petId}">;
-    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        path: import("@sinclair/typebox").TObject<{
-            petId: import("@sinclair/typebox").TNumber;
-        }>;
-    }>;
-    responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-            name: import("@sinclair/typebox").TString;
-            category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>, import("@sinclair/typebox").TUndefined]>>;
-            photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>>, import("@sinclair/typebox").TUndefined]>>;
-            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-        }>;
-        400: import("@sinclair/typebox").TUnknown;
-        404: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
-    }>;
-}>;
-export type post_UpdatePetWithForm = Static<typeof post_UpdatePetWithForm>;
-export declare const post_UpdatePetWithForm: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"POST">;
-    path: import("@sinclair/typebox").TLiteral<"/pet/{petId}">;
-    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        query: import("@sinclair/typebox").TObject<{
+    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
             name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-        }>;
-        path: import("@sinclair/typebox").TObject<{
-            petId: import("@sinclair/typebox").TNumber;
-        }>;
-    }>;
-    responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-            name: import("@sinclair/typebox").TString;
-            category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>, import("@sinclair/typebox").TUndefined]>>;
-            photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>>, import("@sinclair/typebox").TUndefined]>>;
-            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-        }>;
-        400: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
-    }>;
+            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        }>>;
+        billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        }>>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+        status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+    }>>, import("@sinclair/typebox").TUndefined]>>;
+    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
 }>;
-export type delete_DeletePet = Static<typeof delete_DeletePet>;
-export declare const delete_DeletePet: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"DELETE">;
-    path: import("@sinclair/typebox").TLiteral<"/pet/{petId}">;
+export type OrderList = Static<typeof OrderList>;
+export declare const OrderList: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+        productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+    }>>, import("@sinclair/typebox").TUndefined]>>;
+    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        }>>;
+        billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        }>>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+        status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+    }>>, import("@sinclair/typebox").TUndefined]>>;
+    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+}>>;
+export type Analytic = Static<typeof Analytic>;
+export declare const Analytic: import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        }>>;
+        traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>>>;
+        }>>;
+        performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        }>>;
+        business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        }>>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+}>;
+export type AnalyticList = Static<typeof AnalyticList>;
+export declare const AnalyticList: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        }>>;
+        traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>>>;
+        }>>;
+        performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        }>>;
+        business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+            orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        }>>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+}>>;
+export type Notification = Static<typeof Notification>;
+export declare const Notification: import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+}>;
+export type NotificationList = Static<typeof NotificationList>;
+export declare const NotificationList: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+    id: import("@sinclair/typebox").TNumber;
+    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+    type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+        orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+    }>, import("@sinclair/typebox").TUndefined]>>;
+    isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+    priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+}>>;
+export type get__users = Static<typeof get__users>;
+export declare const get__users: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/users">;
     requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        path: import("@sinclair/typebox").TObject<{
-            petId: import("@sinclair/typebox").TNumber;
-        }>;
-        header: import("@sinclair/typebox").TObject<{
-            api_key: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-        }>;
-    }>;
-    responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TUnknown;
-        400: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
-    }>;
-}>;
-export type post_UploadFile = Static<typeof post_UploadFile>;
-export declare const post_UploadFile: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"POST">;
-    path: import("@sinclair/typebox").TLiteral<"/pet/{petId}/uploadImage">;
-    requestFormat: import("@sinclair/typebox").TLiteral<"binary">;
     parameters: import("@sinclair/typebox").TObject<{
         query: import("@sinclair/typebox").TObject<{
-            additionalMetadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-        }>;
-        path: import("@sinclair/typebox").TObject<{
-            petId: import("@sinclair/typebox").TNumber;
-        }>;
-        body: import("@sinclair/typebox").TString;
-    }>;
-    responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TObject<{
-            code: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-        }>;
-        400: import("@sinclair/typebox").TUnknown;
-        404: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
-    }>;
-}>;
-export type get_GetInventory = Static<typeof get_GetInventory>;
-export declare const get_GetInventory: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"GET">;
-    path: import("@sinclair/typebox").TLiteral<"/store/inventory">;
-    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TNever;
-    responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TNumber>;
-        default: import("@sinclair/typebox").TUnknown;
-    }>;
-}>;
-export type post_PlaceOrder = Static<typeof post_PlaceOrder>;
-export declare const post_PlaceOrder: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"POST">;
-    path: import("@sinclair/typebox").TLiteral<"/store/order">;
-    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        body: import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            petId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            shipDate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"placed">, import("@sinclair/typebox").TLiteral<"approved">, import("@sinclair/typebox").TLiteral<"delivered">]>>;
-            complete: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+            _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+            q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
         }>;
     }>;
     responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            petId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            shipDate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"placed">, import("@sinclair/typebox").TLiteral<"approved">, import("@sinclair/typebox").TLiteral<"delivered">]>>;
-            complete: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
-        }>;
-        400: import("@sinclair/typebox").TUnknown;
-        422: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
-    }>;
-}>;
-export type get_GetOrderById = Static<typeof get_GetOrderById>;
-export declare const get_GetOrderById: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"GET">;
-    path: import("@sinclair/typebox").TLiteral<"/store/order/{orderId}">;
-    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        path: import("@sinclair/typebox").TObject<{
-            orderId: import("@sinclair/typebox").TNumber;
-        }>;
-    }>;
-    responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            petId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            shipDate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"placed">, import("@sinclair/typebox").TLiteral<"approved">, import("@sinclair/typebox").TLiteral<"delivered">]>>;
-            complete: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
-        }>;
-        400: import("@sinclair/typebox").TUnknown;
-        404: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
-    }>;
-}>;
-export type delete_DeleteOrder = Static<typeof delete_DeleteOrder>;
-export declare const delete_DeleteOrder: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"DELETE">;
-    path: import("@sinclair/typebox").TLiteral<"/store/order/{orderId}">;
-    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        path: import("@sinclair/typebox").TObject<{
-            orderId: import("@sinclair/typebox").TNumber;
-        }>;
-    }>;
-    responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TUnknown;
-        400: import("@sinclair/typebox").TUnknown;
-        404: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
-    }>;
-}>;
-export type post_CreateUser = Static<typeof post_CreateUser>;
-export declare const post_CreateUser: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"POST">;
-    path: import("@sinclair/typebox").TLiteral<"/user">;
-    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        body: import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        }>;
-    }>;
-    responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        }>;
-        default: import("@sinclair/typebox").TUnknown;
-    }>;
-}>;
-export type post_CreateUsersWithListInput = Static<typeof post_CreateUsersWithListInput>;
-export declare const post_CreateUsersWithListInput: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"POST">;
-    path: import("@sinclair/typebox").TLiteral<"/user/createWithList">;
-    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        body: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+        200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
         }>>;
     }>;
-    responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+}>;
+export type post__users = Static<typeof post__users>;
+export declare const post__users: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"POST">;
+    path: import("@sinclair/typebox").TLiteral<"/users">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
         }>;
-        default: import("@sinclair/typebox").TUnknown;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        201: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
     }>;
 }>;
-export type get_LoginUser = Static<typeof get_LoginUser>;
-export declare const get_LoginUser: import("@sinclair/typebox").TObject<{
+export type get__users_Id = Static<typeof get__users_Id>;
+export declare const get__users_Id: import("@sinclair/typebox").TObject<{
     method: import("@sinclair/typebox").TLiteral<"GET">;
-    path: import("@sinclair/typebox").TLiteral<"/user/login">;
+    path: import("@sinclair/typebox").TLiteral<"/users/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type put__users_Id = Static<typeof put__users_Id>;
+export declare const put__users_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PUT">;
+    path: import("@sinclair/typebox").TLiteral<"/users/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type patch__users_Id = Static<typeof patch__users_Id>;
+export declare const patch__users_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PATCH">;
+    path: import("@sinclair/typebox").TLiteral<"/users/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type delete__users_Id = Static<typeof delete__users_Id>;
+export declare const delete__users_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"DELETE">;
+    path: import("@sinclair/typebox").TLiteral<"/users/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get__posts = Static<typeof get__posts>;
+export declare const get__posts: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/posts">;
     requestFormat: import("@sinclair/typebox").TLiteral<"json">;
     parameters: import("@sinclair/typebox").TObject<{
         query: import("@sinclair/typebox").TObject<{
-            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+            q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
         }>;
     }>;
     responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TString;
-        400: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
-    }>;
-    responseHeaders: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TObject<{
-            "X-Rate-Limit": import("@sinclair/typebox").TNumber;
-            "X-Expires-After": import("@sinclair/typebox").TString;
-        }>;
+        200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>>;
     }>;
 }>;
-export type get_LogoutUser = Static<typeof get_LogoutUser>;
-export declare const get_LogoutUser: import("@sinclair/typebox").TObject<{
+export type post__posts = Static<typeof post__posts>;
+export declare const post__posts: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"POST">;
+    path: import("@sinclair/typebox").TLiteral<"/posts">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        201: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get__posts_Id = Static<typeof get__posts_Id>;
+export declare const get__posts_Id: import("@sinclair/typebox").TObject<{
     method: import("@sinclair/typebox").TLiteral<"GET">;
-    path: import("@sinclair/typebox").TLiteral<"/user/logout">;
+    path: import("@sinclair/typebox").TLiteral<"/posts/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type put__posts_Id = Static<typeof put__posts_Id>;
+export declare const put__posts_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PUT">;
+    path: import("@sinclair/typebox").TLiteral<"/posts/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type patch__posts_Id = Static<typeof patch__posts_Id>;
+export declare const patch__posts_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PATCH">;
+    path: import("@sinclair/typebox").TLiteral<"/posts/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type delete__posts_Id = Static<typeof delete__posts_Id>;
+export declare const delete__posts_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"DELETE">;
+    path: import("@sinclair/typebox").TLiteral<"/posts/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get__comments = Static<typeof get__comments>;
+export declare const get__comments: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/comments">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        query: import("@sinclair/typebox").TObject<{
+            _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+            q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>>;
+    }>;
+}>;
+export type post__comments = Static<typeof post__comments>;
+export declare const post__comments: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"POST">;
+    path: import("@sinclair/typebox").TLiteral<"/comments">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        201: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get__comments_Id = Static<typeof get__comments_Id>;
+export declare const get__comments_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/comments/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type put__comments_Id = Static<typeof put__comments_Id>;
+export declare const put__comments_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PUT">;
+    path: import("@sinclair/typebox").TLiteral<"/comments/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type patch__comments_Id = Static<typeof patch__comments_Id>;
+export declare const patch__comments_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PATCH">;
+    path: import("@sinclair/typebox").TLiteral<"/comments/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type delete__comments_Id = Static<typeof delete__comments_Id>;
+export declare const delete__comments_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"DELETE">;
+    path: import("@sinclair/typebox").TLiteral<"/comments/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get__categories = Static<typeof get__categories>;
+export declare const get__categories: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/categories">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        query: import("@sinclair/typebox").TObject<{
+            _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+            q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>>;
+    }>;
+}>;
+export type post__categories = Static<typeof post__categories>;
+export declare const post__categories: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"POST">;
+    path: import("@sinclair/typebox").TLiteral<"/categories">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        201: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get__categories_Id = Static<typeof get__categories_Id>;
+export declare const get__categories_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/categories/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type put__categories_Id = Static<typeof put__categories_Id>;
+export declare const put__categories_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PUT">;
+    path: import("@sinclair/typebox").TLiteral<"/categories/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type patch__categories_Id = Static<typeof patch__categories_Id>;
+export declare const patch__categories_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PATCH">;
+    path: import("@sinclair/typebox").TLiteral<"/categories/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type delete__categories_Id = Static<typeof delete__categories_Id>;
+export declare const delete__categories_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"DELETE">;
+    path: import("@sinclair/typebox").TLiteral<"/categories/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get__products = Static<typeof get__products>;
+export declare const get__products: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/products">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        query: import("@sinclair/typebox").TObject<{
+            _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+            q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>>;
+    }>;
+}>;
+export type post__products = Static<typeof post__products>;
+export declare const post__products: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"POST">;
+    path: import("@sinclair/typebox").TLiteral<"/products">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        201: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get__products_Id = Static<typeof get__products_Id>;
+export declare const get__products_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/products/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type put__products_Id = Static<typeof put__products_Id>;
+export declare const put__products_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PUT">;
+    path: import("@sinclair/typebox").TLiteral<"/products/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type patch__products_Id = Static<typeof patch__products_Id>;
+export declare const patch__products_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PATCH">;
+    path: import("@sinclair/typebox").TLiteral<"/products/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+            isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type delete__products_Id = Static<typeof delete__products_Id>;
+export declare const delete__products_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"DELETE">;
+    path: import("@sinclair/typebox").TLiteral<"/products/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get__orders = Static<typeof get__orders>;
+export declare const get__orders: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/orders">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        query: import("@sinclair/typebox").TObject<{
+            _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+            q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+                billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>>;
+    }>;
+}>;
+export type post__orders = Static<typeof post__orders>;
+export declare const post__orders: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"POST">;
+    path: import("@sinclair/typebox").TLiteral<"/orders">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+                billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        201: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+                billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get__orders_Id = Static<typeof get__orders_Id>;
+export declare const get__orders_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/orders/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+                billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type put__orders_Id = Static<typeof put__orders_Id>;
+export declare const put__orders_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PUT">;
+    path: import("@sinclair/typebox").TLiteral<"/orders/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+                billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+                billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type patch__orders_Id = Static<typeof patch__orders_Id>;
+export declare const patch__orders_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PATCH">;
+    path: import("@sinclair/typebox").TLiteral<"/orders/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+                billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+                billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>>, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type delete__orders_Id = Static<typeof delete__orders_Id>;
+export declare const delete__orders_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"DELETE">;
+    path: import("@sinclair/typebox").TLiteral<"/orders/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get__analytics = Static<typeof get__analytics>;
+export declare const get__analytics: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/analytics">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        query: import("@sinclair/typebox").TObject<{
+            _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+            q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>>>;
+                }>>;
+                performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>>;
+    }>;
+}>;
+export type post__analytics = Static<typeof post__analytics>;
+export declare const post__analytics: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"POST">;
+    path: import("@sinclair/typebox").TLiteral<"/analytics">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>>>;
+                }>>;
+                performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        201: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>>>;
+                }>>;
+                performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get__analytics_Id = Static<typeof get__analytics_Id>;
+export declare const get__analytics_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/analytics/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>>>;
+                }>>;
+                performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type put__analytics_Id = Static<typeof put__analytics_Id>;
+export declare const put__analytics_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PUT">;
+    path: import("@sinclair/typebox").TLiteral<"/analytics/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>>>;
+                }>>;
+                performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>>>;
+                }>>;
+                performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type patch__analytics_Id = Static<typeof patch__analytics_Id>;
+export declare const patch__analytics_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PATCH">;
+    path: import("@sinclair/typebox").TLiteral<"/analytics/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>>>;
+                }>>;
+                performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>>>;
+                }>>;
+                performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+                business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                    orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                }>>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type delete__analytics_Id = Static<typeof delete__analytics_Id>;
+export declare const delete__analytics_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"DELETE">;
+    path: import("@sinclair/typebox").TLiteral<"/analytics/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get__notifications = Static<typeof get__notifications>;
+export declare const get__notifications: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/notifications">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        query: import("@sinclair/typebox").TObject<{
+            _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+            _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+            q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>>;
+    }>;
+}>;
+export type post__notifications = Static<typeof post__notifications>;
+export declare const post__notifications: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"POST">;
+    path: import("@sinclair/typebox").TLiteral<"/notifications">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        201: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get__notifications_Id = Static<typeof get__notifications_Id>;
+export declare const get__notifications_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/notifications/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type put__notifications_Id = Static<typeof put__notifications_Id>;
+export declare const put__notifications_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PUT">;
+    path: import("@sinclair/typebox").TLiteral<"/notifications/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type patch__notifications_Id = Static<typeof patch__notifications_Id>;
+export declare const patch__notifications_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"PATCH">;
+    path: import("@sinclair/typebox").TLiteral<"/notifications/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+        body: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+            userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+            type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+            }>, import("@sinclair/typebox").TUndefined]>>;
+            isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+            priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+            createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+        }>;
+        400: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type delete__notifications_Id = Static<typeof delete__notifications_Id>;
+export declare const delete__notifications_Id: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"DELETE">;
+    path: import("@sinclair/typebox").TLiteral<"/notifications/{id}">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TObject<{
+        path: import("@sinclair/typebox").TObject<{
+            id: import("@sinclair/typebox").TNumber;
+        }>;
+    }>;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TUnknown;
+        404: import("@sinclair/typebox").TUnknown;
+    }>;
+}>;
+export type get_ = Static<typeof get_>;
+export declare const get_: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"">;
     requestFormat: import("@sinclair/typebox").TLiteral<"json">;
     parameters: import("@sinclair/typebox").TNever;
     responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
     }>;
 }>;
-export type get_GetUserByName = Static<typeof get_GetUserByName>;
-export declare const get_GetUserByName: import("@sinclair/typebox").TObject<{
+export type get__users__id_posts = Static<typeof get__users__id_posts>;
+export declare const get__users__id_posts: import("@sinclair/typebox").TObject<{
     method: import("@sinclair/typebox").TLiteral<"GET">;
-    path: import("@sinclair/typebox").TLiteral<"/user/{username}">;
+    path: import("@sinclair/typebox").TLiteral<"/users/:id/posts">;
     requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        path: import("@sinclair/typebox").TObject<{
-            username: import("@sinclair/typebox").TString;
-        }>;
-    }>;
+    parameters: import("@sinclair/typebox").TNever;
     responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        }>;
-        400: import("@sinclair/typebox").TUnknown;
-        404: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
     }>;
 }>;
-export type put_UpdateUser = Static<typeof put_UpdateUser>;
-export declare const put_UpdateUser: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"PUT">;
-    path: import("@sinclair/typebox").TLiteral<"/user/{username}">;
+export type get__users__id_comments = Static<typeof get__users__id_comments>;
+export declare const get__users__id_comments: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/users/:id/comments">;
     requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        path: import("@sinclair/typebox").TObject<{
-            username: import("@sinclair/typebox").TString;
-        }>;
-        body: import("@sinclair/typebox").TObject<{
-            id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-            username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        }>;
-    }>;
+    parameters: import("@sinclair/typebox").TNever;
     responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TUnknown;
-        400: import("@sinclair/typebox").TUnknown;
-        404: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
     }>;
 }>;
-export type delete_DeleteUser = Static<typeof delete_DeleteUser>;
-export declare const delete_DeleteUser: import("@sinclair/typebox").TObject<{
-    method: import("@sinclair/typebox").TLiteral<"DELETE">;
-    path: import("@sinclair/typebox").TLiteral<"/user/{username}">;
+export type get__users__id_orders = Static<typeof get__users__id_orders>;
+export declare const get__users__id_orders: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/users/:id/orders">;
     requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-    parameters: import("@sinclair/typebox").TObject<{
-        path: import("@sinclair/typebox").TObject<{
-            username: import("@sinclair/typebox").TString;
-        }>;
-    }>;
+    parameters: import("@sinclair/typebox").TNever;
     responses: import("@sinclair/typebox").TObject<{
-        200: import("@sinclair/typebox").TUnknown;
-        400: import("@sinclair/typebox").TUnknown;
-        404: import("@sinclair/typebox").TUnknown;
-        default: import("@sinclair/typebox").TUnknown;
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__users__id_notifications = Static<typeof get__users__id_notifications>;
+export declare const get__users__id_notifications: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/users/:id/notifications">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__posts__id_comments = Static<typeof get__posts__id_comments>;
+export declare const get__posts__id_comments: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/posts/:id/comments">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__categories__id_posts = Static<typeof get__categories__id_posts>;
+export declare const get__categories__id_posts: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/categories/:id/posts">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__orders__id_items = Static<typeof get__orders__id_items>;
+export declare const get__orders__id_items: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/orders/:id/items">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__products_search = Static<typeof get__products_search>;
+export declare const get__products_search: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/products/search">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__posts_search = Static<typeof get__posts_search>;
+export declare const get__posts_search: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/posts/search">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__users_search = Static<typeof get__users_search>;
+export declare const get__users_search: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/users/search">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__featured_posts = Static<typeof get__featured_posts>;
+export declare const get__featured_posts: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/featured/posts">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__published_posts = Static<typeof get__published_posts>;
+export declare const get__published_posts: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/published/posts">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__stats_analytics = Static<typeof get__stats_analytics>;
+export declare const get__stats_analytics: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/stats/analytics">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__stats_daily__date = Static<typeof get__stats_daily__date>;
+export declare const get__stats_daily__date: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/stats/daily/:date">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__inventory_lowStock = Static<typeof get__inventory_lowStock>;
+export declare const get__inventory_lowStock: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/inventory/low-stock">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__orders_byStatus__status = Static<typeof get__orders_byStatus__status>;
+export declare const get__orders_byStatus__status: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/orders/by-status/:status">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__bulk_users = Static<typeof get__bulk_users>;
+export declare const get__bulk_users: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/bulk/users">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__bulk_posts = Static<typeof get__bulk_posts>;
+export declare const get__bulk_posts: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/bulk/posts">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+    }>;
+}>;
+export type get__bulk_products = Static<typeof get__bulk_products>;
+export declare const get__bulk_products: import("@sinclair/typebox").TObject<{
+    method: import("@sinclair/typebox").TLiteral<"GET">;
+    path: import("@sinclair/typebox").TLiteral<"/bulk/products">;
+    requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+    parameters: import("@sinclair/typebox").TNever;
+    responses: import("@sinclair/typebox").TObject<{
+        200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
     }>;
 }>;
 export declare const EndpointByMethod: {
-    put: {
-        "/pet": import("@sinclair/typebox").TObject<{
-            method: import("@sinclair/typebox").TLiteral<"PUT">;
-            path: import("@sinclair/typebox").TLiteral<"/pet">;
+    get: {
+        "/users": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/users">;
             requestFormat: import("@sinclair/typebox").TLiteral<"json">;
             parameters: import("@sinclair/typebox").TObject<{
-                body: import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-                    name: import("@sinclair/typebox").TString;
-                    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                query: import("@sinclair/typebox").TObject<{
+                    _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+                    q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
                     }>, import("@sinclair/typebox").TUndefined]>>;
-                    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    }>>, import("@sinclair/typebox").TUndefined]>>;
-                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
+                    preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>>;
+            }>;
+        }>;
+        "/users/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/users/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
                 }>;
             }>;
             responses: import("@sinclair/typebox").TObject<{
                 200: import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-                    name: import("@sinclair/typebox").TString;
-                    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    id: import("@sinclair/typebox").TNumber;
+                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
                     }>, import("@sinclair/typebox").TUndefined]>>;
-                    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    }>>, import("@sinclair/typebox").TUndefined]>>;
-                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
+                    preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
                 }>;
-                400: import("@sinclair/typebox").TUnknown;
                 404: import("@sinclair/typebox").TUnknown;
-                422: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
             }>;
         }>;
-        "/user/{username}": import("@sinclair/typebox").TObject<{
-            method: import("@sinclair/typebox").TLiteral<"PUT">;
-            path: import("@sinclair/typebox").TLiteral<"/user/{username}">;
+        "/posts": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/posts">;
             requestFormat: import("@sinclair/typebox").TLiteral<"json">;
             parameters: import("@sinclair/typebox").TObject<{
-                path: import("@sinclair/typebox").TObject<{
-                    username: import("@sinclair/typebox").TString;
-                }>;
-                body: import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                query: import("@sinclair/typebox").TObject<{
+                    _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+                    q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
                 }>;
             }>;
             responses: import("@sinclair/typebox").TObject<{
-                200: import("@sinclair/typebox").TUnknown;
-                400: import("@sinclair/typebox").TUnknown;
+                200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>>;
+            }>;
+        }>;
+        "/posts/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/posts/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
                 404: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/comments": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/comments">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                query: import("@sinclair/typebox").TObject<{
+                    _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+                    q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>>;
+            }>;
+        }>;
+        "/comments/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/comments/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/categories": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/categories">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                query: import("@sinclair/typebox").TObject<{
+                    _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+                    q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>>;
+            }>;
+        }>;
+        "/categories/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/categories/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/products": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/products">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                query: import("@sinclair/typebox").TObject<{
+                    _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+                    q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                        warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>>;
+            }>;
+        }>;
+        "/products/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/products/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                        warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/orders": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/orders">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                query: import("@sinclair/typebox").TObject<{
+                    _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+                    q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                        billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>>;
+            }>;
+        }>;
+        "/orders/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/orders/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                        billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/analytics": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/analytics">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                query: import("@sinclair/typebox").TObject<{
+                    _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+                    q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                                path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            }>>>;
+                        }>>;
+                        performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>>;
+            }>;
+        }>;
+        "/analytics/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/analytics/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                                path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            }>>>;
+                        }>>;
+                        performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/notifications": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/notifications">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                query: import("@sinclair/typebox").TObject<{
+                    _page: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _limit: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    _sort: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    _order: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"asc">, import("@sinclair/typebox").TLiteral<"desc">]>>;
+                    q: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>>;
+            }>;
+        }>;
+        "/notifications/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/notifications/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/users/:id/posts": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/users/:id/posts">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/users/:id/comments": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/users/:id/comments">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/users/:id/orders": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/users/:id/orders">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/users/:id/notifications": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/users/:id/notifications">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/posts/:id/comments": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/posts/:id/comments">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/categories/:id/posts": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/categories/:id/posts">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/orders/:id/items": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/orders/:id/items">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/products/search": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/products/search">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/posts/search": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/posts/search">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/users/search": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/users/search">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/featured/posts": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/featured/posts">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/published/posts": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/published/posts">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/stats/analytics": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/stats/analytics">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/stats/daily/:date": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/stats/daily/:date">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/inventory/low-stock": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/inventory/low-stock">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/orders/by-status/:status": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/orders/by-status/:status">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/bulk/users": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/bulk/users">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/bulk/posts": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/bulk/posts">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
+            }>;
+        }>;
+        "/bulk/products": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"GET">;
+            path: import("@sinclair/typebox").TLiteral<"/bulk/products">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TNever;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TUnknown>;
             }>;
         }>;
     };
     post: {
-        "/pet": import("@sinclair/typebox").TObject<{
+        "/users": import("@sinclair/typebox").TObject<{
             method: import("@sinclair/typebox").TLiteral<"POST">;
-            path: import("@sinclair/typebox").TLiteral<"/pet">;
+            path: import("@sinclair/typebox").TLiteral<"/users">;
             requestFormat: import("@sinclair/typebox").TLiteral<"json">;
             parameters: import("@sinclair/typebox").TObject<{
                 body: import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-                    name: import("@sinclair/typebox").TString;
-                    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    id: import("@sinclair/typebox").TNumber;
+                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
                     }>, import("@sinclair/typebox").TUndefined]>>;
-                    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    }>>, import("@sinclair/typebox").TUndefined]>>;
-                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
+                    preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
                 }>;
             }>;
             responses: import("@sinclair/typebox").TObject<{
-                200: import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-                    name: import("@sinclair/typebox").TString;
-                    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                201: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
                     }>, import("@sinclair/typebox").TUndefined]>>;
-                    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    }>>, import("@sinclair/typebox").TUndefined]>>;
-                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-                }>;
-                400: import("@sinclair/typebox").TUnknown;
-                422: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
-            }>;
-        }>;
-        "/pet/{petId}": import("@sinclair/typebox").TObject<{
-            method: import("@sinclair/typebox").TLiteral<"POST">;
-            path: import("@sinclair/typebox").TLiteral<"/pet/{petId}">;
-            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-            parameters: import("@sinclair/typebox").TObject<{
-                query: import("@sinclair/typebox").TObject<{
-                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                }>;
-                path: import("@sinclair/typebox").TObject<{
-                    petId: import("@sinclair/typebox").TNumber;
-                }>;
-            }>;
-            responses: import("@sinclair/typebox").TObject<{
-                200: import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-                    name: import("@sinclair/typebox").TString;
-                    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        }>>;
                     }>, import("@sinclair/typebox").TUndefined]>>;
-                    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    }>>, import("@sinclair/typebox").TUndefined]>>;
-                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
                 }>;
                 400: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
             }>;
         }>;
-        "/pet/{petId}/uploadImage": import("@sinclair/typebox").TObject<{
+        "/posts": import("@sinclair/typebox").TObject<{
             method: import("@sinclair/typebox").TLiteral<"POST">;
-            path: import("@sinclair/typebox").TLiteral<"/pet/{petId}/uploadImage">;
-            requestFormat: import("@sinclair/typebox").TLiteral<"binary">;
-            parameters: import("@sinclair/typebox").TObject<{
-                query: import("@sinclair/typebox").TObject<{
-                    additionalMetadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                }>;
-                path: import("@sinclair/typebox").TObject<{
-                    petId: import("@sinclair/typebox").TNumber;
-                }>;
-                body: import("@sinclair/typebox").TString;
-            }>;
-            responses: import("@sinclair/typebox").TObject<{
-                200: import("@sinclair/typebox").TObject<{
-                    code: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                }>;
-                400: import("@sinclair/typebox").TUnknown;
-                404: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
-            }>;
-        }>;
-        "/store/order": import("@sinclair/typebox").TObject<{
-            method: import("@sinclair/typebox").TLiteral<"POST">;
-            path: import("@sinclair/typebox").TLiteral<"/store/order">;
+            path: import("@sinclair/typebox").TLiteral<"/posts">;
             requestFormat: import("@sinclair/typebox").TLiteral<"json">;
             parameters: import("@sinclair/typebox").TObject<{
                 body: import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    petId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    shipDate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"placed">, import("@sinclair/typebox").TLiteral<"approved">, import("@sinclair/typebox").TLiteral<"delivered">]>>;
-                    complete: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    id: import("@sinclair/typebox").TNumber;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
                 }>;
             }>;
             responses: import("@sinclair/typebox").TObject<{
-                200: import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    petId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    shipDate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"placed">, import("@sinclair/typebox").TLiteral<"approved">, import("@sinclair/typebox").TLiteral<"delivered">]>>;
-                    complete: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                201: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
                 }>;
                 400: import("@sinclair/typebox").TUnknown;
-                422: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
             }>;
         }>;
-        "/user": import("@sinclair/typebox").TObject<{
+        "/comments": import("@sinclair/typebox").TObject<{
             method: import("@sinclair/typebox").TLiteral<"POST">;
-            path: import("@sinclair/typebox").TLiteral<"/user">;
+            path: import("@sinclair/typebox").TLiteral<"/comments">;
             requestFormat: import("@sinclair/typebox").TLiteral<"json">;
             parameters: import("@sinclair/typebox").TObject<{
                 body: import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    id: import("@sinclair/typebox").TNumber;
+                    postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
                 }>;
             }>;
             responses: import("@sinclair/typebox").TObject<{
-                200: import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                201: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
                 }>;
-                default: import("@sinclair/typebox").TUnknown;
+                400: import("@sinclair/typebox").TUnknown;
             }>;
         }>;
-        "/user/createWithList": import("@sinclair/typebox").TObject<{
+        "/categories": import("@sinclair/typebox").TObject<{
             method: import("@sinclair/typebox").TLiteral<"POST">;
-            path: import("@sinclair/typebox").TLiteral<"/user/createWithList">;
+            path: import("@sinclair/typebox").TLiteral<"/categories">;
             requestFormat: import("@sinclair/typebox").TLiteral<"json">;
             parameters: import("@sinclair/typebox").TObject<{
-                body: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                }>>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
             }>;
             responses: import("@sinclair/typebox").TObject<{
-                200: import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                201: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
                 }>;
-                default: import("@sinclair/typebox").TUnknown;
+                400: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/products": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"POST">;
+            path: import("@sinclair/typebox").TLiteral<"/products">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                        warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                201: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                        warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/orders": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"POST">;
+            path: import("@sinclair/typebox").TLiteral<"/orders">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                        billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                201: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                        billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/analytics": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"POST">;
+            path: import("@sinclair/typebox").TLiteral<"/analytics">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                                path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            }>>>;
+                        }>>;
+                        performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                201: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                                path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            }>>>;
+                        }>>;
+                        performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/notifications": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"POST">;
+            path: import("@sinclair/typebox").TLiteral<"/notifications">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                201: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
             }>;
         }>;
     };
-    get: {
-        "/pet/findByStatus": import("@sinclair/typebox").TObject<{
-            method: import("@sinclair/typebox").TLiteral<"GET">;
-            path: import("@sinclair/typebox").TLiteral<"/pet/findByStatus">;
-            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-            parameters: import("@sinclair/typebox").TObject<{
-                query: import("@sinclair/typebox").TObject<{
-                    status: import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>;
-                }>;
-            }>;
-            responses: import("@sinclair/typebox").TObject<{
-                200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-                    name: import("@sinclair/typebox").TString;
-                    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    }>, import("@sinclair/typebox").TUndefined]>>;
-                    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    }>>, import("@sinclair/typebox").TUndefined]>>;
-                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-                }>>;
-                400: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
-            }>;
-        }>;
-        "/pet/findByTags": import("@sinclair/typebox").TObject<{
-            method: import("@sinclair/typebox").TLiteral<"GET">;
-            path: import("@sinclair/typebox").TLiteral<"/pet/findByTags">;
-            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-            parameters: import("@sinclair/typebox").TObject<{
-                query: import("@sinclair/typebox").TObject<{
-                    tags: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-                }>;
-            }>;
-            responses: import("@sinclair/typebox").TObject<{
-                200: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-                    name: import("@sinclair/typebox").TString;
-                    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    }>, import("@sinclair/typebox").TUndefined]>>;
-                    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    }>>, import("@sinclair/typebox").TUndefined]>>;
-                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-                }>>;
-                400: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
-            }>;
-        }>;
-        "/pet/{petId}": import("@sinclair/typebox").TObject<{
-            method: import("@sinclair/typebox").TLiteral<"GET">;
-            path: import("@sinclair/typebox").TLiteral<"/pet/{petId}">;
+    put: {
+        "/users/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PUT">;
+            path: import("@sinclair/typebox").TLiteral<"/users/{id}">;
             requestFormat: import("@sinclair/typebox").TLiteral<"json">;
             parameters: import("@sinclair/typebox").TObject<{
                 path: import("@sinclair/typebox").TObject<{
-                    petId: import("@sinclair/typebox").TNumber;
+                    id: import("@sinclair/typebox").TNumber;
                 }>;
-            }>;
-            responses: import("@sinclair/typebox").TObject<{
-                200: import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-                    name: import("@sinclair/typebox").TString;
-                    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
                     }>, import("@sinclair/typebox").TUndefined]>>;
-                    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-                        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/posts/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PUT">;
+            path: import("@sinclair/typebox").TLiteral<"/posts/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/comments/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PUT">;
+            path: import("@sinclair/typebox").TLiteral<"/comments/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/categories/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PUT">;
+            path: import("@sinclair/typebox").TLiteral<"/categories/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/products/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PUT">;
+            path: import("@sinclair/typebox").TLiteral<"/products/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                        warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                        warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/orders/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PUT">;
+            path: import("@sinclair/typebox").TLiteral<"/orders/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
                     }>>, import("@sinclair/typebox").TUndefined]>>;
-                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                        billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                        billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
                 }>;
                 400: import("@sinclair/typebox").TUnknown;
                 404: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
             }>;
         }>;
-        "/store/inventory": import("@sinclair/typebox").TObject<{
-            method: import("@sinclair/typebox").TLiteral<"GET">;
-            path: import("@sinclair/typebox").TLiteral<"/store/inventory">;
-            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-            parameters: import("@sinclair/typebox").TNever;
-            responses: import("@sinclair/typebox").TObject<{
-                200: import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TNumber>;
-                default: import("@sinclair/typebox").TUnknown;
-            }>;
-        }>;
-        "/store/order/{orderId}": import("@sinclair/typebox").TObject<{
-            method: import("@sinclair/typebox").TLiteral<"GET">;
-            path: import("@sinclair/typebox").TLiteral<"/store/order/{orderId}">;
+        "/analytics/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PUT">;
+            path: import("@sinclair/typebox").TLiteral<"/analytics/{id}">;
             requestFormat: import("@sinclair/typebox").TLiteral<"json">;
             parameters: import("@sinclair/typebox").TObject<{
                 path: import("@sinclair/typebox").TObject<{
-                    orderId: import("@sinclair/typebox").TNumber;
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                                path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            }>>>;
+                        }>>;
+                        performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
                 }>;
             }>;
             responses: import("@sinclair/typebox").TObject<{
                 200: import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    petId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    shipDate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"placed">, import("@sinclair/typebox").TLiteral<"approved">, import("@sinclair/typebox").TLiteral<"delivered">]>>;
-                    complete: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                    id: import("@sinclair/typebox").TNumber;
+                    date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                                path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            }>>>;
+                        }>>;
+                        performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
                 }>;
                 400: import("@sinclair/typebox").TUnknown;
                 404: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
             }>;
         }>;
-        "/user/login": import("@sinclair/typebox").TObject<{
-            method: import("@sinclair/typebox").TLiteral<"GET">;
-            path: import("@sinclair/typebox").TLiteral<"/user/login">;
-            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-            parameters: import("@sinclair/typebox").TObject<{
-                query: import("@sinclair/typebox").TObject<{
-                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                }>;
-            }>;
-            responses: import("@sinclair/typebox").TObject<{
-                200: import("@sinclair/typebox").TString;
-                400: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
-            }>;
-            responseHeaders: import("@sinclair/typebox").TObject<{
-                200: import("@sinclair/typebox").TObject<{
-                    "X-Rate-Limit": import("@sinclair/typebox").TNumber;
-                    "X-Expires-After": import("@sinclair/typebox").TString;
-                }>;
-            }>;
-        }>;
-        "/user/logout": import("@sinclair/typebox").TObject<{
-            method: import("@sinclair/typebox").TLiteral<"GET">;
-            path: import("@sinclair/typebox").TLiteral<"/user/logout">;
-            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
-            parameters: import("@sinclair/typebox").TNever;
-            responses: import("@sinclair/typebox").TObject<{
-                200: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
-            }>;
-        }>;
-        "/user/{username}": import("@sinclair/typebox").TObject<{
-            method: import("@sinclair/typebox").TLiteral<"GET">;
-            path: import("@sinclair/typebox").TLiteral<"/user/{username}">;
+        "/notifications/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PUT">;
+            path: import("@sinclair/typebox").TLiteral<"/notifications/{id}">;
             requestFormat: import("@sinclair/typebox").TLiteral<"json">;
             parameters: import("@sinclair/typebox").TObject<{
                 path: import("@sinclair/typebox").TObject<{
-                    username: import("@sinclair/typebox").TString;
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
                 }>;
             }>;
             responses: import("@sinclair/typebox").TObject<{
                 200: import("@sinclair/typebox").TObject<{
-                    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                    userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
                 }>;
                 400: import("@sinclair/typebox").TUnknown;
                 404: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+    };
+    patch: {
+        "/users/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PATCH">;
+            path: import("@sinclair/typebox").TLiteral<"/users/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    profile: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        avatar: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        bio: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        location: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        website: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    preferences: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        theme: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        notifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        language: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timezone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        emailNotifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            marketing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            security: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                            updates: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    lastLogin: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    role: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    stats: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        postsCreated: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        commentsPosted: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        loginCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/posts/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PATCH">;
+            path: import("@sinclair/typebox").TLiteral<"/posts/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    excerpt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    featured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        comments: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shares: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        bookmarks: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        readTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    seo: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaTitle: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        metaDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        keywords: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    publishedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/comments/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PATCH">;
+            path: import("@sinclair/typebox").TLiteral<"/comments/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    postId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    authorId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    content: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    likes: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    isApproved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isEdited: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/categories/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PATCH">;
+            path: import("@sinclair/typebox").TLiteral<"/categories/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    slug: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    postCount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    color: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    icon: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    parentId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNull, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        totalViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        averageRating: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/products/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PATCH">;
+            path: import("@sinclair/typebox").TLiteral<"/products/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                        warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    description: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shortDescription: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    price: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    originalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    currency: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    categoryId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    brand: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    model: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    barcode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    inventory: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        inStock: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        reserved: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        available: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        lowStockThreshold: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    images: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    specifications: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        batteryLife: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        chargingTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        connectivity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        weight: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        dimensions: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        colors: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
+                        warranty: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    features: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    ratings: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        average: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        count: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        breakdown: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            1: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            2: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            3: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            4: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            5: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>, import("@sinclair/typebox").TUndefined]>>;
+                    isActive: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    isFeatured: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/orders/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PATCH">;
+            path: import("@sinclair/typebox").TLiteral<"/orders/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                        billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    orderNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    items: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        productId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        productName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        unitPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        totalPrice: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        sku: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    paymentStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    shippingMethod: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    addresses: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                        billing: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            street: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            apartment: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            city: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            state: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            zipCode: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            country: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                            phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    totals: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        subtotal: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        tax: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        shipping: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        discount: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    timeline: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                        status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        timestamp: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                        note: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>>, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    updatedAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/analytics/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PATCH">;
+            path: import("@sinclair/typebox").TLiteral<"/analytics/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                                path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            }>>>;
+                        }>>;
+                        performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    date: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    period: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    metrics: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        users: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            total: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            new: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            returning: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            active: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        traffic: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            pageViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            uniqueViews: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            bounceRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgSessionDuration: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            topPages: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
+                                path: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                                views: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            }>>>;
+                        }>>;
+                        performance: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            avgLoadTime: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            apiCalls: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            cacheHitRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            errorRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                        business: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
+                            orders: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            revenue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            conversionRate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                            avgOrderValue: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        }>>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/notifications/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"PATCH">;
+            path: import("@sinclair/typebox").TLiteral<"/notifications/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+                body: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                    userId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
+                    type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    title: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    data: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
+                        orderId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
+                        trackingNumber: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    }>, import("@sinclair/typebox").TUndefined]>>;
+                    isRead: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TBoolean, import("@sinclair/typebox").TUndefined]>>;
+                    priority: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                    createdAt: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TString, import("@sinclair/typebox").TUndefined]>>;
+                }>;
+                400: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
             }>;
         }>;
     };
     delete: {
-        "/pet/{petId}": import("@sinclair/typebox").TObject<{
+        "/users/{id}": import("@sinclair/typebox").TObject<{
             method: import("@sinclair/typebox").TLiteral<"DELETE">;
-            path: import("@sinclair/typebox").TLiteral<"/pet/{petId}">;
+            path: import("@sinclair/typebox").TLiteral<"/users/{id}">;
             requestFormat: import("@sinclair/typebox").TLiteral<"json">;
             parameters: import("@sinclair/typebox").TObject<{
                 path: import("@sinclair/typebox").TObject<{
-                    petId: import("@sinclair/typebox").TNumber;
-                }>;
-                header: import("@sinclair/typebox").TObject<{
-                    api_key: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
+                    id: import("@sinclair/typebox").TNumber;
                 }>;
             }>;
             responses: import("@sinclair/typebox").TObject<{
                 200: import("@sinclair/typebox").TUnknown;
-                400: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
             }>;
         }>;
-        "/store/order/{orderId}": import("@sinclair/typebox").TObject<{
+        "/posts/{id}": import("@sinclair/typebox").TObject<{
             method: import("@sinclair/typebox").TLiteral<"DELETE">;
-            path: import("@sinclair/typebox").TLiteral<"/store/order/{orderId}">;
+            path: import("@sinclair/typebox").TLiteral<"/posts/{id}">;
             requestFormat: import("@sinclair/typebox").TLiteral<"json">;
             parameters: import("@sinclair/typebox").TObject<{
                 path: import("@sinclair/typebox").TObject<{
-                    orderId: import("@sinclair/typebox").TNumber;
+                    id: import("@sinclair/typebox").TNumber;
                 }>;
             }>;
             responses: import("@sinclair/typebox").TObject<{
                 200: import("@sinclair/typebox").TUnknown;
-                400: import("@sinclair/typebox").TUnknown;
                 404: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
             }>;
         }>;
-        "/user/{username}": import("@sinclair/typebox").TObject<{
+        "/comments/{id}": import("@sinclair/typebox").TObject<{
             method: import("@sinclair/typebox").TLiteral<"DELETE">;
-            path: import("@sinclair/typebox").TLiteral<"/user/{username}">;
+            path: import("@sinclair/typebox").TLiteral<"/comments/{id}">;
             requestFormat: import("@sinclair/typebox").TLiteral<"json">;
             parameters: import("@sinclair/typebox").TObject<{
                 path: import("@sinclair/typebox").TObject<{
-                    username: import("@sinclair/typebox").TString;
+                    id: import("@sinclair/typebox").TNumber;
                 }>;
             }>;
             responses: import("@sinclair/typebox").TObject<{
                 200: import("@sinclair/typebox").TUnknown;
-                400: import("@sinclair/typebox").TUnknown;
                 404: import("@sinclair/typebox").TUnknown;
-                default: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/categories/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"DELETE">;
+            path: import("@sinclair/typebox").TLiteral<"/categories/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/products/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"DELETE">;
+            path: import("@sinclair/typebox").TLiteral<"/products/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/orders/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"DELETE">;
+            path: import("@sinclair/typebox").TLiteral<"/orders/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/analytics/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"DELETE">;
+            path: import("@sinclair/typebox").TLiteral<"/analytics/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
+            }>;
+        }>;
+        "/notifications/{id}": import("@sinclair/typebox").TObject<{
+            method: import("@sinclair/typebox").TLiteral<"DELETE">;
+            path: import("@sinclair/typebox").TLiteral<"/notifications/{id}">;
+            requestFormat: import("@sinclair/typebox").TLiteral<"json">;
+            parameters: import("@sinclair/typebox").TObject<{
+                path: import("@sinclair/typebox").TObject<{
+                    id: import("@sinclair/typebox").TNumber;
+                }>;
+            }>;
+            responses: import("@sinclair/typebox").TObject<{
+                200: import("@sinclair/typebox").TUnknown;
+                404: import("@sinclair/typebox").TUnknown;
             }>;
         }>;
     };
 };
 export type EndpointByMethod = typeof EndpointByMethod;
-export type PutEndpoints = EndpointByMethod["put"];
-export type PostEndpoints = EndpointByMethod["post"];
 export type GetEndpoints = EndpointByMethod["get"];
+export type PostEndpoints = EndpointByMethod["post"];
+export type PutEndpoints = EndpointByMethod["put"];
+export type PatchEndpoints = EndpointByMethod["patch"];
 export type DeleteEndpoints = EndpointByMethod["delete"];
-export type EndpointParameters = {
-    body?: unknown;
-    query?: Record<string, unknown>;
-    header?: Record<string, unknown>;
-    path?: Record<string, unknown>;
-};
-export type MutationMethod = "post" | "put" | "patch" | "delete";
-export type Method = "get" | "head" | "options" | MutationMethod;
-type RequestFormat = "json" | "form-data" | "form-url" | "binary" | "text";
-export type DefaultEndpoint = {
-    parameters?: EndpointParameters | undefined;
-    responses?: Record<string, unknown>;
-    responseHeaders?: Record<string, unknown>;
-};
-export type Endpoint<TConfig extends DefaultEndpoint = DefaultEndpoint> = {
-    operationId: string;
-    method: Method;
-    path: string;
-    requestFormat: RequestFormat;
-    parameters?: TConfig["parameters"];
-    meta: {
-        alias: string;
-        hasParameters: boolean;
-        areParametersRequired: boolean;
-    };
-    responses?: TConfig["responses"];
-    responseHeaders?: TConfig["responseHeaders"];
-};
-export interface Fetcher {
-    decodePathParams?: (path: string, pathParams: Record<string, string>) => string;
-    encodeSearchParams?: (searchParams: Record<string, unknown> | undefined) => URLSearchParams;
-    fetch: (input: {
-        method: Method;
-        url: URL;
-        urlSearchParams?: URLSearchParams | undefined;
-        parameters?: EndpointParameters | undefined;
-        path: string;
-        overrides?: RequestInit;
-        throwOnStatusError?: boolean;
-    }) => Promise<Response>;
-    parseResponseData?: (response: Response) => Promise<unknown>;
-}
-export declare const successStatusCodes: readonly [200, 201, 202, 203, 204, 205, 206, 207, 208, 226, 300, 301, 302, 303, 304, 305, 306, 307, 308];
-export type SuccessStatusCode = (typeof successStatusCodes)[number];
-export declare const errorStatusCodes: readonly [400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 421, 422, 423, 424, 425, 426, 428, 429, 431, 451, 500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511];
-export type ErrorStatusCode = (typeof errorStatusCodes)[number];
-export interface TypedHeaders<TypedHeaderValues extends Record<string, string> | unknown> extends Omit<Headers, "append" | "delete" | "get" | "getSetCookie" | "has" | "set" | "forEach"> {
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Headers/append) */
-    append: <Name extends Extract<keyof TypedHeaderValues, string> | (string & {})>(name: Name, value: Lowercase<Name> extends keyof TypedHeaderValues ? TypedHeaderValues[Lowercase<Name>] : string) => void;
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Headers/delete) */
-    delete: <Name extends Extract<keyof TypedHeaderValues, string> | (string & {})>(name: Name) => void;
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Headers/get) */
-    get: <Name extends Extract<keyof TypedHeaderValues, string> | (string & {})>(name: Name) => (Lowercase<Name> extends keyof TypedHeaderValues ? TypedHeaderValues[Lowercase<Name>] : string) | null;
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Headers/getSetCookie) */
-    getSetCookie: () => string[];
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Headers/has) */
-    has: <Name extends Extract<keyof TypedHeaderValues, string> | (string & {})>(name: Name) => boolean;
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Headers/set) */
-    set: <Name extends Extract<keyof TypedHeaderValues, string> | (string & {})>(name: Name, value: Lowercase<Name> extends keyof TypedHeaderValues ? TypedHeaderValues[Lowercase<Name>] : string) => void;
-    forEach: (callbackfn: (value: TypedHeaderValues[keyof TypedHeaderValues] | (string & {}), key: Extract<keyof TypedHeaderValues, string> | (string & {}), parent: TypedHeaders<TypedHeaderValues>) => void, thisArg?: any) => void;
-}
-/** @see https://developer.mozilla.org/en-US/docs/Web/API/Response */
-export interface TypedSuccessResponse<TSuccess, TStatusCode, THeaders> extends Omit<Response, "ok" | "status" | "json" | "headers"> {
-    ok: true;
-    status: TStatusCode;
-    headers: never extends THeaders ? Headers : TypedHeaders<THeaders>;
-    data: TSuccess;
-    /** [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Response/json) */
-    json: () => Promise<TSuccess>;
-}
-/** @see https://developer.mozilla.org/en-US/docs/Web/API/Response */
-export interface TypedErrorResponse<TData, TStatusCode, THeaders> extends Omit<Response, "ok" | "status" | "json" | "headers"> {
-    ok: false;
-    status: TStatusCode;
-    headers: never extends THeaders ? Headers : TypedHeaders<THeaders>;
-    data: TData;
-    /** [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/API/Response/json) */
-    json: () => Promise<TData>;
-}
-export type TypedApiResponse<TAllResponses extends Record<string | number, unknown> = {}, THeaders = {}> = {
-    [K in keyof TAllResponses]: K extends string ? K extends `${infer TStatusCode extends number}` ? TStatusCode extends SuccessStatusCode ? TypedSuccessResponse<TAllResponses[K], TStatusCode, K extends keyof THeaders ? THeaders[K] : never> : TypedErrorResponse<TAllResponses[K], TStatusCode, K extends keyof THeaders ? THeaders[K] : never> : never : K extends number ? K extends SuccessStatusCode ? TypedSuccessResponse<TAllResponses[K], K, K extends keyof THeaders ? THeaders[K] : never> : TypedErrorResponse<TAllResponses[K], K, K extends keyof THeaders ? THeaders[K] : never> : never;
-}[keyof TAllResponses];
-export type SafeApiResponse<TEndpoint> = TEndpoint extends {
-    responses: infer TResponses;
-} ? TResponses extends Record<string, unknown> ? TypedApiResponse<TResponses, TEndpoint extends {
-    responseHeaders: infer THeaders;
-} ? THeaders : never> : never : never;
-export type InferResponseByStatus<TEndpoint, TStatusCode> = Extract<SafeApiResponse<TEndpoint>, {
-    status: TStatusCode;
-}>;
-export declare class TypedStatusError<TData = unknown> extends Error {
-    response: TypedErrorResponse<TData, ErrorStatusCode, unknown>;
-    status: number;
-    constructor(response: TypedErrorResponse<TData, ErrorStatusCode, unknown>);
-}
-export declare const GetEndpoints: import("@sinclair/typebox").TObject<{
-    '/pet/findByStatus': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            query: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
-                status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>>;
-            }>>;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/pet/findByTags': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            query: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
-                tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
-            }>>;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/pet/{petId}': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            path: import("@sinclair/typebox").TObject<{
-                petId: import("@sinclair/typebox").TString;
-            }>;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/store/inventory': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{}>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/store/order/{orderId}': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            path: import("@sinclair/typebox").TObject<{
-                orderId: import("@sinclair/typebox").TString;
-            }>;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/user/login': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            query: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
-                username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>>;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/user/logout': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{}>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/user/{username}': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            path: import("@sinclair/typebox").TObject<{
-                username: import("@sinclair/typebox").TString;
-            }>;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-}>;
-export type GetEndpointsType = {
-    [K in keyof Static<typeof GetEndpoints>]: {
-        parameters: Static<typeof GetEndpoints>[K]['parameters'];
-        response: Static<typeof GetEndpoints>[K]['response'];
-    };
-};
-export declare const PostEndpoints: import("@sinclair/typebox").TObject<{
-    '/pet': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            body: import("@sinclair/typebox").TAny;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/pet/{petId}': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            path: import("@sinclair/typebox").TObject<{
-                petId: import("@sinclair/typebox").TString;
-            }>;
-            query: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
-                name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-                status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>>;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/pet/{petId}/uploadImage': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            path: import("@sinclair/typebox").TObject<{
-                petId: import("@sinclair/typebox").TString;
-            }>;
-            query: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
-                additionalMetadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-            }>>;
-            body: import("@sinclair/typebox").TAny;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/store/order': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            body: import("@sinclair/typebox").TAny;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/user': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            body: import("@sinclair/typebox").TAny;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/user/createWithList': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            body: import("@sinclair/typebox").TAny;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-}>;
-export type PostEndpointsType = {
-    [K in keyof Static<typeof PostEndpoints>]: {
-        parameters: Static<typeof PostEndpoints>[K]['parameters'];
-        response: Static<typeof PostEndpoints>[K]['response'];
-    };
-};
-export declare const PutEndpoints: import("@sinclair/typebox").TObject<{
-    '/pet': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            body: import("@sinclair/typebox").TAny;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/user/{username}': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            path: import("@sinclair/typebox").TObject<{
-                username: import("@sinclair/typebox").TString;
-            }>;
-            body: import("@sinclair/typebox").TAny;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-}>;
-export type PutEndpointsType = {
-    [K in keyof Static<typeof PutEndpoints>]: {
-        parameters: Static<typeof PutEndpoints>[K]['parameters'];
-        response: Static<typeof PutEndpoints>[K]['response'];
-    };
-};
-export declare const DeleteEndpoints: import("@sinclair/typebox").TObject<{
-    '/pet/{petId}': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            path: import("@sinclair/typebox").TObject<{
-                petId: import("@sinclair/typebox").TString;
-            }>;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/store/order/{orderId}': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            path: import("@sinclair/typebox").TObject<{
-                orderId: import("@sinclair/typebox").TString;
-            }>;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-    '/user/{username}': import("@sinclair/typebox").TObject<{
-        parameters: import("@sinclair/typebox").TObject<{
-            path: import("@sinclair/typebox").TObject<{
-                username: import("@sinclair/typebox").TString;
-            }>;
-        }>;
-        response: import("@sinclair/typebox").TAny;
-    }>;
-}>;
-export type DeleteEndpointsType = {
-    [K in keyof Static<typeof DeleteEndpoints>]: {
-        parameters: Static<typeof DeleteEndpoints>[K]['parameters'];
-        response: Static<typeof DeleteEndpoints>[K]['response'];
-    };
-};
-export declare const updatePet: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    body: import("@sinclair/typebox").TAny;
-}>, import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-    name: import("@sinclair/typebox").TString;
-    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>, import("@sinclair/typebox").TUndefined]>>;
-    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>>, import("@sinclair/typebox").TUndefined]>>;
-    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-}>>;
-export declare const addPet: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    body: import("@sinclair/typebox").TAny;
-}>, import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-    name: import("@sinclair/typebox").TString;
-    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>, import("@sinclair/typebox").TUndefined]>>;
-    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>>, import("@sinclair/typebox").TUndefined]>>;
-    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-}>>;
-export declare const findPetsByStatus: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    query: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
-        status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>>;
-    }>>;
-}>, import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-    name: import("@sinclair/typebox").TString;
-    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>, import("@sinclair/typebox").TUndefined]>>;
-    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>>, import("@sinclair/typebox").TUndefined]>>;
-    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-}>>>;
-export declare const findPetsByTags: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    query: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
-        tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>>;
-    }>>;
-}>, import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-    name: import("@sinclair/typebox").TString;
-    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>, import("@sinclair/typebox").TUndefined]>>;
-    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>>, import("@sinclair/typebox").TUndefined]>>;
-    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-}>>>;
-export declare const getPetById: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    path: import("@sinclair/typebox").TObject<{
-        petId: import("@sinclair/typebox").TString;
-    }>;
-}>, import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-    name: import("@sinclair/typebox").TString;
-    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>, import("@sinclair/typebox").TUndefined]>>;
-    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>>, import("@sinclair/typebox").TUndefined]>>;
-    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-}>>;
-export declare const updatePetWithForm: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    path: import("@sinclair/typebox").TObject<{
-        petId: import("@sinclair/typebox").TString;
-    }>;
-    query: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-        status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>>;
-}>, import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TNumber, import("@sinclair/typebox").TUndefined]>>;
-    name: import("@sinclair/typebox").TString;
-    category: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TObject<{
-        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>, import("@sinclair/typebox").TUndefined]>>;
-    photoUrls: import("@sinclair/typebox").TArray<import("@sinclair/typebox").TString>;
-    tags: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TArray<import("@sinclair/typebox").TObject<{
-        id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-        name: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>>, import("@sinclair/typebox").TUndefined]>>;
-    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"available">, import("@sinclair/typebox").TLiteral<"pending">, import("@sinclair/typebox").TLiteral<"sold">]>, import("@sinclair/typebox").TUndefined]>>;
-}>>;
-export declare const deletePet: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    path: import("@sinclair/typebox").TObject<{
-        petId: import("@sinclair/typebox").TString;
-    }>;
-}>, import("@sinclair/typebox").TUnknown>;
-export declare const uploadFile: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    path: import("@sinclair/typebox").TObject<{
-        petId: import("@sinclair/typebox").TString;
-    }>;
-    query: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
-        additionalMetadata: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>>;
-    body: import("@sinclair/typebox").TAny;
-}>, import("@sinclair/typebox").TObject<{
-    code: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    type: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    message: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-}>>;
-export declare const getInventory: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{}>, import("@sinclair/typebox").TRecord<import("@sinclair/typebox").TString, import("@sinclair/typebox").TNumber>>;
-export declare const placeOrder: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    body: import("@sinclair/typebox").TAny;
-}>, import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    petId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    shipDate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"placed">, import("@sinclair/typebox").TLiteral<"approved">, import("@sinclair/typebox").TLiteral<"delivered">]>>;
-    complete: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
-}>>;
-export declare const getOrderById: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    path: import("@sinclair/typebox").TObject<{
-        orderId: import("@sinclair/typebox").TString;
-    }>;
-}>, import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    petId: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    quantity: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    shipDate: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    status: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TUnion<[import("@sinclair/typebox").TLiteral<"placed">, import("@sinclair/typebox").TLiteral<"approved">, import("@sinclair/typebox").TLiteral<"delivered">]>>;
-    complete: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TBoolean>;
-}>>;
-export declare const deleteOrder: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    path: import("@sinclair/typebox").TObject<{
-        orderId: import("@sinclair/typebox").TString;
-    }>;
-}>, import("@sinclair/typebox").TUnknown>;
-export declare const createUser: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    body: import("@sinclair/typebox").TAny;
-}>, import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-}>>;
-export declare const createUsersWithListInput: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    body: import("@sinclair/typebox").TAny;
-}>, import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-}>>;
-export declare const loginUser: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    query: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TObject<{
-        username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-        password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    }>>;
-}>, import("@sinclair/typebox").TString>;
-export declare const logoutUser: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{}>, import("@sinclair/typebox").TUnknown>;
-export declare const getUserByName: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    path: import("@sinclair/typebox").TObject<{
-        username: import("@sinclair/typebox").TString;
-    }>;
-}>, import("@sinclair/typebox").TObject<{
-    id: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-    username: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    firstName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    lastName: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    email: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    password: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    phone: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TString>;
-    userStatus: import("@sinclair/typebox").TOptional<import("@sinclair/typebox").TNumber>;
-}>>;
-export declare const updateUser: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    path: import("@sinclair/typebox").TObject<{
-        username: import("@sinclair/typebox").TString;
-    }>;
-    body: import("@sinclair/typebox").TAny;
-}>, import("@sinclair/typebox").TUnknown>;
-export declare const deleteUser: import("kweri").Endpoint<import("@sinclair/typebox").TObject<{
-    path: import("@sinclair/typebox").TObject<{
-        username: import("@sinclair/typebox").TString;
-    }>;
-}>, import("@sinclair/typebox").TUnknown>;
 export interface ClientConfig {
-    baseURL: string;
-    fetcher?: (options: {
-        method: string;
-        url: string;
-        body?: unknown;
-    }) => Promise<Response>;
+    baseURL?: string;
+    defaultHeaders?: Record<string, string>;
 }
 export declare class GeneratedClient {
-    private client;
-    constructor(config: ClientConfig);
-    get<Path extends keyof GetEndpointsType>(path: Path, params?: GetEndpointsType[Path]['parameters']): Promise<GetEndpointsType[Path]['response']>;
-    post<Path extends keyof PostEndpointsType>(path: Path, params?: PostEndpointsType[Path]['parameters']): Promise<PostEndpointsType[Path]['response']>;
-    put<Path extends keyof PutEndpointsType>(path: Path, params?: PutEndpointsType[Path]['parameters']): Promise<PutEndpointsType[Path]['response']>;
-    delete<Path extends keyof DeleteEndpointsType>(path: Path, params?: DeleteEndpointsType[Path]['parameters']): Promise<DeleteEndpointsType[Path]['response']>;
-    updatePet(params: Static<typeof put_UpdatePet>['parameters']): Promise<Static<typeof put_UpdatePet>['responses'][keyof Static<typeof put_UpdatePet>['responses']]>;
-    addPet(params: Static<typeof post_AddPet>['parameters']): Promise<Static<typeof post_AddPet>['responses'][keyof Static<typeof post_AddPet>['responses']]>;
-    findPetsByStatus(params: Static<typeof get_FindPetsByStatus>['parameters']): Promise<Static<typeof get_FindPetsByStatus>['responses'][keyof Static<typeof get_FindPetsByStatus>['responses']]>;
-    findPetsByTags(params: Static<typeof get_FindPetsByTags>['parameters']): Promise<Static<typeof get_FindPetsByTags>['responses'][keyof Static<typeof get_FindPetsByTags>['responses']]>;
-    getPetById(params: Static<typeof get_GetPetById>['parameters']): Promise<Static<typeof get_GetPetById>['responses'][keyof Static<typeof get_GetPetById>['responses']]>;
-    updatePetWithForm(params: Static<typeof post_UpdatePetWithForm>['parameters']): Promise<Static<typeof post_UpdatePetWithForm>['responses'][keyof Static<typeof post_UpdatePetWithForm>['responses']]>;
-    deletePet(params: Static<typeof delete_DeletePet>['parameters']): Promise<Static<typeof delete_DeletePet>['responses'][keyof Static<typeof delete_DeletePet>['responses']]>;
-    uploadFile(params: Static<typeof post_UploadFile>['parameters']): Promise<Static<typeof post_UploadFile>['responses'][keyof Static<typeof post_UploadFile>['responses']]>;
-    getInventory(): Promise<Static<typeof get_GetInventory>['responses'][keyof Static<typeof get_GetInventory>['responses']]>;
-    placeOrder(params: Static<typeof post_PlaceOrder>['parameters']): Promise<Static<typeof post_PlaceOrder>['responses'][keyof Static<typeof post_PlaceOrder>['responses']]>;
-    getOrderById(params: Static<typeof get_GetOrderById>['parameters']): Promise<Static<typeof get_GetOrderById>['responses'][keyof Static<typeof get_GetOrderById>['responses']]>;
-    deleteOrder(params: Static<typeof delete_DeleteOrder>['parameters']): Promise<Static<typeof delete_DeleteOrder>['responses'][keyof Static<typeof delete_DeleteOrder>['responses']]>;
-    createUser(params: Static<typeof post_CreateUser>['parameters']): Promise<Static<typeof post_CreateUser>['responses'][keyof Static<typeof post_CreateUser>['responses']]>;
-    createUsersWithListInput(params: Static<typeof post_CreateUsersWithListInput>['parameters']): Promise<Static<typeof post_CreateUsersWithListInput>['responses'][keyof Static<typeof post_CreateUsersWithListInput>['responses']]>;
-    loginUser(params: Static<typeof get_LoginUser>['parameters']): Promise<Static<typeof get_LoginUser>['responses'][keyof Static<typeof get_LoginUser>['responses']]>;
-    logoutUser(): Promise<Static<typeof get_LogoutUser>['responses'][keyof Static<typeof get_LogoutUser>['responses']]>;
-    getUserByName(params: Static<typeof get_GetUserByName>['parameters']): Promise<Static<typeof get_GetUserByName>['responses'][keyof Static<typeof get_GetUserByName>['responses']]>;
-    updateUser(params: Static<typeof put_UpdateUser>['parameters']): Promise<Static<typeof put_UpdateUser>['responses'][keyof Static<typeof put_UpdateUser>['responses']]>;
-    deleteUser(params: Static<typeof delete_DeleteUser>['parameters']): Promise<Static<typeof delete_DeleteUser>['responses'][keyof Static<typeof delete_DeleteUser>['responses']]>;
+    private baseURL;
+    private defaultHeaders;
+    constructor(config?: ClientConfig);
+    private request;
+    get(path: string, params?: any): Promise<any>;
+    post(path: string, body?: any): Promise<any>;
+    put(path: string, body?: any): Promise<any>;
+    patch(path: string, body?: any): Promise<any>;
+    delete(path: string): Promise<any>;
 }
-export declare function createClient(config: any): GeneratedClient;
-export {};
+export declare function createClient(config?: ClientConfig): GeneratedClient;

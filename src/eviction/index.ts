@@ -4,12 +4,16 @@ import type { CacheEntry } from '../cache/cache-entry.js'
 export interface TimerAdapter {
   setInterval: (fn: () => void, ms: number) => number | NodeJS.Timeout
   clearInterval: (handle: number | NodeJS.Timeout) => void
+  setTimeout: (fn: () => void, ms: number) => number | NodeJS.Timeout
+  clearTimeout: (handle: number | NodeJS.Timeout) => void
   now: () => number
 }
 
 const defaultTimer: TimerAdapter = {
   setInterval: (fn, ms) => setInterval(fn, ms),
   clearInterval: (handle) => clearInterval(handle),
+  setTimeout: (fn, ms) => setTimeout(fn, ms),
+  clearTimeout: (handle) => clearTimeout(handle as any),
   now: () => Date.now(),
 }
 

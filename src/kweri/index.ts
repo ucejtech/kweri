@@ -1,10 +1,12 @@
 import { Type } from '@sinclair/typebox';
+import { Value } from '@sinclair/typebox/value';
 import type {
   Endpoint,
   InferParams,
   InferResponse
 } from '../contract/index.js';
 import type { Fetcher } from '../types/index.js';
+import { ValidationError } from '../types/index.js';
 import type { CacheEntry } from '../cache/cache-entry.js';
 import { createCacheEntry, isFresh, categorizeError } from '../cache/index.js';
 import { CacheStore } from '../cache/cache-store.js';
@@ -12,7 +14,7 @@ import { ObserverRegistry } from '../subscriptions/index.js';
 import { QueryClient } from '../query-client/index.js';
 import { ApiClient } from '../api-client/index.js';
 import { FetchOrchestrator } from '../fetch-orchestrator/index.js';
-import { EvictionEngine } from '../eviction/index.js';
+import { EvictionEngine, type TimerAdapter } from '../eviction/index.js';
 import type { MutationOptions } from '../mutations/index.js';
 import type { KweriDevToolsSnapshot } from './devtools-types.js';
 import {
@@ -20,6 +22,8 @@ import {
   type MountKweriDevToolsOptions
 } from '../devtools/index.js';
 import { isProductionRuntime } from '../runtime-env.js';
+import type { PersistenceAdapter } from '../persistence/index.js';
+import { CACHE_VERSION } from '../persistence/index.js';
 export type { KweriDevToolsSnapshot } from './devtools-types.js';
 
 export interface KweriOptions {
@@ -35,6 +39,10 @@ export interface KweriOptions {
   enableDevTools?: boolean;
   /** Options passed to `mountKweriDevTools` when `enableDevTools` is true. */
   devtools?: MountKweriDevToolsOptions;
+  /** Maximum number of automatic retries for retryable errors. Default 0 (no retry). Uses exponential backoff with jitter. */
+  maxRetries?: number;
+  /** Optional pluggable persistence adapter for saving/restoring cache across sessions. Silently skipped in SSR. All failures are non-fatal. */
+  persistence?: PersistenceAdapter;
 }
 
 /**
@@ -57,6 +65,11 @@ function flattenParams(params: unknown): Record<string, any> {
   return flat;
 }
 
+/** Exponential backoff with jitter: min(1000 * 2^attempt, 30s) + random(0, 1s) */
+function getRetryDelay(attempt: number): number {
+  return Math.min(1000 * Math.pow(2, attempt), 30_000) + Math.random() * 1000
+}
+
 export class Kweri {
   readonly queryClient: QueryClient;
   readonly apiClient: ApiClient;
@@ -67,9 +80,12 @@ export class Kweri {
   private readonly eviction: EvictionEngine;
   private readonly defaultStaleTime: number;
   private readonly defaultCacheTime: number;
+  private readonly maxRetries: number;
+  private readonly timer: TimerAdapter;
+  private readonly persistence: PersistenceAdapter | undefined;
   private devtoolsUnmount: (() => void) | undefined;
 
-  constructor(options: KweriOptions) {
+  constructor(options: KweriOptions, timer?: TimerAdapter) {
     const defaultFetcher: Fetcher = async (opts) => {
       return fetch(opts.url, {
         method: opts.method,
@@ -93,6 +109,14 @@ export class Kweri {
 
     this.defaultStaleTime = options.staleTime ?? 0;
     this.defaultCacheTime = options.cacheTime ?? 5 * 60_000;
+    this.maxRetries = options.maxRetries ?? 0;
+    this.timer = timer ?? {
+      setInterval: (fn, ms) => setInterval(fn, ms),
+      clearInterval: (handle) => clearInterval(handle),
+      setTimeout: (fn, ms) => setTimeout(fn, ms),
+      clearTimeout: (handle) => clearTimeout(handle as any),
+      now: () => Date.now(),
+    };
 
     if (options.gcInterval) {
       this.eviction.start(options.gcInterval);
@@ -101,6 +125,9 @@ export class Kweri {
     if (options.enableDevTools && !isProductionRuntime()) {
       this.devtoolsUnmount = mountKweriDevTools(this, options.devtools);
     }
+
+    this.persistence = options.persistence;
+    if (this.persistence) this.hydrate(this.persistence);
   }
 
   /**
@@ -119,41 +146,61 @@ export class Kweri {
     }
 
     return this.orchestrator.fetch(key, async () => {
-      this.store.set(key, {
-        status: 'loading',
-        staleTime: this.defaultStaleTime,
-        cacheTime: this.defaultCacheTime
-      });
-      this.observers.notify(key, this.store.get(key)!);
+      let attempt = 0;
 
-      try {
-        const flat = flattenParams(params);
-        const execEndpoint = { ...endpoint, params: Type.Any() };
-        const response = await this.apiClient.execute(execEndpoint, flat);
-        const data =
-          typeof response?.json === 'function'
-            ? await response.json()
-            : response;
-
-        const entry = createCacheEntry({
-          data,
-          status: 'success',
+      while (true) {
+        this.store.set(key, {
+          status: 'loading',
           staleTime: this.defaultStaleTime,
           cacheTime: this.defaultCacheTime
         });
-        this.store.set(key, entry);
         this.observers.notify(key, this.store.get(key)!);
 
-        return data as InferResponse<E>;
-      } catch (e) {
-        const error = categorizeError(e);
-        this.store.set(key, {
-          status: 'error',
-          error,
-          errorUpdatedAt: Date.now()
-        });
-        this.observers.notify(key, this.store.get(key)!);
-        throw e;
+        try {
+          const flat = flattenParams(params);
+          const execEndpoint = { ...endpoint, params: Type.Any() };
+          const response = await this.apiClient.execute(execEndpoint, flat);
+          const data =
+            typeof response?.json === 'function'
+              ? await response.json()
+              : response;
+
+          if (!Value.Check(endpoint.response, data)) {
+            const errors = Array.from(Value.Errors(endpoint.response, data))
+              .map(err => ({ path: err.path, message: err.message }))
+            throw new ValidationError(
+              `Invalid response for ${endpoint.method} ${endpoint.path}`,
+              errors
+            )
+          }
+
+          const entry = createCacheEntry({
+            data,
+            status: 'success',
+            staleTime: this.defaultStaleTime,
+            cacheTime: this.defaultCacheTime
+          });
+          this.store.set(key, entry);
+          this.observers.notify(key, this.store.get(key)!);
+          this.persist();
+
+          return data as InferResponse<E>;
+        } catch (e) {
+          const error = categorizeError(e);
+          const retryCount = (this.store.get(key)?.retryCount ?? 0) + 1;
+
+          if (error.retryable && attempt < this.maxRetries) {
+            this.store.set(key, { status: 'error', error, errorUpdatedAt: Date.now(), retryCount });
+            this.observers.notify(key, this.store.get(key)!);
+            await new Promise<void>(resolve => this.timer.setTimeout(resolve, getRetryDelay(attempt)));
+            attempt++;
+            continue;
+          }
+
+          this.store.set(key, { status: 'error', error, errorUpdatedAt: Date.now(), retryCount });
+          this.observers.notify(key, this.store.get(key)!);
+          throw e;
+        }
       }
     }) as Promise<InferResponse<E>>;
   }
@@ -221,6 +268,7 @@ export class Kweri {
     data: InferResponse<E>
   ): void {
     this.queryClient.setCachedData(endpoint, params, data);
+    this.persist();
   }
 
   invalidateQuery<E extends Endpoint>(
@@ -285,6 +333,29 @@ export class Kweri {
   isInFlight<E extends Endpoint>(endpoint: E, params: InferParams<E>): boolean {
     const key = this.queryClient.getQueryKey(endpoint, params);
     return this.orchestrator.isInFlight(key);
+  }
+
+  private async hydrate(adapter: PersistenceAdapter): Promise<void> {
+    try {
+      const saved = await adapter.restore();
+      if (!saved || saved.version !== CACHE_VERSION) return;
+      for (const [key, entry] of saved.entries) {
+        if (entry.status === 'error') continue;
+        // Two-step: create the entry, then force updatedAt: 0 so it's treated as stale.
+        // CacheStore.set() creates new entries via createCacheEntry() which recalculates
+        // updatedAt from data, so a second merge call is needed to override it.
+        this.store.set(key, entry);
+        this.store.set(key, { updatedAt: 0 });
+      }
+    } catch { /* non-fatal */ }
+  }
+
+  private persist(): void {
+    if (!this.persistence) return;
+    const adapter = this.persistence;
+    const entries = Array.from(this.store.entries())
+      .filter(([, entry]) => entry.status === 'success');
+    adapter.save({ version: CACHE_VERSION, entries }).catch(() => { /* non-fatal */ });
   }
 
   startGC(intervalMs: number): void {

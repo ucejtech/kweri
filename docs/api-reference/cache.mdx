@@ -1,0 +1,105 @@
+---
+title: Cache
+description: Cache entry shape, status values, and helper functions.
+icon: layer-group
+---
+
+## CacheEntry
+
+```ts
+interface CacheEntry<T = unknown> {
+  data:           T | undefined
+  status:         CacheEntryStatus
+  error:          CachedError | undefined
+
+  updatedAt:      number   // ms timestamp when data was last set (0 = never)
+  staleTime:      number   // copied from KweriOptions at fetch time
+  cacheTime:      number   // copied from KweriOptions at fetch time
+
+  errorUpdatedAt: number   // ms timestamp when error was last set
+  errorCacheTime: number   // how long to keep the error (default: 5_000)
+  retryCount:     number
+}
+```
+
+## CacheEntryStatus
+
+```ts
+type CacheEntryStatus = 'idle' | 'loading' | 'success' | 'error'
+```
+
+| Value | Meaning |
+|---|---|
+| `idle` | No fetch has been attempted |
+| `loading` | A fetch is in progress |
+| `success` | Data is available (may be stale) |
+| `error` | Last fetch failed |
+
+## CachedError
+
+```ts
+interface CachedError {
+  message:   string
+  type:      'network' | 'validation' | 'server' | 'unknown'
+  status?:   number   // HTTP status code, if available
+  retryable: boolean
+}
+```
+
+## createCacheEntry
+
+Creates a new cache entry with sensible defaults:
+
+```ts
+function createCacheEntry(options?: {
+  data?:          unknown
+  status?:        CacheEntryStatus
+  error?:         CachedError
+  staleTime?:     number   // default: 0
+  cacheTime?:     number   // default: 300_000
+  errorCacheTime?: number  // default: 5_000
+}): CacheEntry
+```
+
+If `data` is provided, `updatedAt` is set to `Date.now()`. Otherwise `updatedAt = 0`.
+
+## isFresh
+
+```ts
+function isFresh(entry: CacheEntry, now?: number): boolean
+```
+
+Returns `true` when:
+```
+entry.updatedAt !== 0  AND  now < entry.updatedAt + entry.staleTime
+```
+
+## isErrorExpired
+
+```ts
+function isErrorExpired(entry: CacheEntry, now?: number): boolean
+```
+
+Returns `true` when:
+```
+entry.error == null  OR  now >= entry.errorUpdatedAt + entry.errorCacheTime
+```
+
+An expired error means the next `kweri.query()` call will retry the network request.
+
+## categorizeError
+
+```ts
+function categorizeError(error: unknown): CachedError
+```
+
+Classifies any thrown value into a `CachedError`:
+
+```ts
+// ValidationError → { type: 'validation', retryable: false }
+// HTTP 4xx        → { type: 'validation', retryable: false, status: 4xx }
+// HTTP 5xx        → { type: 'server',     retryable: true,  status: 5xx }
+// TypeError /
+// network failure → { type: 'network',    retryable: true }
+// unknown         → { type: 'unknown',    retryable: true }
+```

@@ -64,38 +64,38 @@ describe('Vue Adapter', () => {
 
   describe('createVueQueryHooks', () => {
     it('should create useQuery composable', () => {
-      const { useQuery } = createVueQueryHooks(mockVueAPI)
-      
+      const { useQuery } = createVueQueryHooks(mockVueAPI, kweri)
+
       expect(typeof useQuery).toBe('function')
     })
 
     it('should create useMutation composable', () => {
-      const { useMutation } = createVueQueryHooks(mockVueAPI)
-      
+      const { useMutation } = createVueQueryHooks(mockVueAPI, kweri)
+
       expect(typeof useMutation).toBe('function')
     })
 
     it('useQuery should return reactive refs', () => {
-      const { useQuery } = createVueQueryHooks(mockVueAPI)
-      
-      const result = useQuery(kweri, testEndpoint, {})
-      
+      const { useQuery } = createVueQueryHooks(mockVueAPI, kweri)
+
+      const result = useQuery(testEndpoint, {})
+
       expect(result).toHaveProperty('data')
       expect(result).toHaveProperty('status')
       expect(result).toHaveProperty('error')
       expect(result).toHaveProperty('isLoading')
       expect(result).toHaveProperty('isSuccess')
       expect(result).toHaveProperty('isError')
-      
+
       // Should have created refs
       expect(mockVueAPI.ref).toHaveBeenCalled()
     })
 
     it('useMutation should return reactive refs and mutate function', () => {
-      const { useMutation } = createVueQueryHooks(mockVueAPI)
-      
-      const result = useMutation(kweri, mutationEndpoint)
-      
+      const { useMutation } = createVueQueryHooks(mockVueAPI, kweri)
+
+      const result = useMutation(mutationEndpoint)
+
       expect(result).toHaveProperty('mutate')
       expect(result).toHaveProperty('status')
       expect(result).toHaveProperty('error')
@@ -106,39 +106,39 @@ describe('Vue Adapter', () => {
     })
 
     it('should set up watchers for reactive params', () => {
-      const { useQuery } = createVueQueryHooks(mockVueAPI)
-      
+      const { useQuery } = createVueQueryHooks(mockVueAPI, kweri)
+
       const reactiveParams = mockVueAPI.ref({})
-      useQuery(kweri, testEndpoint, reactiveParams)
-      
+      useQuery(testEndpoint, reactiveParams)
+
       expect(mockVueAPI.watch).toHaveBeenCalled()
       expect(mockWatchers.length).toBeGreaterThan(0)
     })
 
     it('should register cleanup on unmount', () => {
-      const { useQuery } = createVueQueryHooks(mockVueAPI)
-      
-      useQuery(kweri, testEndpoint, {})
-      
+      const { useQuery } = createVueQueryHooks(mockVueAPI, kweri)
+
+      useQuery(testEndpoint, {})
+
       expect(mockVueAPI.onUnmounted).toHaveBeenCalled()
       expect(mockUnmountCallbacks.length).toBeGreaterThan(0)
     })
 
     it('should respect enabled option', () => {
-      const { useQuery } = createVueQueryHooks(mockVueAPI)
-      
-      const result = useQuery(kweri, testEndpoint, {}, { enabled: mockVueAPI.ref(false) })
-      
+      const { useQuery } = createVueQueryHooks(mockVueAPI, kweri)
+
+      const result = useQuery(testEndpoint, {}, { enabled: mockVueAPI.ref(false) })
+
       // Should create the result structure but not start loading
       expect(result.status.value).toBe('idle')
     })
 
     it('should handle reactive enabled option', () => {
-      const { useQuery } = createVueQueryHooks(mockVueAPI)
-      
+      const { useQuery } = createVueQueryHooks(mockVueAPI, kweri)
+
       const enabled = mockVueAPI.ref(false)
-      const result = useQuery(kweri, testEndpoint, {}, { enabled })
-      
+      useQuery(testEndpoint, {}, { enabled })
+
       // Should watch the enabled ref
       expect(mockVueAPI.watch).toHaveBeenCalledWith(
         expect.anything(),

@@ -1,0 +1,281 @@
+---
+title: Kweri Class
+description: The central facade — create one instance and share it everywhere.
+icon: cube
+---
+
+## Constructor
+
+```ts
+new Kweri(options: KweriOptions, timer?: TimerAdapter)
+```
+
+### KweriOptions
+
+```ts
+interface KweriOptions {
+  // Required
+  baseURL: string
+
+  // Optional — HTTP
+  fetcher?: Fetcher          // custom HTTP transport (default: global fetch)
+
+  // Optional — caching
+  staleTime?: number         // ms data is fresh (default: 0)
+  cacheTime?: number         // ms to keep stale data in memory (default: 300_000)
+  maxRetries?: number        // retries for network/server errors (default: 0)
+
+  // Optional — garbage collection
+  gcInterval?: number        // ms between GC sweeps (default: no GC)
+
+  // Optional — persistence
+  persistence?: PersistenceAdapter
+
+  // Optional — devtools
+  enableDevTools?: boolean
+  devtools?: MountKweriDevToolsOptions
+}
+```
+
+### Example
+
+```ts
+import { Kweri } from 'kweri'
+
+export const kweri = new Kweri({
+  baseURL: 'https://api.example.com',
+  staleTime: 30_000,
+  cacheTime: 300_000,
+  gcInterval: 60_000,
+  maxRetries: 3,
+  enableDevTools: true,
+  devtools: { position: 'bottom-right' }
+})
+```
+
+---
+
+## Querying
+
+### `kweri.query`
+
+Execute a query. Returns cached data immediately if fresh; otherwise fetches and caches the result.
+
+```ts
+async query<E extends Endpoint>(
+  endpoint: E,
+  params: InferParams<E>
+): Promise<InferResponse<E>>
+```
+
+Concurrent calls for the same key share a single in-flight request.
+
+```ts
+const users = await kweri.query(getUsers, {})
+const user  = await kweri.query(getUserById, { path: { id: 1 } })
+```
+
+---
+
+## Mutations
+
+### `kweri.mutate`
+
+Execute a mutation with full lifecycle hooks.
+
+```ts
+async mutate<E extends Endpoint, TContext = unknown>(
+  endpoint: E,
+  params: InferParams<E>,
+  options?: MutationOptions<...>
+): Promise<InferResponse<E>>
+```
+
+See [Mutations](/core/mutations) for the full options reference.
+
+---
+
+## Cache access
+
+### `kweri.getCachedData`
+
+Return the currently cached data for a query without triggering a fetch.
+
+```ts
+getCachedData<E extends Endpoint>(
+  endpoint: E,
+  params: InferParams<E>
+): InferResponse<E> | undefined
+```
+
+### `kweri.setCachedData`
+
+Write data directly into the cache. The entry is marked as `success` with `updatedAt = now`.
+
+```ts
+setCachedData<E extends Endpoint>(
+  endpoint: E,
+  params: InferParams<E>,
+  data: InferResponse<E>
+): void
+```
+
+Useful for optimistic updates before a mutation fires.
+
+---
+
+## Invalidation
+
+### `kweri.invalidateQuery`
+
+Mark a specific cached entry as stale. Subscribers will receive a background refetch on their next render.
+
+```ts
+invalidateQuery<E extends Endpoint>(endpoint: E, params: InferParams<E>): void
+```
+
+### `kweri.invalidateByPath`
+
+Mark all entries whose cache key **contains** the given string or matches the given regex as stale.
+
+```ts
+invalidateByPath(pattern: string | RegExp): void
+```
+
+```ts
+kweri.invalidateByPath('/users')         // matches /users, /users/1, /users?page=2
+kweri.invalidateByPath(/\/users\/\d+/)   // matches /users/1, /users/42, etc.
+```
+
+### `kweri.invalidateQueryByKey`
+
+Invalidate by the raw serialized cache key — primarily used by DevTools.
+
+```ts
+invalidateQueryByKey(key: string): void
+```
+
+---
+
+## Removal
+
+### `kweri.removeQuery`
+
+Delete a cache entry entirely.
+
+```ts
+removeQuery<E extends Endpoint>(endpoint: E, params: InferParams<E>): void
+```
+
+### `kweri.removeQueryByKey`
+
+Delete by raw key string.
+
+```ts
+removeQueryByKey(key: string): void
+```
+
+---
+
+## Subscriptions
+
+### `kweri.subscribe`
+
+Subscribe to cache changes for a specific query. Returns an unsubscribe function.
+
+```ts
+subscribe<E extends Endpoint>(
+  endpoint: E,
+  params: InferParams<E>,
+  callback: (entry: CacheEntry) => void
+): () => void
+```
+
+```ts
+const unsubscribe = kweri.subscribe(getUsers, {}, (entry) => {
+  console.log(entry.status, entry.data)
+})
+
+// Later:
+unsubscribe()
+```
+
+### `kweri.onCacheChange`
+
+Subscribe to **all** cache changes globally. Useful for logging or custom devtools.
+
+```ts
+onCacheChange(callback: (key: string, entry: CacheEntry) => void): () => void
+```
+
+---
+
+## Status
+
+### `kweri.isInFlight`
+
+Check whether a fetch is currently in progress for a given query.
+
+```ts
+isInFlight<E extends Endpoint>(endpoint: E, params: InferParams<E>): boolean
+```
+
+### `kweri.getQueryKey`
+
+Get the serialized cache key for a query/params pair.
+
+```ts
+getQueryKey<E extends Endpoint>(endpoint: E, params: InferParams<E>): string
+```
+
+---
+
+## Garbage collection
+
+### `kweri.startGC` / `kweri.stopGC`
+
+Manually control the eviction engine. If `gcInterval` is set in `KweriOptions`, GC starts automatically on construction.
+
+```ts
+kweri.startGC(60_000)  // sweep every 60 seconds
+kweri.stopGC()
+```
+
+---
+
+## Devtools
+
+### `kweri.getDevToolsSnapshot`
+
+Returns a point-in-time snapshot of the cache, observer counts, and in-flight requests. Used internally by the DevTools panel.
+
+```ts
+getDevToolsSnapshot(): KweriDevToolsSnapshot
+
+interface KweriDevToolsSnapshot {
+  cache:     Array<{ key: string; entry: CacheEntry }>
+  observers: Array<{ key: string; count: number }>
+  inFlight:  string[]
+}
+```
+
+---
+
+## Lifecycle
+
+### `kweri.destroy`
+
+Stops the GC timer, unmounts DevTools, and clears all subscriptions. Call this when the application shuts down or when testing.
+
+```ts
+kweri.destroy()
+```
+
+---
+
+## Public properties
+
+```ts
+readonly queryClient: QueryClient  // direct access to cache operations
+readonly apiClient:   ApiClient    // direct access to HTTP execution
+```

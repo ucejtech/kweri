@@ -1,0 +1,201 @@
+---
+title: Kweri
+description: Full API reference for the Kweri class.
+icon: code
+---
+
+## Constructor
+
+```ts
+new Kweri(options: KweriOptions, timer?: TimerAdapter)
+```
+
+## KweriOptions
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `baseURL` | `string` | — | **Required.** Base URL prepended to all request paths |
+| `fetcher` | `Fetcher` | global `fetch` | Custom HTTP transport |
+| `staleTime` | `number` | `0` | Milliseconds data is considered fresh |
+| `cacheTime` | `number` | `300_000` | Milliseconds to retain stale data with no observers |
+| `maxRetries` | `number` | `0` | Max automatic retries for retryable errors |
+| `gcInterval` | `number` | `undefined` | Milliseconds between GC sweeps (disabled if omitted) |
+| `persistence` | `PersistenceAdapter` | `undefined` | Adapter for cross-session cache persistence |
+| `enableDevTools` | `boolean` | `false` | Mount the DevTools overlay (no-op in production) |
+| `devtools` | `MountKweriDevToolsOptions` | `{}` | DevTools panel options |
+
+## Methods
+
+### query
+
+```ts
+query<E extends Endpoint>(endpoint: E, params: InferParams<E>): Promise<InferResponse<E>>
+```
+
+Executes a query. Returns cached data if fresh; otherwise fetches, caches, and returns.
+
+---
+
+### mutate
+
+```ts
+mutate<E extends Endpoint, TContext = unknown>(
+  endpoint: E,
+  params: InferParams<E>,
+  options?: MutationOptions<InferParams<E>, InferResponse<E>, TContext>
+): Promise<InferResponse<E>>
+```
+
+Executes a mutation with lifecycle hooks. See [Mutations](/core/mutations).
+
+---
+
+### getCachedData
+
+```ts
+getCachedData<E extends Endpoint>(endpoint: E, params: InferParams<E>): InferResponse<E> | undefined
+```
+
+Returns cached data without triggering a network request. Returns `undefined` if not cached.
+
+---
+
+### setCachedData
+
+```ts
+setCachedData<E extends Endpoint>(endpoint: E, params: InferParams<E>, data: InferResponse<E>): void
+```
+
+Writes data into the cache directly. Marks entry as `success` with `updatedAt = Date.now()`.
+
+---
+
+### invalidateQuery
+
+```ts
+invalidateQuery<E extends Endpoint>(endpoint: E, params: InferParams<E>): void
+```
+
+Marks a cache entry as stale. The entry remains in cache; a background refetch fires on next access.
+
+---
+
+### invalidateByPath
+
+```ts
+invalidateByPath(pattern: string | RegExp): void
+```
+
+Marks all entries whose serialized cache key contains `pattern` as stale.
+
+---
+
+### invalidateQueryByKey
+
+```ts
+invalidateQueryByKey(key: string): void
+```
+
+Invalidates by raw serialized cache key.
+
+---
+
+### removeQuery
+
+```ts
+removeQuery<E extends Endpoint>(endpoint: E, params: InferParams<E>): void
+```
+
+Deletes a cache entry entirely.
+
+---
+
+### removeQueryByKey
+
+```ts
+removeQueryByKey(key: string): void
+```
+
+Deletes by raw serialized cache key.
+
+---
+
+### subscribe
+
+```ts
+subscribe<E extends Endpoint>(
+  endpoint: E,
+  params: InferParams<E>,
+  callback: (entry: CacheEntry) => void
+): () => void
+```
+
+Subscribes to cache changes for a query. Returns an unsubscribe function.
+
+---
+
+### onCacheChange
+
+```ts
+onCacheChange(callback: (key: string, entry: CacheEntry) => void): () => void
+```
+
+Subscribes to all cache changes globally.
+
+---
+
+### isInFlight
+
+```ts
+isInFlight<E extends Endpoint>(endpoint: E, params: InferParams<E>): boolean
+```
+
+Returns `true` if a fetch is currently in progress for this query.
+
+---
+
+### getQueryKey
+
+```ts
+getQueryKey<E extends Endpoint>(endpoint: E, params: InferParams<E>): string
+```
+
+Returns the serialized cache key string (e.g. `GET:/users:{}`).
+
+---
+
+### startGC / stopGC
+
+```ts
+startGC(intervalMs: number): void
+stopGC(): void
+```
+
+Start or stop the eviction engine.
+
+---
+
+### getDevToolsSnapshot
+
+```ts
+getDevToolsSnapshot(): KweriDevToolsSnapshot
+```
+
+Returns a snapshot of the current cache, observer counts, and in-flight requests.
+
+---
+
+### destroy
+
+```ts
+destroy(): void
+```
+
+Stops GC, unmounts DevTools, clears all subscriptions.
+
+## Properties
+
+```ts
+readonly queryClient: QueryClient
+readonly apiClient:   ApiClient
+```

@@ -1,0 +1,155 @@
+---
+title: Custom Fetcher
+description: Swap out the HTTP transport for auth, interceptors, or non-browser environments.
+icon: arrow-right-arrow-left
+---
+
+## Default fetcher
+
+By default, kweri uses the global `fetch` with minimal config:
+
+```ts
+// Default behavior
+const response = await fetch(url, {
+  method,
+  headers: body ? { 'Content-Type': 'application/json' } : {},
+  body: body ? JSON.stringify(body) : undefined
+})
+```
+
+The response is expected to be a `Response`-like object that kweri can call `.json()` on.
+
+## Fetcher interface
+
+```ts
+interface FetcherOptions {
+  method: string
+  url:    string
+  body?:  any     // already-parsed body object (not stringified)
+}
+
+type Fetcher = (options: FetcherOptions) => Promise<Response>
+```
+
+## Common patterns
+
+### Authorization headers
+
+```ts
+const kweri = new Kweri({
+  baseURL: 'https://api.example.com',
+  fetcher: async ({ method, url, body }) => {
+    const token = getAuthToken()  // your auth mechanism
+
+    return fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: body ? JSON.stringify(body) : undefined
+    })
+  }
+})
+```
+
+### Token refresh
+
+```ts
+const kweri = new Kweri({
+  baseURL: 'https://api.example.com',
+  fetcher: async ({ method, url, body }) => {
+    let token = getAccessToken()
+
+    const res = await fetch(url, {
+      method,
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined
+    })
+
+    // Attempt a single refresh on 401
+    if (res.status === 401) {
+      token = await refreshAccessToken()
+      return fetch(url, {
+        method,
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: body ? JSON.stringify(body) : undefined
+      })
+    }
+
+    return res
+  }
+})
+```
+
+### Request timeout
+
+```ts
+const kweri = new Kweri({
+  baseURL: 'https://api.example.com',
+  fetcher: async ({ method, url, body }) => {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 10_000)  // 10s
+
+    try {
+      return await fetch(url, {
+        method,
+        signal: controller.signal,
+        headers: { 'Content-Type': 'application/json' },
+        body: body ? JSON.stringify(body) : undefined
+      })
+    } finally {
+      clearTimeout(timeout)
+    }
+  }
+})
+```
+
+### Node.js / non-browser environments
+
+Use any `fetch`-compatible library. In Node.js 18+ the global `fetch` is available; for older versions use `node-fetch` or `undici`:
+
+```ts
+import { fetch } from 'undici'
+
+const kweri = new Kweri({
+  baseURL: 'https://api.example.com',
+  fetcher: async ({ method, url, body }) =>
+    fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined
+    }) as unknown as Response
+})
+```
+
+### Custom response unwrapping
+
+If your API wraps all responses in an envelope (`{ data: ..., meta: ... }`), unwrap in the fetcher:
+
+```ts
+const kweri = new Kweri({
+  baseURL: 'https://api.example.com',
+  fetcher: async ({ method, url, body }) => {
+    const res = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: body ? JSON.stringify(body) : undefined
+    })
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+
+    const envelope = await res.json()
+
+    // Return a fake Response that kweri can call .json() on
+    return new Response(JSON.stringify(envelope.data), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    })
+  }
+})
+```
+
+<Warning>
+The fetcher must return something kweri can call `.json()` on. Returning a raw parsed object won't work — wrap it in a `Response` if needed.
+</Warning>

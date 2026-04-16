@@ -1,0 +1,74 @@
+---
+title: Installation
+description: Install kweri and configure your project.
+icon: download
+---
+
+## Package manager
+
+<CodeGroup>
+```bash npm
+npm install kweri
+```
+```bash yarn
+yarn add kweri
+```
+```bash pnpm
+pnpm add kweri
+```
+```bash bun
+bun add kweri
+```
+</CodeGroup>
+
+## Requirements
+
+| Requirement | Version |
+|---|---|
+| TypeScript | `^5.0` |
+| Node.js | `>=18` (for `crypto.subtle` in query key hashing) |
+| TypeBox | bundled — `@sinclair/typebox ^0.34` |
+
+Kweri ships TypeBox as a dependency and re-exports `Type` and `Static` from its main entry point, so you don't need to install TypeBox separately.
+
+## Package exports
+
+```json
+{
+  ".":           "dist/index.js",      // main entry — Kweri class, adapters, utilities
+  "./generated": ".generated/client.js" // generated OpenAPI client (after running kweri-gen)
+}
+```
+
+## TypeScript configuration
+
+Kweri is written in TypeScript and ships with declarations. No additional `@types` packages are needed.
+
+Make sure your `tsconfig.json` has `"moduleResolution": "bundler"` or `"node16"` / `"nodenext"` to resolve the package exports correctly:
+
+```json tsconfig.json
+{
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "strict": true
+  }
+}
+```
+
+## CLI (optional)
+
+The `kweri-gen` CLI is included in the package and available as a local binary:
+
+```bash
+# Run directly via npx
+npx kweri-gen https://api.example.com/openapi.json
+
+# Or add a script to package.json
+{
+  "scripts": {
+    "generate-api": "kweri-gen https://api.example.com/openapi.json"
+  }
+}
+```
+
+See the [kweri-gen CLI reference](/cli/kweri-gen) for full options.

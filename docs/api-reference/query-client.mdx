@@ -1,0 +1,146 @@
+---
+title: QueryClient
+description: Low-level cache operations. Use Kweri directly unless you need fine-grained control.
+icon: magnifying-glass
+---
+
+`QueryClient` manages cache reads, writes, invalidations, and subscriptions. It is exposed as `kweri.queryClient` for advanced use cases — in most applications you'll interact with the `Kweri` facade instead.
+
+## Constructor
+
+```ts
+new QueryClient(store: CacheStore, observers: ObserverRegistry)
+```
+
+## Methods
+
+### getQueryKey
+
+```ts
+getQueryKey<E extends Endpoint>(endpoint: E, params: unknown): string
+```
+
+Returns the serialized cache key for an endpoint + params pair.
+
+---
+
+### invalidateQuery
+
+```ts
+invalidateQuery<E extends Endpoint>(endpoint: E, params: unknown): void
+```
+
+Marks the entry for `endpoint + params` as stale by setting `updatedAt = 0`.
+
+---
+
+### invalidateByKey
+
+```ts
+invalidateByKey(key: string): void
+```
+
+Invalidates by raw cache key string.
+
+---
+
+### invalidateByPath
+
+```ts
+invalidateByPath(pattern: string | RegExp): void
+```
+
+Invalidates all entries whose key contains/matches `pattern`.
+
+---
+
+### removeQuery
+
+```ts
+removeQuery<E extends Endpoint>(endpoint: E, params: unknown): void
+```
+
+Deletes the cache entry.
+
+---
+
+### removeByKey
+
+```ts
+removeByKey(key: string): void
+```
+
+Deletes by raw key string.
+
+---
+
+### getCachedData
+
+```ts
+getCachedData<E extends Endpoint>(endpoint: E, params: unknown): unknown
+```
+
+Returns cached data or `undefined`.
+
+---
+
+### setCachedData
+
+```ts
+setCachedData<E extends Endpoint>(endpoint: E, params: unknown, data: unknown): void
+```
+
+Writes data into the cache and notifies observers.
+
+---
+
+### subscribe
+
+```ts
+subscribe<E extends Endpoint>(
+  endpoint: E,
+  params: unknown,
+  callback: (entry: CacheEntry) => void
+): () => void
+```
+
+Subscribes to cache changes for a specific query.
+
+## CacheStore
+
+The underlying storage used by `QueryClient`. Exposed as `kweri.queryClient` → internal store.
+
+```ts
+class CacheStore {
+  get(key: string): CacheEntry | undefined
+  set(key: string, partial: Partial<CacheEntry>): void  // merges
+  delete(key: string): boolean
+  has(key: string): boolean
+  entries(): IterableIterator<[string, CacheEntry]>
+  keys(): IterableIterator<string>
+  values(): IterableIterator<CacheEntry>
+  size: number
+  clear(): void
+}
+```
+
+## ObserverRegistry
+
+Pub/sub registry for cache entry notifications.
+
+```ts
+class ObserverRegistry {
+  subscribe(key: string, callback: Callback): Unsubscribe
+  notify(key: string, entry: CacheEntry): void
+  subscribeAll(callback: GlobalNotifyCallback): Unsubscribe
+  getObserverCount(key: string): number
+  keys(): IterableIterator<string>
+  size: number
+  clear(key: string): void
+  clearAll(): void
+}
+
+type Callback             = (entry: CacheEntry) => void
+type Unsubscribe          = () => void
+type GlobalNotifyCallback = (key: string, entry: CacheEntry) => void
+```

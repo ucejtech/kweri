@@ -1,3 +1,4 @@
+import { Type } from '@sinclair/typebox'
 import type { Endpoint, InferParams, InferResponse } from '../contract/index.js'
 import type { Kweri } from '../kweri/index.js'
 import type { CacheEntryStatus } from '../cache/cache-entry.js'
@@ -37,9 +38,8 @@ export interface VueMutationResult<TData = unknown, TError = unknown> {
   isError: Ref<boolean>;
 }
 
-export function createVueQueryHooks(vue: VueEffectAPI) {
+export function createVueQueryHooks(vue: VueEffectAPI, kweri: Kweri) {
   function useQuery<E extends Endpoint>(
-    kweri: Kweri,
     endpoint: E,
     params: InferParams<E> | Ref<InferParams<E>>,
     options: VueQueryOptions = {}
@@ -75,7 +75,11 @@ export function createVueQueryHooks(vue: VueEffectAPI) {
         isError.value = entry.status === 'error';
       });
 
-      kweri.query(endpoint, currentParams).catch(() => {});
+      kweri.query(endpoint, currentParams).catch((err) => {
+        if (typeof console !== 'undefined') {
+          console.error('[kweri] background query failed:', err)
+        }
+      });
     };
 
     const getCurrentParams = () => {
@@ -126,7 +130,6 @@ export function createVueQueryHooks(vue: VueEffectAPI) {
   }
 
   function useMutation<E extends Endpoint>(
-    kweri: Kweri,
     endpoint: E
   ): VueMutationResult<InferResponse<E>, Error> {
     type TData = InferResponse<E>;
@@ -184,4 +187,56 @@ export function createVueQueryHooks(vue: VueEffectAPI) {
   }
 
   return { useQuery, useMutation };
+}
+
+/**
+ * Create path-based hooks bound to a kweri instance and a generated EndpointByMethod map.
+ * Usage mirrors the rise-api pattern: useGet('/users', {}) instead of useQuery(kweri, endpoint, {}).
+ *
+ * @param vue   - Vue effect API (ref, watch, onUnmounted)
+ * @param kweri - Kweri instance
+ * @param endpointByMethod - EndpointByMethod from the generated contract (kweri/generated)
+ */
+export function createVuePathHooks(
+  vue: VueEffectAPI,
+  kweri: Kweri,
+  endpointByMethod: Record<string, Record<string, any>>
+) {
+  const { useQuery, useMutation } = createVueQueryHooks(vue, kweri)
+
+  function resolveEndpoint(method: string, path: string): Endpoint {
+    // EndpointByMethod uses lowercase keys ('get', 'post', …)
+    const schema = endpointByMethod[method.toLowerCase()]?.[path]
+    if (!schema) throw new Error(`[kweri] No endpoint registered for ${method} ${path}`)
+    // Extract the 200/201 response schema from responses.properties, falling back to .response
+    const responsesProps = schema.properties?.responses?.properties
+    const response =
+      responsesProps?.['200'] ??
+      responsesProps?.['201'] ??
+      schema.properties?.response ??
+      Type.Unknown()
+    return { method: method as Endpoint['method'], path, params: Type.Any(), response }
+  }
+
+  function useGet(path: string, params: any = {}, options: VueQueryOptions = {}) {
+    return useQuery(resolveEndpoint('GET', path), params, options)
+  }
+
+  function usePost(path: string) {
+    return useMutation(resolveEndpoint('POST', path))
+  }
+
+  function usePut(path: string) {
+    return useMutation(resolveEndpoint('PUT', path))
+  }
+
+  function usePatch(path: string) {
+    return useMutation(resolveEndpoint('PATCH', path))
+  }
+
+  function useDelete(path: string) {
+    return useMutation(resolveEndpoint('DELETE', path))
+  }
+
+  return { useGet, usePost, usePut, usePatch, useDelete }
 }
