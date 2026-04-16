@@ -34,7 +34,7 @@ export const { useQuery, useMutation } =
 
 ## Documentation
 
-Full docs at **[kweri.dev](https://kweri.dev)**: quickstart, framework guides, API reference, and more.
+Full docs at **[kweri.uchenna.xyz](https://kweri.uchenna.xyz)**: quickstart, framework guides, API reference, and more.
 
 ## License
 
