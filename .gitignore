@@ -39,9 +39,8 @@ misc/*
 # kweri generator temp (deleted after each run)
 .kweri-temp/
 
-# kweri generated schemas (overwritten by kweri-gen, stub client.* is committed)
-.generated/schemas.js
-.generated/schemas.d.ts
+# kweri generated output (run kweri-gen to populate)
+.generated/
 .kweri/
 
 # auto-generated version from package.json

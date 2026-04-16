@@ -37,7 +37,6 @@
   "files": [
     "dist",
     "cli",
-    ".generated",
     "tsconfig.build.json",
     "tsconfig.generated.json"
   ],
