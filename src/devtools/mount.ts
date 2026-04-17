@@ -4,7 +4,7 @@ import { PACKAGE_VERSION } from '../version.js';
 import { isFresh } from '../cache/index.js';
 import type { MountKweriDevToolsOptions } from './options.js';
 import { devtoolsCss } from './styles.js';
-import { ICON_LAYERS, ICON_DB } from './icons.js';
+import { ICON_KWERI_LOGO } from './icons.js';
 import {
   collectRowKeys,
   entryForKey,
@@ -78,13 +78,36 @@ export function mountKweriDevTools(
   let pendingRenderWhileScrolling = false;
 
   const position = options?.position ?? 'bottom-right';
+  const isDocked = position === 'left' || position === 'right';
+
+  // Inject a document-level <style> so the page body shifts when the panel opens.
+  // This lives outside the shadow DOM so it can affect the host page layout.
+  let docStyle: HTMLStyleElement | null = null;
+  if (isDocked) {
+    docStyle = document.createElement('style');
+    docStyle.setAttribute('data-kweri-devtools-doc', '');
+    // Use the same width expression as the panel CSS.
+    const panelWidth = 'min(520px, calc(100vw - 48px))';
+    const side = position === 'right' ? 'right' : 'left';
+    docStyle.textContent = [
+      `body { transition: margin-${side} 300ms cubic-bezier(0.16, 1, 0.3, 1); }`,
+      `body.kweri-docked-${side} { margin-${side}: ${panelWidth}; }`,
+    ].join('\n');
+    document.head.appendChild(docStyle);
+  }
+
   const host = document.createElement('div');
   host.setAttribute('data-kweri-devtools', '');
   const shadow = host.attachShadow({ mode: 'open' });
   const styleEl = document.createElement('style');
   styleEl.textContent = devtoolsCss;
   const wrap = document.createElement('div');
-  wrap.className = `wrap ${position === 'bottom-left' ? 'bl' : 'br'}`;
+  const positionClass =
+    position === 'bottom-left' ? 'bl' :
+    position === 'left'        ? 'dock-left' :
+    position === 'right'       ? 'dock-right' :
+    'br';
+  wrap.className = `wrap ${positionClass}`;
 
   const panel = document.createElement('div');
   panel.className = 'panel';
@@ -101,7 +124,7 @@ export function mountKweriDevTools(
   brand.className = 'brand';
   const mark = document.createElement('span');
   mark.className = 'brand-mark';
-  mark.innerHTML = ICON_DB;
+  mark.innerHTML = ICON_KWERI_LOGO;
   const titles = document.createElement('div');
   titles.className = 'head-titles';
   const title = document.createElement('h2');
@@ -234,7 +257,7 @@ export function mountKweriDevTools(
   const toggle = document.createElement('button');
   toggle.type = 'button';
   toggle.className = 'toggle';
-  toggle.innerHTML = `${ICON_LAYERS}<span class="toggle-label">DEV</span>`;
+  toggle.innerHTML = `${ICON_KWERI_LOGO}<span class="toggle-label">DEV</span>`;
   toggle.setAttribute('aria-label', 'Open kweri query devtools');
   toggle.setAttribute('aria-expanded', 'false');
 
@@ -279,6 +302,10 @@ export function mountKweriDevTools(
       'aria-label',
       v ? 'Close kweri query devtools' : 'Open kweri query devtools'
     );
+    if (isDocked) {
+      const side = position === 'right' ? 'right' : 'left';
+      document.body.classList.toggle(`kweri-docked-${side}`, v);
+    }
     if (v) render();
   };
 
@@ -785,5 +812,10 @@ export function mountKweriDevTools(
     window.clearInterval(poll);
     window.clearTimeout(scrollQuietTimer);
     host.remove();
+    if (isDocked) {
+      const side = position === 'right' ? 'right' : 'left';
+      document.body.classList.remove(`kweri-docked-${side}`);
+      docStyle?.remove();
+    }
   };
 }

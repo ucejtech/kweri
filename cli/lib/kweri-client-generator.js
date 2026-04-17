@@ -181,7 +181,7 @@ function parseDeclaredEndpointSchemas(source) {
  */
 function parseEndpointSchemas(source) {
   const results = [];
-  const constRegex = /export const ([a-z][a-z0-9_]*) = Type\.Object\(\{/g;
+  const constRegex = /export const ([a-zA-Z][a-zA-Z0-9_]*) = Type\.Object\(\{/g;
   let match;
 
   while ((match = constRegex.exec(source)) !== null) {
@@ -232,7 +232,7 @@ function generateEndpointMethodMap(endpoints) {
   }
 
   const methodMapEntries = methodNames
-    .map(m => `  ${m}: ${exportNames[m]}`)
+    .map(m => `  ${m.toLowerCase()}: ${exportNames[m]}`)
     .join(',\n');
   lines.push(`export const EndpointByMethod = {\n${methodMapEntries}\n}`);
 
@@ -274,6 +274,14 @@ function optimizeContractSourceForKweri(source) {
     /import \{ Type, Static \} from ["']@sinclair\/typebox["'];?/g,
     'import { Type, type Static } from "kweri";'
   );
+
+  // Remove the EndpointByMethod block already emitted by typed-openapi
+  // so we can replace it with our own generated version below.
+  const ebmMarker = cleanSource.indexOf('// <EndpointByMethod>');
+  if (ebmMarker !== -1) {
+    cleanSource = cleanSource.slice(0, ebmMarker).trim();
+    console.log(`✂️ Stripped typed-openapi EndpointByMethod block`);
+  }
 
   // Extract endpoints for Kweri client
   const endpoints = parseDeclaredEndpointSchemas(cleanSource);

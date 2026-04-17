@@ -158,6 +158,40 @@ export function createReactQueryHooks(useSyncExternalStore: UseSyncExternalStore
   return { useQuery, useMutation };
 }
 
+// ---------------------------------------------------------------------------
+// Type helpers for path-based hooks
+// ---------------------------------------------------------------------------
+
+/** All valid paths for a given method in the EndpointByMethod map. */
+type PathsOf<TMap, TMethod extends string> =
+  TMethod extends keyof TMap ? keyof TMap[TMethod] & string : string
+
+/** The raw TypeBox schema object for a specific method + path. */
+type SchemaOf<TMap, TMethod extends string, TPath extends string> =
+  TMethod extends keyof TMap
+    ? TPath extends keyof TMap[TMethod]
+      ? TMap[TMethod][TPath]
+      : never
+    : never
+
+/**
+ * Extract the `parameters` type from a TypeBox endpoint schema.
+ * TypeBox stores the TypeScript type as a phantom `static` property,
+ * so we read it directly to avoid calling `Static<>` on a generic.
+ */
+type EndpointParams<TSchema> =
+  TSchema extends { readonly static: { parameters: infer P } } ? P : Record<string, unknown>
+
+/**
+ * Extract the success response type (200 → 201 → unknown fallback)
+ * from a TypeBox endpoint schema.
+ */
+type EndpointResponse<TSchema> =
+  TSchema extends { readonly static: { responses: { 200: infer R } } } ? R :
+  TSchema extends { readonly static: { responses: { 201: infer R } } } ? R : unknown
+
+// ---------------------------------------------------------------------------
+
 /**
  * Create path-based hooks bound to a kweri instance and a generated EndpointByMethod map.
  * Usage mirrors the rise-api pattern: useGet('/users', {}) instead of useQuery(kweri, endpoint, {}).
@@ -166,44 +200,57 @@ export function createReactQueryHooks(useSyncExternalStore: UseSyncExternalStore
  * @param kweri                - Kweri instance
  * @param endpointByMethod     - EndpointByMethod from the generated contract (kweri/generated)
  */
-export function createReactPathHooks(
+export function createReactPathHooks<
+  TMap extends Record<string, Record<string, any>>
+>(
   useSyncExternalStore: UseSyncExternalStore,
   kweri: Kweri,
-  endpointByMethod: Record<string, Record<string, any>>
+  endpointByMethod: TMap
 ) {
   const { useQuery, useMutation } = createReactQueryHooks(useSyncExternalStore, kweri)
 
   function resolveEndpoint(method: string, path: string): Endpoint {
     // EndpointByMethod uses lowercase keys ('get', 'post', …)
-    const schema = endpointByMethod[method.toLowerCase()]?.[path]
-    if (!schema) throw new Error(`[kweri] No endpoint registered for ${method} ${path}`)
-    const responsesProps = schema.properties?.responses?.properties
-    const response =
-      responsesProps?.['200'] ??
-      responsesProps?.['201'] ??
-      schema.properties?.response ??
-      Type.Unknown()
-    return { method: method as Endpoint['method'], path, params: Type.Any(), response }
+    const key = method.toLowerCase()
+    if (!endpointByMethod[key]?.[path]) {
+      throw new Error(`[kweri] No endpoint registered for ${method} ${path}`)
+    }
+    // Use Type.Unknown() so kweri skips runtime validation for path-based hooks.
+    // The response schema from typed-openapi is used for TypeScript inference only —
+    // runtime validation against it is too strict for real-world JSON payloads.
+    return { method: method as Endpoint['method'], path, params: Type.Any(), response: Type.Unknown() }
   }
 
-  function useGet(path: string, params: any = {}, options: ReactQueryOptions = {}) {
-    return useQuery(resolveEndpoint('GET', path), params, options)
+  function useGet<TPath extends PathsOf<TMap, 'get'>>(
+    path: TPath,
+    params: EndpointParams<SchemaOf<TMap, 'get', TPath>> = {} as any,
+    options: ReactQueryOptions = {}
+  ): ReactQueryResult<EndpointResponse<SchemaOf<TMap, 'get', TPath>>, Error> {
+    return useQuery(resolveEndpoint('GET', path), params as any, options) as any
   }
 
-  function usePost(path: string) {
-    return useMutation(resolveEndpoint('POST', path))
+  function usePost<TPath extends PathsOf<TMap, 'post'>>(
+    path: TPath
+  ): ReactMutationResult<EndpointResponse<SchemaOf<TMap, 'post', TPath>>, Error> {
+    return useMutation(resolveEndpoint('POST', path)) as any
   }
 
-  function usePut(path: string) {
-    return useMutation(resolveEndpoint('PUT', path))
+  function usePut<TPath extends PathsOf<TMap, 'put'>>(
+    path: TPath
+  ): ReactMutationResult<EndpointResponse<SchemaOf<TMap, 'put', TPath>>, Error> {
+    return useMutation(resolveEndpoint('PUT', path)) as any
   }
 
-  function usePatch(path: string) {
-    return useMutation(resolveEndpoint('PATCH', path))
+  function usePatch<TPath extends PathsOf<TMap, 'patch'>>(
+    path: TPath
+  ): ReactMutationResult<EndpointResponse<SchemaOf<TMap, 'patch', TPath>>, Error> {
+    return useMutation(resolveEndpoint('PATCH', path)) as any
   }
 
-  function useDelete(path: string) {
-    return useMutation(resolveEndpoint('DELETE', path))
+  function useDelete<TPath extends PathsOf<TMap, 'delete'>>(
+    path: TPath
+  ): ReactMutationResult<EndpointResponse<SchemaOf<TMap, 'delete', TPath>>, Error> {
+    return useMutation(resolveEndpoint('DELETE', path)) as any
   }
 
   return { useGet, usePost, usePut, usePatch, useDelete }
