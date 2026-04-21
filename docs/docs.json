@@ -85,13 +85,13 @@
     "links": [
       {
         "label": "GitHub",
-        "href": "https://github.com/KyndraHQ/packages"
+        "href": "https://github.com/ucejtech/kweri"
       }
     ]
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/KyndraHQ/packages"
+      "github": "https://github.com/ucejtech/kweri"
     }
   }
 }
