@@ -1,4 +1,4 @@
-import { describe, it, expect, mock, beforeEach } from 'bun:test'
+import { describe, it, expect, mock, beforeEach, afterEach } from 'bun:test'
 import { createVueQueryHooks } from './vue.js'
 import { Kweri } from '../kweri/index.js'
 import { defineEndpoint } from '../contract/index.js'
@@ -60,6 +60,13 @@ describe('Vue Adapter', () => {
         mockUnmountCallbacks.push(callback)
       }),
     }
+  })
+
+  // Tear down so background queries/subscriptions/timers don't bleed into the
+  // next test (or the next file) and surface as "unhandled error between tests".
+  afterEach(async () => {
+    kweri.destroy()
+    await new Promise((r) => setTimeout(r, 0))
   })
 
   describe('createVueQueryHooks', () => {
