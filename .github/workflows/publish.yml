@@ -33,8 +33,17 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Set version from tag
-        run: npm version ${GITHUB_REF_NAME#v} --no-git-tag-version
+      # Fail loudly if the release tag and package.json disagree, instead of
+      # silently overriding the version. package.json is the source of truth.
+      - name: Verify tag matches package.json
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          PKG="$(node -p "require('./package.json').version")"
+          if [ "$TAG" != "$PKG" ]; then
+            echo "::error::Release tag $TAG does not match package.json $PKG. Tag the commit that bumped package.json."
+            exit 1
+          fi
+          echo "Releasing $PKG"
 
       - name: Generate version
         run: node scripts/generate-version.js
@@ -45,5 +54,12 @@ jobs:
       - name: Build
         run: bun run build
 
+      # Prereleases (e.g. 0.3.0-rc.1) publish under the `next` tag so they don't
+      # move `latest`. Stable versions publish to `latest`.
       - name: Publish
-        run: npm publish --access public
+        run: |
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then
+            npm publish --access public --tag next
+          else
+            npm publish --access public
+          fi

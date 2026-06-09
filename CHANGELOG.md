@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0 — Codegen rearchitecture
+## 0.2.2 — Codegen rearchitecture
 
 > **Breaking change.** `kweri-gen` now writes into your own source tree and the
 > generated client routes through the kweri runtime.
