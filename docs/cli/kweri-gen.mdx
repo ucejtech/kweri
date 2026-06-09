@@ -25,8 +25,9 @@ Arguments:
   <openapi-source>    URL or local file path to an OpenAPI JSON or YAML spec
 
 Options:
-  -o, --out <dir>     Output directory (default: src/api/kweri)
-  -h, --help          Show help
+  -o, --out <dir>        Output directory (default: src/api/kweri)
+  -f, --filename <name>  Output file name (default: client.ts; .ts appended if missing)
+  -h, --help             Show help
 ```
 
 External and internal `$ref` pointers are resolved automatically — there is no
@@ -38,8 +39,8 @@ separate bundling flag.
 # From a URL (writes src/api/kweri/client.ts)
 kweri-gen https://api.example.com/openapi.json
 
-# From a local file, into a custom directory
-kweri-gen ./openapi.json --out src/generated
+# From a local file, into a custom directory and file name
+kweri-gen ./openapi.json --out src/generated --filename stocks
 
 # A spec with external $refs (resolved automatically)
 kweri-gen https://petstore3.swagger.io/api/v3/openapi.json

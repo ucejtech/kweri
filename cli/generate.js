@@ -16,6 +16,11 @@ const { values, positionals } = parseArgs({
       short: 'o',
       default: 'src/api/kweri'
     },
+    filename: {
+      type: 'string',
+      short: 'f',
+      default: 'client.ts'
+    },
     help: {
       type: 'boolean',
       short: 'h'
@@ -29,8 +34,9 @@ if (values.help || positionals.length === 0) {
 Usage: kweri-gen <openapi-url-or-file> [options]
 
 Options:
-  -o, --out <dir>   Output directory for the generated client (default: src/api/kweri)
-  -h, --help        Show this help message
+  -o, --out <dir>        Output directory for the generated client (default: src/api/kweri)
+  -f, --filename <name>  Output file name (default: client.ts; .ts appended if missing)
+  -h, --help             Show this help message
 
 Examples:
   kweri-gen https://api.example.com/openapi.json
@@ -79,8 +85,14 @@ async function main() {
     const client = emitClient(endpoints);
     const output = await formatSource(`${contract}\n\n${client}\n`);
 
+    const filename = values.filename.endsWith('.ts')
+      ? values.filename
+      : `${values.filename}.ts`;
+    const moduleName = filename.replace(/\.ts$/, '');
+    const filenameFlag = filename === 'client.ts' ? '' : ` --filename ${filename}`;
+
     const outDir = resolve(process.cwd(), values.out);
-    const outFile = resolve(outDir, 'client.ts');
+    const outFile = resolve(outDir, filename);
     mkdirSync(dirname(outFile), { recursive: true });
     writeFileSync(outFile, output, 'utf-8');
 
@@ -89,13 +101,13 @@ async function main() {
     );
     console.log(`\n📦 Import in your code:
   import { Kweri } from 'kweri'
-  import { createClient, EndpointByMethod } from '${values.out.replace(/^src\//, '@/').replace(/\/$/, '')}/client'
+  import { createClient, EndpointByMethod } from '${values.out.replace(/^src\//, '@/').replace(/\/$/, '')}/${moduleName}'
 
   const kweri = new Kweri({ baseURL: 'https://api.example.com' })
   const api = createClient(kweri)
 
 💡 Tip: add a script instead of postinstall, and commit the output:
-  "scripts": { "gen": "kweri-gen ${source} --out ${values.out}" }
+  "scripts": { "gen": "kweri-gen ${source} --out ${values.out}${filenameFlag}" }
 `);
   } catch (error) {
     console.error(`❌ Error:`, error instanceof Error ? error.message : error);
