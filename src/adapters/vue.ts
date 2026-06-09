@@ -60,7 +60,12 @@ export function createVueQueryHooks(vue: VueEffectAPI, kweri: Kweri) {
 
     const enabled = typeof options.enabled === 'object' ? options.enabled : vue.ref(options.enabled ?? true);
 
-    const executeQuery = async (currentParams: InferParams<E>) => {
+    // Intentionally NOT async: the only async work (the background query) is
+    // fire-and-forget with its own .catch below. Marking this async would wrap
+    // the whole body in a promise that the call sites don't await, so any throw
+    // here would surface as an unhandled rejection "between tests" rather than
+    // at the call site.
+    const executeQuery = (currentParams: InferParams<E>) => {
       if (!enabled.value) {
         status.value = 'idle';
         return;
