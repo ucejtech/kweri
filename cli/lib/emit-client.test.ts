@@ -60,7 +60,9 @@ describe('emitClient', () => {
   it('emits a GeneratedClient + createClient that never calls fetch directly', () => {
     const out = emitClient([query, mutation]);
     expect(out).toContain('export class GeneratedClient');
-    expect(out).toContain('constructor(private kweri: Kweri)');
+    expect(out).toContain('constructor(kweri: Kweri)')
+    // Parameter properties emit runtime code — banned under erasableSyntaxOnly.
+    expect(out).not.toContain('private kweri: Kweri)');
     expect(out).toContain('export function createClient(kweri: Kweri)');
     // The whole point: no raw fetch in the generated client.
     expect(out).not.toContain('fetch(');

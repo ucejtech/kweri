@@ -1,4 +1,4 @@
-// Bun Snapshot v1, https://goo.gl/fbAQLP
+// Bun Snapshot v1, https://bun.sh/docs/test/snapshots
 
 exports[`emitClient emits a GeneratedClient + createClient that never calls fetch directly 1`] = `
 "// ---------------------------------------------------------------------------
@@ -11,7 +11,11 @@ function __endpoint(method: string, path: string): Endpoint {
 }
 
 export class GeneratedClient {
-  constructor(private kweri: Kweri) {}
+  private kweri: Kweri
+
+  constructor(kweri: Kweri) {
+    this.kweri = kweri
+  }
 
   async getUser(params: Static<typeof get_GetUser>['parameters']): Promise<Static<typeof get_GetUser>['responses'][200]> {
     return this.kweri.query(__endpoint('GET', '/users/{id}'), params as any) as Promise<Static<typeof get_GetUser>['responses'][200]>
