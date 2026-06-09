@@ -36,9 +36,7 @@
     "test:watch": "bun test --watch",
     "test:coverage": "bun test --coverage",
     "pack": "bun run build && npm pack",
-    "prepublishOnly": "bun run build",
-    "version": "changeset version && node scripts/generate-version.js",
-    "release": "bun run build && changeset publish"
+    "prepublishOnly": "bun run build"
   },
   "files": [
     "dist",
@@ -46,14 +44,12 @@
     "tsconfig.build.json"
   ],
   "dependencies": {
-    "@sinclair/typebox": "^0.34.49",
-    "typed-openapi": "^2.2.7",
     "@apidevtools/swagger-parser": "^12.1.0",
-    "ajv": "^8.20.0"
+    "@sinclair/typebox": "^0.34.49",
+    "ajv": "^8.20.0",
+    "typed-openapi": "^2.2.7"
   },
   "devDependencies": {
-    "@changesets/changelog-github": "^0.7.0",
-    "@changesets/cli": "^2.31.0",
     "@types/bun": "latest",
     "@types/json-schema": "^7.0.15",
     "typescript": "^5.9.3",

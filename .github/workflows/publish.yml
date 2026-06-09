@@ -4,26 +4,34 @@ on:
   push:
     branches: [main]
 
-# contents/pull-requests: for the version PR, tags, and GitHub Release.
-# id-token: for npm trusted publishing (OIDC) — no NPM_TOKEN needed.
-permissions:
-  contents: write
-  pull-requests: write
-  id-token: write
-
-concurrency:
-  group: release
-  cancel-in-progress: false
-
 jobs:
-  release:
-    name: Release
+  # Opens/updates a "release PR" based on Conventional Commits since the last
+  # release. Merging that PR bumps the version + changelog and tags a release,
+  # which sets release_created=true and triggers the publish job below.
+  release-please:
+    name: Release PR
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.releases_created }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
+  publish:
+    name: Publish to npm
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # npm trusted publishing (OIDC) — no NPM_TOKEN needed
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -41,20 +49,15 @@ jobs:
 
       - name: Install dependencies
         run: bun install
+
       - name: Generate version
         run: node scripts/generate-version.js
 
       - name: Run tests
         run: bun test
 
-      # Opens/updates a "version packages" PR when changesets are pending;
-      # publishes to npm (+ tags + GitHub Release) once that PR is merged.
-      - name: Create Release PR or publish
-        uses: changesets/action@v1
-        with:
-          version: bun run version
-          publish: bun run release
-          commit: "chore: version packages"
-          title: "chore: version packages"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build
+        run: bun run build
+
+      - name: Publish
+        run: npm publish --access public

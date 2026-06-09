@@ -1,59 +1,52 @@
 # Releasing
 
-Releases are automated with [Changesets](https://github.com/changesets/changesets).
-You never bump the version or create a tag by hand — a bot opens a **"version
-packages" PR**, and merging it publishes. Every surface (`package.json`, git tag,
-`src/version.ts`, the GitHub Release, and the npm version) is produced from the
-accumulated changesets, so nothing can drift.
+Releases are automated with [release-please](https://github.com/googleapis/release-please).
+You never write changeset files, bump the version, or tag by hand. The release
+is derived entirely from your **commit messages** (Conventional Commits): merge
+to `main`, a bot opens/updates a **release PR**, and merging that PR publishes.
 
-## Versioning
+## Commit messages drive the release
 
-This is a `0.x` package, so semver-zero rules apply. Choose the bump type when
-you add the changeset:
+Write [Conventional Commits](https://www.conventionalcommits.org/). The prefix
+determines whether — and how — the next version bumps:
 
-- **minor** — a breaking change (`0.2.x` → `0.3.0`)
-- **patch** — a feature or bug fix (`0.2.1` → `0.2.2`)
+| Commit prefix | Example | Effect on this `0.x` package |
+|---|---|---|
+| `fix:` | `fix: handle empty query params` | patch (`0.3.0` → `0.3.1`) |
+| `feat:` | `feat: format generated client` | patch (`0.3.0` → `0.3.1`) |
+| `feat!:` / `fix!:` / `BREAKING CHANGE:` footer | `feat!: drop kweri/generated export` | minor (`0.3.0` → `0.4.0`) |
+| `chore:` `docs:` `refactor:` `test:` `ci:` | `chore: tidy imports` | no release on their own (ride along) |
 
-Don't use **major** until you intend to cut `1.0.0`.
+This matches the project's semver-zero policy: **breaking → minor, everything
+else → patch**, configured via `bump-minor-pre-major` + `bump-patch-for-minor-pre-major`
+in [`release-please-config.json`](release-please-config.json). Don't cut a
+`1.0.0` until you intend to.
 
-## Day-to-day: add a changeset with each PR
-
-Any PR that changes published behaviour includes a changeset describing it:
-
-```bash
-bunx changeset
-```
-
-Pick the bump type, write a short summary (it becomes the changelog entry), and
-commit the generated `.changeset/*.md` file alongside your code.
+> Only `feat`/`fix` (and breaking changes) trigger a release. A batch of pure
+> `chore:`/`docs:` commits will **not** open a release PR — that's intended.
 
 ## How a release happens
 
-On every push to `main`, [`.github/workflows/publish.yml`](../.github/workflows/publish.yml)
-runs `changesets/action`, which does one of two things:
+On every push to `main`, [`.github/workflows/publish.yml`](.github/workflows/publish.yml):
 
-1. **Pending changesets exist** → it opens or updates a **"chore: version
-   packages"** PR that consumes the changesets, bumps `package.json`,
-   regenerates `src/version.ts`, and writes `CHANGELOG.md`. Review and merge it
-   when you're ready to release.
+1. Runs **release-please**, which scans commits since the last release tag and
+   opens/updates a **release PR** that bumps the version in `package.json`,
+   updates `CHANGELOG.md`, and (on merge) tags the release.
+2. When you **merge the release PR**, the same workflow's `publish` job runs:
+   builds and publishes to npm via **trusted publishing (OIDC)** — no token.
 
-2. **That PR was just merged** (no changesets left) → it builds, publishes to npm
-   via **trusted publishing (OIDC)** (no token), and creates the matching git tag
-   and GitHub Release.
+To hold a release, just don't merge the release PR; it keeps updating as more
+commits land.
 
-That's the whole flow. To "hold" a release, just don't merge the version PR yet;
-it keeps updating as more changesets land.
+## One-time setup (already done, for reference)
 
-### Prereleases
-
-For an `rc`/`beta` line, use Changesets pre mode:
-
-```bash
-bunx changeset pre enter next   # tag line: e.g. 0.3.0-next.0
-bunx changeset version          # (the bot also does this in the version PR)
-# … publish via the normal merge flow …
-bunx changeset pre exit         # when ready to cut the stable release
-```
+- **npm trusted publisher** for `kweri`: owner `ucejtech`, repo `kweri`,
+  workflow file `publish.yml`. No `NPM_TOKEN` secret.
+- **Repo → Settings → Actions → General → Workflow permissions**: *"Allow GitHub
+  Actions to create and approve pull requests"* must be enabled so release-please
+  can open the release PR.
+- [`.release-please-manifest.json`](.release-please-manifest.json) tracks the
+  current released version (`0.3.0`). release-please updates it on each release.
 
 ## Rollbacks
 
@@ -76,9 +69,9 @@ Work top to bottom; stop as soon as the situation is contained.
    npm deprecate kweri@<bad> "Broken release — use <last-good>+ instead"
    ```
 
-3. **Roll forward.** Revert the offending commit(s) via PR, add a `patch`
-   changeset, and let the normal flow ship the fix. This is the real remedy — the
-   bad version stays on npm but nobody is pointed at it.
+3. **Roll forward.** Revert the offending commit(s) with a `fix:` commit and let
+   the normal flow ship the patch. This is the real remedy — the bad version
+   stays on npm but nobody is pointed at it.
 
 4. **Last resort only** — within 72h, for genuinely broken or secret-leaking
    artifacts:
