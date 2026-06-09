@@ -1,5 +1,13 @@
 # kweri
 
+## [0.4.2](https://github.com/ucejtech/kweri/compare/kweri-v0.4.1...kweri-v0.4.2) (2026-06-09)
+
+
+### Features
+
+* multi-instance factory, per-query cache options, auto GC, share… ([648d065](https://github.com/ucejtech/kweri/commit/648d065c4e82c59ce7a5a501de498d9301b5ed48))
+* multi-instance factory, per-query cache options, auto GC, shared devtools ([dc3ebc4](https://github.com/ucejtech/kweri/commit/dc3ebc468982b01bbcfe1182cd04d080db3c3696))
+
 ## [0.4.1](https://github.com/ucejtech/kweri/compare/kweri-v0.4.0...kweri-v0.4.1) (2026-06-09)
 
 
