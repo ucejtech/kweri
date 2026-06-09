@@ -13,15 +13,31 @@ Kweri's `EvictionEngine` periodically sweeps the cache and removes entries that 
 
 Entries that still have subscribers are never evicted, regardless of age.
 
-## Enabling GC
+## Automatic GC (default)
 
-Pass `gcInterval` to `KweriOptions` to start GC automatically:
+In the browser, GC runs **automatically** — you don't need to configure anything for `cacheTime` to be honored. The automatic sweeper is designed to cost nothing when idle:
+
+- **Self-stopping** — it only runs a timer while there are entries to collect, and stops once the cache empties (re-arming on the next write).
+- **Visibility-aware** — it pauses while the tab is hidden and resumes on focus.
+- **SSR-safe** — on the server (no `document`) the automatic sweeper is **not** started. A server-side instance is request-scoped and collected wholesale, so no per-request timer leaks. (Still call `kweri.destroy()` when a request ends if you set an explicit `gcInterval`.)
+
+```ts
+// Browser: cacheTime is honored automatically, no gcInterval needed.
+const kweri = new Kweri({
+  baseURL: 'https://api.example.com',
+  cacheTime: 300_000, // unobserved entries collected ~5 minutes after going idle
+})
+```
+
+## Explicit fixed-interval GC
+
+Pass `gcInterval` to run a sweep on a fixed cadence instead of the automatic sweeper:
 
 ```ts
 const kweri = new Kweri({
   baseURL: 'https://api.example.com',
-  cacheTime: 300_000,  // entries eligible for eviction after 5 minutes
-  gcInterval: 60_000   // sweep every 60 seconds
+  cacheTime: 300_000,
+  gcInterval: 60_000   // sweep every 60 seconds, always-on
 })
 ```
 
@@ -81,8 +97,9 @@ const kweri = new Kweri({ baseURL: '...' }, mockTimer)
 | Component subscribed, data stale | Entry kept, background refetch |
 | No subscribers, within cacheTime | Entry kept in memory |
 | No subscribers, past cacheTime | Entry eligible for next GC sweep |
-| No subscribers, GC disabled | Entry stays in memory indefinitely |
+| No subscribers, browser | Collected automatically (auto-GC) |
+| No subscribers, SSR / no `document` | Collected when the request-scoped instance is dropped |
 
 <Tip>
-If your app navigates frequently between views, set a generous `cacheTime` (5–10 minutes) and a reasonable `gcInterval` (60 seconds). This keeps recently-visited data warm for instant navigation while still reclaiming memory for old queries.
+If your app navigates frequently between views, set a generous `cacheTime` (5–10 minutes). The automatic sweeper keeps recently-visited data warm for instant navigation while still reclaiming memory for old queries — no `gcInterval` required.
 </Tip>

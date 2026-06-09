@@ -12,6 +12,9 @@ export interface UseSyncExternalStore {
 
 export interface ReactQueryOptions {
   enabled?: boolean;
+  staleTime?: number;
+  cacheTime?: number;
+  maxRetries?: number;
 }
 
 export interface ReactQueryResult<TData = unknown, TError = unknown> {
@@ -43,6 +46,11 @@ export function createReactQueryHooks(useSyncExternalStore: UseSyncExternalStore
     options: ReactQueryOptions = {}
   ): ReactQueryResult<InferResponse<E>, Error> {
     const enabled = options.enabled ?? true;
+    const queryOpts = {
+      staleTime: options.staleTime,
+      cacheTime: options.cacheTime,
+      maxRetries: options.maxRetries,
+    };
 
     type TData = InferResponse<E>;
     type Snapshot = {
@@ -73,7 +81,7 @@ export function createReactQueryHooks(useSyncExternalStore: UseSyncExternalStore
         onStoreChange();
       });
 
-      kweri.query(endpoint, params).catch((err) => {
+      kweri.query(endpoint, params, queryOpts).catch((err) => {
         if (typeof console !== 'undefined') {
           console.error('[kweri] background query failed:', err)
         }
@@ -86,7 +94,7 @@ export function createReactQueryHooks(useSyncExternalStore: UseSyncExternalStore
 
     const refetch = async () => {
       kweri.invalidateQuery(endpoint, params)
-      await kweri.query(endpoint, params)
+      await kweri.query(endpoint, params, queryOpts)
     };
 
     return {

@@ -74,7 +74,8 @@
         "advanced/devtools",
         "advanced/persistence",
         "advanced/custom-fetcher",
-        "advanced/eviction"
+        "advanced/eviction",
+          "advanced/multiple-instances"
       ]
     },
     {

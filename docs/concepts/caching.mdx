@@ -31,11 +31,35 @@ const kweri = new Kweri({
 })
 ```
 
-- **`staleTime`** — how long data is considered fresh. While fresh, `kweri.query()` returns the cached data without hitting the network. Default: `0` (immediately stale).
-- **`cacheTime`** — how long an entry is kept in memory after it becomes stale **and has no active observers**. Once this expires the entry is eligible for garbage collection. Default: `5 minutes`.
+- **`staleTime`** — *"when do I refetch?"* How long data stays **fresh**. While fresh, `kweri.query()` returns the cached data without hitting the network. Once stale, the next access refetches in the background. Default: `0` (immediately stale).
+- **`cacheTime`** — *"when do I forget?"* How long an entry with **no active observers** is kept in memory before it can be garbage-collected. Default: `5 minutes`.
+
+They are **independent**: `staleTime` governs *freshness* (refetching), `cacheTime` governs *retention* (memory). An entry can be stale but still cached — it's kept around and refetched on next access. Normally `cacheTime ≥ staleTime`.
+
+| | `staleTime` | `cacheTime` |
+|---|---|---|
+| Question | When do I refetch? | When do I forget? |
+| Applies while | data exists | **no** observers are mounted |
+| Expired ⇒ | background refetch on next access | entry eligible for garbage collection |
+
+### Per-query overrides
+
+Freshness is really a property of the *data*, not the instance — a profile and a stock price want very different `staleTime`s. Override per call, taking precedence over the instance defaults:
+
+```ts
+// Direct
+await kweri.query(getStock, { path: { id } }, { staleTime: 1_000 })
+await kweri.query(getProfile, {}, { staleTime: 5 * 60_000, cacheTime: 30 * 60_000 })
+```
+
+```ts
+// Via hooks — the third options arg accepts staleTime / cacheTime / maxRetries
+const stock = useGet('/stocks/{id}', { path: { id } }, { staleTime: 1_000 })
+const profile = useGet('/me', {}, { staleTime: 5 * 60_000 })
+```
 
 <Info>
-`staleTime` and `cacheTime` are set globally on the `Kweri` instance. Per-query overrides are not currently supported.
+Overrides are stamped onto the cache entry when it's (re)fetched, so they take effect from that write forward.
 </Info>
 
 ### Stale-while-revalidate

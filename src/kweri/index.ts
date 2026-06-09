@@ -18,7 +18,7 @@ import { EvictionEngine, type TimerAdapter } from '../eviction/index.js';
 import type { MutationOptions } from '../mutations/index.js';
 import type { KweriDevToolsSnapshot } from './devtools-types.js';
 import {
-  mountKweriDevTools,
+  registerDevTools,
   type MountKweriDevToolsOptions
 } from '../devtools/index.js';
 import { isProductionRuntime } from '../runtime-env.js';
@@ -43,6 +43,13 @@ export interface KweriOptions {
   maxRetries?: number;
   /** Optional pluggable persistence adapter for saving/restoring cache across sessions. Silently skipped in SSR. All failures are non-fatal. */
   persistence?: PersistenceAdapter;
+}
+
+/** Per-query overrides for `query()` — take precedence over the instance defaults. */
+export interface QueryOptions {
+  staleTime?: number;
+  cacheTime?: number;
+  maxRetries?: number;
 }
 
 /**
@@ -120,10 +127,14 @@ export class Kweri {
 
     if (options.gcInterval) {
       this.eviction.start(options.gcInterval);
+    } else if (typeof document !== 'undefined') {
+      // Browser default: auto-GC honors cacheTime. Skipped in SSR (no timer leak).
+      this.eviction.startAuto();
     }
 
     if (options.enableDevTools && !isProductionRuntime()) {
-      this.devtoolsUnmount = mountKweriDevTools(this, options.devtools);
+      const label = options.devtools?.label ?? options.baseURL;
+      this.devtoolsUnmount = registerDevTools(this, label, options.devtools);
     }
 
     this.persistence = options.persistence;
@@ -136,8 +147,13 @@ export class Kweri {
    */
   async query<E extends Endpoint>(
     endpoint: E,
-    params: InferParams<E>
+    params: InferParams<E>,
+    options: QueryOptions = {}
   ): Promise<InferResponse<E>> {
+    const staleTime = options.staleTime ?? this.defaultStaleTime;
+    const cacheTime = options.cacheTime ?? this.defaultCacheTime;
+    const maxRetries = options.maxRetries ?? this.maxRetries;
+
     const key = this.queryClient.getQueryKey(endpoint, params);
 
     const cached = this.store.get(key);
@@ -151,8 +167,8 @@ export class Kweri {
       while (true) {
         this.store.set(key, {
           status: 'loading',
-          staleTime: this.defaultStaleTime,
-          cacheTime: this.defaultCacheTime
+          staleTime,
+          cacheTime
         });
         this.observers.notify(key, this.store.get(key)!);
 
@@ -177,11 +193,12 @@ export class Kweri {
           const entry = createCacheEntry({
             data,
             status: 'success',
-            staleTime: this.defaultStaleTime,
-            cacheTime: this.defaultCacheTime
+            staleTime,
+            cacheTime
           });
           this.store.set(key, entry);
           this.observers.notify(key, this.store.get(key)!);
+          this.eviction.ensureRunning();
           this.persist();
 
           return data as InferResponse<E>;
@@ -189,7 +206,7 @@ export class Kweri {
           const error = categorizeError(e);
           const retryCount = (this.store.get(key)?.retryCount ?? 0) + 1;
 
-          if (error.retryable && attempt < this.maxRetries) {
+          if (error.retryable && attempt < maxRetries) {
             this.store.set(key, { status: 'error', error, errorUpdatedAt: Date.now(), retryCount });
             this.observers.notify(key, this.store.get(key)!);
             await new Promise<void>(resolve => this.timer.setTimeout(resolve, getRetryDelay(attempt)));
@@ -268,6 +285,7 @@ export class Kweri {
     data: InferResponse<E>
   ): void {
     this.queryClient.setCachedData(endpoint, params, data);
+    this.eviction.ensureRunning();
     this.persist();
   }
 
@@ -369,7 +387,7 @@ export class Kweri {
   destroy(): void {
     this.devtoolsUnmount?.();
     this.devtoolsUnmount = undefined;
-    this.eviction.stop();
+    this.eviction.dispose();
     this.orchestrator.clear();
     this.observers.clearAll();
     this.store.clear();

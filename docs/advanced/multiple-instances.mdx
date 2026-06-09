@@ -1,0 +1,171 @@
+---
+title: Multiple instances
+description: Share configuration across several base URLs without duplication.
+icon: layer-group
+---
+
+## When you need more than one instance
+
+Each `Kweri` instance is bound to a single `baseURL` and owns an **isolated cache**. If your app talks to several APIs, use **one instance per API** — that's the correct design, not just a convenience:
+
+<Info>
+Cache keys are `method + path + params` — the **baseURL is not part of the key**. So two APIs that both expose `/users` would collide in a shared cache. Separate instances give you correct isolation, plus independent eviction and per-API `staleTime`/`cacheTime`.
+</Info>
+
+The only downside is repeated config. The factory helpers remove it.
+
+## `createKweriClients` (named map)
+
+Create several named instances that share defaults. Each entry is a `baseURL` string (shorthand) or full per-client options:
+
+```ts
+import { createKweriClients, presets } from 'kweri'
+
+export const { main, stocks } = createKweriClients(
+  {
+    main: { baseURL: 'https://api.example.com', enableDevTools: true },
+    stocks: 'https://stocks.example.com', // shorthand
+  },
+  presets.spa, // shared defaults
+)
+```
+
+It returns the instances keyed by name, plus a non-enumerable `destroyAll()`:
+
+```ts
+const clients = createKweriClients({ a: A_URL, b: B_URL })
+clients.destroyAll() // tears down every instance
+```
+
+<Warning>
+`destroyAll` is a reserved key — don't name a client `destroyAll`.
+</Warning>
+
+## `createKweriFactory` (low-level primitive)
+
+`createKweriClients` is built on this. It captures defaults and returns instances **when invoked**, so *you* control lifetime:
+
+```ts
+import { createKweriFactory } from 'kweri'
+
+const createApi = createKweriFactory({ staleTime: 30_000, cacheTime: 5 * 60_000 })
+
+export const kweri = createApi('https://api.example.com', { enableDevTools: true })
+export const stocks = createApi('https://stocks.example.com')
+```
+
+## Presets
+
+Opinionated default profiles for common project types. GC is automatic (honors `cacheTime` in the browser), so presets don't set `gcInterval`.
+
+```ts
+import { presets } from 'kweri'
+
+presets.spa      // { staleTime: 30_000,  cacheTime: 5m,  maxRetries: 2 }
+presets.ssr      // { staleTime: 60_000,  maxRetries: 0 }   — create per request
+presets.mobile   // { staleTime: 60_000,  cacheTime: 30m, maxRetries: 3 }
+presets.realtime // { staleTime: 0,       cacheTime: 30s, maxRetries: 1 }
+```
+
+Pass one as the `defaults` and override per client as needed.
+
+## Per-environment patterns
+
+Because the factory returns instances on call, the **application** chooses the instantiation scope:
+
+<Tabs>
+  <Tab title="SPA">
+    Module-level singletons are fine — one cache for the app's lifetime.
+    ```ts
+    export const { main, stocks } = createKweriClients(map, presets.spa)
+    ```
+  </Tab>
+  <Tab title="SSR / RSC">
+    **Never** share a singleton cache across requests — it bleeds one user's data into another's. Create instances **per request** and provide them via context.
+    ```ts
+    export const makeClients = () => createKweriClients(map, presets.ssr)
+    // call makeClients() once per request; destroyAll() when the request ends
+    ```
+  </Tab>
+  <Tab title="Multi-tenant / dynamic">
+    baseURL isn't known at import time — instantiate lazily and tear down on tenant switch.
+    ```ts
+    const make = createKweriFactory(presets.spa)
+    const cache = new Map<string, Kweri>()
+    export const tenantApi = {
+      get: (id: string) => cache.get(id) ?? cache.set(id, make(urlFor(id))).get(id)!,
+      reset: () => { cache.forEach(k => k.destroy()); cache.clear() },
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Path hooks per instance
+
+Each API has its own generated `EndpointByMethod` (its own types), so path hooks are bound **per `(instance, EndpointByMethod)` pair** — you can't share one `useGet` across APIs. Create a hook set per API and group them:
+
+```ts
+import { useSyncExternalStore } from 'react'
+import { createReactPathHooks } from 'kweri'
+import { EndpointByMethod as MainEndpoints } from '@/api/main/client'
+import { EndpointByMethod as StocksEndpoints } from '@/api/stocks/client'
+import { main, stocks } from '@/lib/kweri'
+
+export const api = {
+  main: createReactPathHooks(useSyncExternalStore, main, MainEndpoints),
+  stocks: createReactPathHooks(useSyncExternalStore, stocks, StocksEndpoints),
+}
+```
+
+Each group is fully typed against its own API:
+
+```ts
+const { data } = api.main.useGet('/users', {})          // typed by MainEndpoints
+const create = api.stocks.usePost('/orders')            // typed by StocksEndpoints
+```
+
+<Tip>
+Generate each API into its own `--out` dir (`kweri-gen <main-spec> --out src/api/main`, `kweri-gen <stocks-spec> --out src/api/stocks`) so their `EndpointByMethod` maps stay separate.
+</Tip>
+
+## Per-API auth
+
+Auth differs per API, so it's a per-client `fetcher`, not a shared default:
+
+```ts
+import { createKweriClients, type Fetcher } from 'kweri'
+
+const withAuth = (getToken: () => string): Fetcher =>
+  ({ method, url, body }) =>
+    fetch(url, {
+      method,
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        ...(body ? { 'Content-Type': 'application/json' } : {}),
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    })
+
+export const { main, stocks } = createKweriClients(
+  {
+    main:   { baseURL: MAIN,   fetcher: withAuth(getUserToken) },
+    stocks: { baseURL: STOCKS, fetcher: withAuth(getServiceToken) },
+  },
+  presets.spa,
+)
+```
+
+## DevTools with multiple instances
+
+Enabling `enableDevTools` on several instances is safe — they share **one** panel with an instance switcher in the header (no stacked overlays). Each instance appears in the switcher labelled by its `baseURL`, or by `devtools.label` if set:
+
+```ts
+createKweriClients({
+  main:   { baseURL: MAIN,   enableDevTools: true },
+  stocks: { baseURL: STOCKS, enableDevTools: true, devtools: { label: 'Stocks API' } },
+})
+```
+
+<Info>
+The first instance to enable devtools mounts the panel, so panel-level options like `position` come from that instance. The panel unmounts automatically when the last instance is destroyed.
+</Info>
