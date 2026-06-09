@@ -1,5 +1,13 @@
 # kweri
 
+## [0.4.3](https://github.com/ucejtech/kweri/compare/kweri-v0.4.2...kweri-v0.4.3) (2026-06-09)
+
+
+### Features
+
+* add filename option for output file in kweri-gen CLI ([58871fd](https://github.com/ucejtech/kweri/commit/58871fdb794e512c4f04fa33f3a76665af791dbc))
+* add filename option for output file in kweri-gen CLI ([ae94d41](https://github.com/ucejtech/kweri/commit/ae94d4181797c9eb1b786b14e7b0458c72ac3c97))
+
 ## [0.4.2](https://github.com/ucejtech/kweri/compare/kweri-v0.4.1...kweri-v0.4.2) (2026-06-09)
 
 
