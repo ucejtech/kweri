@@ -209,4 +209,70 @@ describe('EvictionEngine', () => {
       expect(cleared).toBe(true)
     })
   })
+
+  describe('auto mode (startAuto / ensureRunning)', () => {
+    // A timer whose interval callbacks can be fired on demand.
+    function manualTimer(now: () => number) {
+      const intervals = new Map<number, () => void>()
+      let id = 1
+      const timer: TimerAdapter = {
+        setInterval: (fn) => {
+          const h = id++
+          intervals.set(h, fn)
+          return h
+        },
+        clearInterval: (h) => {
+          intervals.delete(h as number)
+        },
+        setTimeout: () => 0,
+        clearTimeout: () => {},
+        now,
+      }
+      return {
+        timer,
+        running: () => intervals.size,
+        tick: () => intervals.forEach((fn) => fn()),
+      }
+    }
+
+    it('does not arm a timer when the cache is empty', () => {
+      const mt = manualTimer(() => Date.now())
+      const engine = new EvictionEngine(store, getObserverCount, mt.timer)
+      engine.startAuto()
+      expect(mt.running()).toBe(0)
+    })
+
+    it('arms when entries exist, self-stops when it empties', () => {
+      const entry = createCacheEntry({ data: 1, status: 'success', cacheTime: 10 })
+      store.set('k', entry)
+      const mt = manualTimer(() => entry.updatedAt + 1000) // past cacheTime
+      const engine = new EvictionEngine(store, getObserverCount, mt.timer)
+
+      engine.startAuto()
+      expect(mt.running()).toBe(1) // armed because cache is non-empty
+
+      mt.tick() // sweep removes the expired, observer-less entry
+      expect(store.size).toBe(0)
+      expect(mt.running()).toBe(0) // self-stopped — nothing left to collect
+    })
+
+    it('rearms via ensureRunning after a new write', () => {
+      const mt = manualTimer(() => Date.now())
+      const engine = new EvictionEngine(store, getObserverCount, mt.timer)
+      engine.startAuto()
+      expect(mt.running()).toBe(0)
+
+      store.set('k', createCacheEntry({ data: 1, status: 'success', cacheTime: 60_000 }))
+      engine.ensureRunning()
+      expect(mt.running()).toBe(1)
+    })
+
+    it('ensureRunning is a no-op outside auto mode', () => {
+      const mt = manualTimer(() => Date.now())
+      const engine = new EvictionEngine(store, getObserverCount, mt.timer)
+      store.set('k', createCacheEntry({ data: 1, status: 'success' }))
+      engine.ensureRunning() // never called startAuto
+      expect(mt.running()).toBe(0)
+    })
+  })
 })

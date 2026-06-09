@@ -44,7 +44,11 @@ export { CACHE_VERSION } from './persistence/index.js'
 
 // Kweri facade (single entry point)
 export { Kweri } from './kweri/index.js'
-export type { KweriOptions, KweriDevToolsSnapshot } from './kweri/index.js'
+export type { KweriOptions, QueryOptions, KweriDevToolsSnapshot } from './kweri/index.js'
+
+// Multi-instance factory + presets (shared defaults across base URLs)
+export { createKweriFactory, createKweriClients, presets } from './factory.js'
+export type { KweriDefaults, KweriClientConfig, KweriClients } from './factory.js'
 
 // Devtools (vanilla DOM overlay)
 export { mountKweriDevTools } from './devtools/index.js'

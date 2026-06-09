@@ -292,6 +292,17 @@ export const devtoolsCss = `
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
+.instance-select {
+  margin-top: 4px;
+  max-width: 100%;
+  font-family: var(--kw-font-mono);
+  font-size: 11px;
+  color: var(--kw-text);
+  background: var(--kw-bg-base);
+  border: 1px solid var(--kw-border, rgba(255,255,255,0.1));
+  border-radius: 4px;
+  padding: 2px 6px;
+}
 .version {
   display: inline-block;
   margin-left: 8px;

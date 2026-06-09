@@ -30,9 +30,15 @@ export function isEligibleForEviction(
   return now > entry.updatedAt + entry.cacheTime
 }
 
+const DEFAULT_AUTO_INTERVAL = 60_000
+
 export class EvictionEngine {
   private intervalId: number | NodeJS.Timeout | null = null
   private timer: TimerAdapter
+
+  private autoMode = false
+  private autoIntervalMs = DEFAULT_AUTO_INTERVAL
+  private visibilityHandler: (() => void) | null = null
 
   constructor(
     private store: CacheStore,
@@ -59,17 +65,72 @@ export class EvictionEngine {
     }
   }
 
-  /** Start periodic GC every `intervalMs`. */
+  /** Fixed-interval GC (explicit `gcInterval` / `startGC`). */
   start(intervalMs: number): void {
-    this.stop()
+    this.autoMode = false
+    this.pause()
     this.intervalId = this.timer.setInterval(() => this.sweep(), intervalMs)
   }
 
-  /** Stop periodic GC. */
-  stop(): void {
+  /**
+   * Self-stopping, visibility-aware GC that honors `cacheTime` without an
+   * explicit interval. Only armed while the cache is non-empty and the tab is
+   * visible; callers gate this on a browser environment so SSR never arms a timer.
+   */
+  startAuto(intervalMs: number = DEFAULT_AUTO_INTERVAL): void {
+    this.autoMode = true
+    this.autoIntervalMs = intervalMs
+
+    if (
+      typeof document !== 'undefined' &&
+      typeof document.addEventListener === 'function' &&
+      !this.visibilityHandler
+    ) {
+      this.visibilityHandler = () => {
+        if (document.visibilityState === 'hidden') this.pause()
+        else this.ensureRunning()
+      }
+      document.addEventListener('visibilitychange', this.visibilityHandler)
+    }
+
+    this.ensureRunning()
+  }
+
+  /** Arm the auto-GC timer if it should run and isn't already. Call after cache writes. */
+  ensureRunning(): void {
+    if (!this.autoMode || this.intervalId !== null) return
+    if (this.store.size === 0) return
+    if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return
+    this.intervalId = this.timer.setInterval(() => this.autoTick(), this.autoIntervalMs)
+  }
+
+  private autoTick(): void {
+    this.sweep()
+    if (this.store.size === 0) this.pause() // ensureRunning() rearms on the next write
+  }
+
+  private pause(): void {
     if (this.intervalId !== null) {
       this.timer.clearInterval(this.intervalId)
       this.intervalId = null
+    }
+  }
+
+  stop(): void {
+    this.pause()
+  }
+
+  /** Full teardown: stop the timer and remove the visibility listener. */
+  dispose(): void {
+    this.autoMode = false
+    this.pause()
+    if (
+      this.visibilityHandler &&
+      typeof document !== 'undefined' &&
+      typeof document.removeEventListener === 'function'
+    ) {
+      document.removeEventListener('visibilitychange', this.visibilityHandler)
+      this.visibilityHandler = null
     }
   }
 

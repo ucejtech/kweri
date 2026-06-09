@@ -47,6 +47,36 @@ export function saveDevToolsSettings(s: DevToolsSettings): void {
   } catch { /* non-fatal */ }
 }
 
+/** The subset of Kweri the devtools panel drives. */
+export type DevToolsTarget = Pick<
+  Kweri,
+  | 'getDevToolsSnapshot'
+  | 'onCacheChange'
+  | 'invalidateByPath'
+  | 'invalidateQueryByKey'
+  | 'removeQueryByKey'
+>
+
+/** Supplies the panel with the active instance and the switchable instance list. */
+export interface DevToolsHost {
+  getActive(): DevToolsTarget | null
+  listInstances(): Array<{ id: string; label: string }>
+  activeId(): string | null
+  setActive(id: string): void
+  /** Fires when the active instance or the instance list changes. */
+  subscribe(cb: () => void): () => void
+}
+
+function singleHost(kweri: DevToolsTarget): DevToolsHost {
+  return {
+    getActive: () => kweri,
+    listInstances: () => [{ id: '0', label: 'kweri' }],
+    activeId: () => '0',
+    setActive: () => {},
+    subscribe: () => () => {},
+  }
+}
+
 /**
  * Mount a floating devtools panel for inspecting kweri query cache, observers, and in-flight fetches.
  * Framework-agnostic (vanilla DOM). Returns an unmount function.
@@ -55,9 +85,19 @@ export function mountKweriDevTools(
   kweri: Kweri,
   options?: MountKweriDevToolsOptions
 ): () => void {
+  return mountPanel(singleHost(kweri), options)
+}
+
+/** Mount the panel over a source (single instance, or a multi-instance registry). */
+export function mountPanel(
+  source: DevToolsHost,
+  options?: MountKweriDevToolsOptions
+): () => void {
   if (typeof document === 'undefined') {
     return () => {};
   }
+
+  const active = () => source.getActive()
 
   const settings = loadDevToolsSettings()
 
@@ -131,6 +171,29 @@ export function mountKweriDevTools(
   title.className = 'console-title';
   title.innerHTML = `KWERI_CONSOLE <span class="version">${PACKAGE_VERSION}</span>`;
   titles.append(title);
+
+  // Instance switcher — hidden unless more than one instance is registered.
+  const instanceSelect = document.createElement('select');
+  instanceSelect.className = 'instance-select';
+  instanceSelect.setAttribute('aria-label', 'Active kweri instance');
+  instanceSelect.addEventListener('change', () => {
+    source.setActive((instanceSelect as HTMLSelectElement).value);
+  });
+  const syncInstanceSelect = () => {
+    const list = source.listInstances();
+    const activeId = source.activeId();
+    instanceSelect.replaceChildren();
+    for (const inst of list) {
+      const opt = document.createElement('option');
+      opt.value = inst.id;
+      opt.textContent = inst.label;
+      if (inst.id === activeId) opt.setAttribute('selected', 'true');
+      instanceSelect.append(opt);
+    }
+    (instanceSelect as HTMLSelectElement).value = activeId ?? '';
+    instanceSelect.hidden = list.length <= 1;
+  };
+  titles.append(instanceSelect);
   brand.append(mark, titles);
 
   const closeBtn = document.createElement('button');
@@ -216,7 +279,7 @@ export function mountKweriDevTools(
   globalActionBtn.className = 'global-action-btn';
   globalActionBtn.textContent = 'INVALIDATE_ALL';
   globalActionBtn.addEventListener('click', () => {
-    kweri.invalidateByPath(/.*/);
+    active()?.invalidateByPath(/.*/);
     eventLog.unshift({
       timestamp: Date.now(),
       type: 'INVALIDATE_ALL',
@@ -409,7 +472,7 @@ export function mountKweriDevTools(
       inv.textContent = 'Invalidate';
       inv.addEventListener('click', (e: MouseEvent) => {
         e.stopPropagation();
-        kweri.invalidateQueryByKey(key);
+        active()?.invalidateQueryByKey(key);
         eventLog.unshift({
           timestamp: Date.now(),
           type: 'INVALIDATE',
@@ -425,7 +488,7 @@ export function mountKweriDevTools(
       rem.textContent = 'Remove';
       rem.addEventListener('click', (e: MouseEvent) => {
         e.stopPropagation();
-        kweri.removeQueryByKey(key);
+        active()?.removeQueryByKey(key);
         if (expandedKey === key) expandedKey = null;
         eventLog.unshift({
           timestamp: Date.now(),
@@ -658,7 +721,7 @@ export function mountKweriDevTools(
   };
 
   const render = () => {
-    const snap = kweri.getDevToolsSnapshot();
+    const snap = active()?.getDevToolsSnapshot() ?? { cache: [], observers: [], inFlight: [] };
     const keys = collectRowKeys(snap);
     const filteredKeys = filterKeys(keys, searchTerm);
     const totalObs = snap.observers.reduce((a, o) => a + o.count, 0);
@@ -778,7 +841,7 @@ export function mountKweriDevTools(
     render();
   };
 
-  const unsub = kweri.onCacheChange((key, entry) => {
+  const onCacheChange = (key: string, entry: any) => {
     if (entry) {
       eventLog.unshift({
         timestamp: Date.now(),
@@ -794,13 +857,24 @@ export function mountKweriDevTools(
               ? `Request failed`
               : 'Loading...'
       });
-      // Keep log size manageable
       if (eventLog.length > 200) {
         eventLog.splice(150);
       }
     }
     requestRender();
+  };
+
+  let unsubCache = active()?.onCacheChange(onCacheChange) ?? (() => {});
+
+  // Re-bind to the active instance and refresh the switcher when the registry changes.
+  const unsubHost = source.subscribe(() => {
+    unsubCache();
+    unsubCache = active()?.onCacheChange(onCacheChange) ?? (() => {});
+    syncInstanceSelect();
+    requestRender();
   });
+  syncInstanceSelect();
+
   const poll = window.setInterval(() => {
     requestRender();
   }, 2000);
@@ -808,7 +882,8 @@ export function mountKweriDevTools(
   render();
 
   return () => {
-    unsub();
+    unsubCache();
+    unsubHost();
     window.clearInterval(poll);
     window.clearTimeout(scrollQuietTimer);
     host.remove();

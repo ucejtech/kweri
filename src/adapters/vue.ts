@@ -18,6 +18,9 @@ export interface VueEffectAPI {
 
 export interface VueQueryOptions {
   enabled?: VueRef<boolean> | boolean;
+  staleTime?: number;
+  cacheTime?: number;
+  maxRetries?: number;
 }
 
 export interface VueQueryResult<TData = unknown, TError = unknown> {
@@ -59,6 +62,11 @@ export function createVueQueryHooks(vue: VueEffectAPI, kweri: Kweri) {
     let unsubscribe: (() => void) | undefined;
 
     const enabled = typeof options.enabled === 'object' ? options.enabled : vue.ref(options.enabled ?? true);
+    const queryOpts = {
+      staleTime: options.staleTime,
+      cacheTime: options.cacheTime,
+      maxRetries: options.maxRetries,
+    };
 
     // Intentionally NOT async: the only async work (the background query) is
     // fire-and-forget with its own .catch below. Marking this async would wrap
@@ -83,7 +91,7 @@ export function createVueQueryHooks(vue: VueEffectAPI, kweri: Kweri) {
         isError.value = entry.status === 'error';
       });
 
-      kweri.query(endpoint, currentParams).catch((err) => {
+      kweri.query(endpoint, currentParams, queryOpts).catch((err) => {
         if (typeof console !== 'undefined') {
           console.error('[kweri] background query failed:', err)
         }
@@ -123,7 +131,7 @@ export function createVueQueryHooks(vue: VueEffectAPI, kweri: Kweri) {
     const refetch = async () => {
       const currentParams = getCurrentParams();
       kweri.invalidateQuery(endpoint, currentParams);
-      await kweri.query(endpoint, currentParams);
+      await kweri.query(endpoint, currentParams, queryOpts);
     };
 
     return {
