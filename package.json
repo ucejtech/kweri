@@ -6,6 +6,14 @@
     "name": "Jeremiah Uchenna",
     "url": "https://github.com/ucejtech"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ucejtech/kweri.git"
+  },
+  "homepage": "https://kweri.uchenna.xyz",
+  "bugs": {
+    "url": "https://github.com/ucejtech/kweri/issues"
+  },
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
