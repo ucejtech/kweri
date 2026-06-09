@@ -1,5 +1,13 @@
 # kweri
 
+## [0.4.1](https://github.com/ucejtech/kweri/compare/kweri-v0.4.0...kweri-v0.4.1) (2026-06-09)
+
+
+### Bug Fixes
+
+* erasable syntax in generated client code ([e02be84](https://github.com/ucejtech/kweri/commit/e02be8410a48a8826df3cde21701b355e4b4004a))
+* erasable syntax in generated client code ([f79d1e8](https://github.com/ucejtech/kweri/commit/f79d1e892da3d76a920950cf969354e9c8b4afa7))
+
 ## [0.4.0](https://github.com/ucejtech/kweri/compare/kweri-v0.3.0...kweri-v0.4.0) (2026-06-09)
 
 
