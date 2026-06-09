@@ -1,0 +1,6 @@
+# Generator dev artifacts — not needed by consumers of the published package.
+# (Subdirectory .npmignore is honored even when package.json "files" is set.)
+lib/*.test.ts
+lib/__snapshots__
+lib/__fixtures__
+lib/__generated__
