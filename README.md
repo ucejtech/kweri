@@ -1,9 +1,9 @@
 
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="logo/dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="logo/light.svg">
-  <img src="logo/light.svg" alt="kweri" width="100" />
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/ucejtech/kweri/main/logo/dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/ucejtech/kweri/main/logo/light.svg">
+  <img src="https://raw.githubusercontent.com/ucejtech/kweri/main/logo/light.svg" alt="kweri" width="100" />
 </picture>
 
 **A framework-agnostic API client with stale-while-revalidate caching.**
