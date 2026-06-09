@@ -36,12 +36,8 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # misc
 misc/*
 
-# kweri generator temp (deleted after each run)
-.kweri-temp/
-
-# kweri generated output (run kweri-gen to populate)
-.generated/
-.kweri/
+# kweri generator runtime-test artifact
+cli/lib/__generated__/
 
 # auto-generated version from package.json
 src/version.ts

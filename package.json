@@ -1,6 +1,6 @@
 {
   "name": "kweri",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "author": {
     "name": "Jeremiah Uchenna",
@@ -18,11 +18,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
-    },
-    "./generated": {
-      "types": "./.generated/client.d.ts",
-      "import": "./.generated/client.js",
-      "default": "./.generated/client.js"
     }
   },
   "scripts": {
@@ -39,8 +34,7 @@
     "dist",
     "cli",
     "logo",
-    "tsconfig.build.json",
-    "tsconfig.generated.json"
+    "tsconfig.build.json"
   ],
   "dependencies": {
     "@sinclair/typebox": "^0.34.0",
