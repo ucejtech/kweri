@@ -43,7 +43,6 @@
   "files": [
     "dist",
     "cli",
-    "logo",
     "tsconfig.build.json"
   ],
   "dependencies": {
