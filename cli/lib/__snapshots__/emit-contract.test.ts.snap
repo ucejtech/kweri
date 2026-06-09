@@ -1,4 +1,4 @@
-// Bun Snapshot v1, https://goo.gl/fbAQLP
+// Bun Snapshot v1, https://bun.sh/docs/test/snapshots
 
 exports[`emitContract (integration with typed-openapi) emits schemas + EndpointByMethod, no client, no @ts-nocheck 1`] = `
 "
