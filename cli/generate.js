@@ -6,6 +6,7 @@ import { dirname, resolve } from 'path';
 import { buildIR } from './lib/ir.js';
 import { emitContract } from './lib/emit-contract.js';
 import { emitClient } from './lib/emit-client.js';
+import { formatSource } from './lib/format.js';
 
 const { values, positionals } = parseArgs({
   args: process.argv.slice(2),
@@ -76,7 +77,7 @@ async function main() {
     console.log(`🔧 Generating contract + Kweri-routed client`);
     const contract = emitContract(mapped);
     const client = emitClient(endpoints);
-    const output = `${contract}\n\n${client}\n`;
+    const output = await formatSource(`${contract}\n\n${client}\n`);
 
     const outDir = resolve(process.cwd(), values.out);
     const outFile = resolve(outDir, 'client.ts');
