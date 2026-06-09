@@ -35,10 +35,13 @@ Kweri ships TypeBox as a dependency and re-exports `Type` and `Static` from its 
 
 ```json
 {
-  ".":           "dist/index.js",      // main entry — Kweri class, adapters, utilities
-  "./generated": ".generated/client.js" // generated OpenAPI client (after running kweri-gen)
+  ".": "dist/index.js"  // main entry — Kweri class, adapters, utilities
 }
 ```
+
+Generated OpenAPI clients are written into **your** source tree (default
+`src/api/kweri/client.ts`) and imported from there — not from the `kweri`
+package. See the [kweri-gen CLI reference](/cli/kweri-gen).
 
 ## TypeScript configuration
 
@@ -61,12 +64,12 @@ The `kweri-gen` CLI is included in the package and available as a local binary:
 
 ```bash
 # Run directly via npx
-npx kweri-gen https://api.example.com/openapi.json
+npx kweri-gen https://api.example.com/openapi.json --out src/api/kweri
 
 # Or add a script to package.json
 {
   "scripts": {
-    "generate-api": "kweri-gen https://api.example.com/openapi.json"
+    "gen": "kweri-gen https://api.example.com/openapi.json --out src/api/kweri"
   }
 }
 ```

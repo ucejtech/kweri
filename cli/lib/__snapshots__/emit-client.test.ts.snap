@@ -1,0 +1,28 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`emitClient emits a GeneratedClient + createClient that never calls fetch directly 1`] = `
+"// ---------------------------------------------------------------------------
+// Kweri-routed client — every call goes through the kweri runtime
+// (cache, stale-while-revalidate, request deduplication).
+// ---------------------------------------------------------------------------
+
+function __endpoint(method: string, path: string): Endpoint {
+  return { method: method as Endpoint['method'], path, params: Type.Any(), response: Type.Unknown() }
+}
+
+export class GeneratedClient {
+  constructor(private kweri: Kweri) {}
+
+  async getUser(params: Static<typeof get_GetUser>['parameters']): Promise<Static<typeof get_GetUser>['responses'][200]> {
+    return this.kweri.query(__endpoint('GET', '/users/{id}'), params as any) as Promise<Static<typeof get_GetUser>['responses'][200]>
+  }
+
+  async createUser(params: Static<typeof post_CreateUser>['parameters']): Promise<Static<typeof post_CreateUser>['responses'][201]> {
+    return this.kweri.mutate(__endpoint('POST', '/users'), params as any) as Promise<Static<typeof post_CreateUser>['responses'][201]>
+  }
+}
+
+export function createClient(kweri: Kweri): GeneratedClient {
+  return new GeneratedClient(kweri)
+}"
+`;

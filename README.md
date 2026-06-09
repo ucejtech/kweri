@@ -20,13 +20,27 @@ bun add kweri
 
 ## Quick start
 
-**With an OpenAPI spec**, generate typed hooks from your spec:
+**With an OpenAPI spec**, generate a typed client into your own source tree:
 
 ```bash
-npx kweri-gen https://api.example.com/openapi.json
+npx kweri-gen https://api.example.com/openapi.json --out src/api/kweri
 ```
 
+This writes `src/api/kweri/client.ts` — commit it like any other source file. It
+exports an `EndpointByMethod` map for path-based hooks plus a `createClient`
+whose every call runs through kweri (cache, dedup, stale-while-revalidate):
+
 ```ts
+import { Kweri } from 'kweri'
+import { createClient, EndpointByMethod } from './api/kweri/client'
+
+const kweri = new Kweri({ baseURL: 'https://api.example.com' })
+
+// Typed client:
+const api = createClient(kweri)
+await api.getUser({ path: { id: '123' } })
+
+// Or path-based hooks:
 export const { useGet, usePost, usePut, usePatch, useDelete } =
   createReactPathHooks(useSyncExternalStore, kweri, EndpointByMethod)
 ```

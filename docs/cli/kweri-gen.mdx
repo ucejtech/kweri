@@ -6,11 +6,15 @@ icon: wand-magic-sparkles
 
 ## Overview
 
-`kweri-gen` takes an OpenAPI 3.x specification and generates a `.generated/client.js` file containing:
+`kweri-gen` takes an OpenAPI 3.x specification and generates a single
+`client.ts` file **into your own source tree**, containing:
 
-- **TypeBox schemas** for every endpoint (method, path, parameters, responses)
-- **Method-grouped maps** (`GetEndpoints`, `PostEndpoints`, etc.)
+- **TypeBox schemas** for every component and endpoint (method, path, parameters, responses)
 - **`EndpointByMethod`** — the unified map used by `createReactPathHooks` and `createVuePathHooks`
+- **`createClient`** — a typed client whose every method runs through the kweri runtime (cache, request dedup, stale-while-revalidate)
+
+The output is plain TypeScript that your own build compiles. Commit it like any
+other source file.
 
 ## Usage
 
@@ -21,108 +25,104 @@ Arguments:
   <openapi-source>    URL or local file path to an OpenAPI JSON or YAML spec
 
 Options:
-  -b, --bundle        Bundle $ref pointers before generating
-                      (use when your spec has external $refs)
+  -o, --out <dir>     Output directory (default: src/api/kweri)
   -h, --help          Show help
 ```
+
+External and internal `$ref` pointers are resolved automatically — there is no
+separate bundling flag.
 
 ### Examples
 
 ```bash
-# From a URL
+# From a URL (writes src/api/kweri/client.ts)
 kweri-gen https://api.example.com/openapi.json
 
-# From a local file
-kweri-gen ./openapi.json
+# From a local file, into a custom directory
+kweri-gen ./openapi.json --out src/generated
 
-# With bundling for complex specs
-kweri-gen https://petstore3.swagger.io/api/v3/openapi.json --bundle
-
-# As an npm script
+# A spec with external $refs (resolved automatically)
+kweri-gen https://petstore3.swagger.io/api/v3/openapi.json
 ```
 
 ```json package.json
 {
   "scripts": {
-    "generate-api": "kweri-gen https://api.example.com/openapi.json"
+    "gen": "kweri-gen https://api.example.com/openapi.json --out src/api/kweri"
   }
 }
 ```
 
+<Note>
+Run `kweri-gen` as an explicit `gen` script and commit the output — **not** as a
+`postinstall` hook. Writing into your own tree means the generated client
+survives reinstalls and works under npm, pnpm, and Yarn PnP.
+</Note>
+
 ## Output
 
-The generated file is written to `.generated/client.js` (relative to `cwd`). It is importable via the `kweri/generated` package export.
+The generated file is written to `<out>/client.ts` (default
+`src/api/kweri/client.ts`), relative to the current working directory.
 
 ### File structure
 
 ```ts
-// .generated/client.js (abbreviated)
+// src/api/kweri/client.ts (abbreviated)
 
-import { Type, type Static } from "kweri"
+import { Type, type Static, type Endpoint, type Kweri } from "kweri"
 
 // One TypeBox schema per endpoint
-export type get__users = Static<typeof get__users>
-export const get__users = Type.Object({
+export const get_GetUser = Type.Object({
   method:     Type.Literal("GET"),
-  path:       Type.Literal("/users"),
-  parameters: Type.Object({ ... }),
-  responses:  Type.Object({ 200: UserList })
+  path:       Type.Literal("/users/{id}"),
+  parameters: Type.Object({ path: Type.Object({ id: Type.String() }) }),
+  responses:  Type.Object({ 200: User })
 })
 
-export type post__users = Static<typeof post__users>
-export const post__users = Type.Object({
-  method:     Type.Literal("POST"),
-  path:       Type.Literal("/users"),
-  parameters: Type.Object({ body: UserCreate }),
-  responses:  Type.Object({ 201: User })
-})
-
-// ...more schemas...
-
-// Method-grouped maps
-export const GetEndpoints = {
-  '/users':    get__users,
-  '/users/{id}': get__users_id,
-  // ...
-}
-
-export const PostEndpoints = {
-  '/users': post__users,
-  // ...
-}
-
-// ...PutEndpoints, PatchEndpoints, DeleteEndpoints...
-
-// Unified map used by path hooks
+// Unified map used by the path hooks
 export const EndpointByMethod = {
-  get:    GetEndpoints,
-  post:   PostEndpoints,
-  put:    PutEndpoints,
-  patch:  PatchEndpoints,
-  delete: DeleteEndpoints,
+  get:    { "/users": get_ListUsers, "/users/{id}": get_GetUser },
+  post:   { "/users": post_CreateUser },
+  delete: { "/users/{id}": delete_DeleteUser },
 }
+
+// Typed client — every call routes through kweri
+export class GeneratedClient {
+  constructor(private kweri: Kweri) {}
+  async getUser(params: Static<typeof get_GetUser>['parameters']): Promise<Static<typeof get_GetUser>['responses'][200]> {
+    return this.kweri.query(__endpoint('GET', '/users/{id}'), params as any) as any
+  }
+  // ...
+}
+
+export function createClient(kweri: Kweri): GeneratedClient { /* ... */ }
 ```
 
-## Importing the generated client
+## Using the generated client
+
+Because the client routes through kweri, every call is cached and deduplicated:
 
 ```ts
-import { EndpointByMethod } from 'kweri/generated'
-```
+import { Kweri } from 'kweri'
+import { createClient } from './api/kweri/client'
 
-<Note>
-The `kweri/generated` import path is configured in kweri's `package.json` exports. It points to `.generated/client.js`. Run `kweri-gen` at least once before importing from it.
-</Note>
+const kweri = new Kweri({ baseURL: 'https://api.example.com' })
+const api = createClient(kweri)
+
+const user = await api.getUser({ path: { id: '123' } })
+```
 
 ## Using with path-based hooks
 
-The generated `EndpointByMethod` is designed to work directly with `createReactPathHooks` and `createVuePathHooks`:
+The generated `EndpointByMethod` works directly with `createReactPathHooks` and
+`createVuePathHooks`. Import it from your generated file:
 
 <Tabs>
   <Tab title="React">
     ```ts
     import { useSyncExternalStore } from 'react'
     import { createReactPathHooks } from 'kweri'
-    import { EndpointByMethod } from 'kweri/generated'
+    import { EndpointByMethod } from './api/kweri/client'
     import { kweri } from '@/lib/kweri'
 
     export const { useGet, usePost, usePut, usePatch, useDelete } =
@@ -133,7 +133,7 @@ The generated `EndpointByMethod` is designed to work directly with `createReactP
     ```ts
     import { ref, watch, onUnmounted } from 'vue'
     import { createVuePathHooks } from 'kweri'
-    import { EndpointByMethod } from 'kweri/generated'
+    import { EndpointByMethod } from './api/kweri/client'
     import { kweri } from '@/lib/kweri'
 
     export const { useGet, usePost, usePut, usePatch, useDelete } =
@@ -147,9 +147,9 @@ The generated `EndpointByMethod` is designed to work directly with `createReactP
 When you call `useGet('/users', {})`, the path hook:
 
 1. Lowercases the method: `'get'`
-2. Looks up `EndpointByMethod['get']['/users']` → the TypeBox schema
+2. Looks up `EndpointByMethod['get']['/users']` → the TypeBox schema (for types)
 3. Extracts the `responses.200` (or `responses.201`) schema as the response type
-4. Constructs a temporary `Endpoint` object with `params: Type.Any()` (skips runtime param validation)
+4. Constructs a temporary `Endpoint` with `params: Type.Any()` (skips runtime param validation)
 5. Delegates to the underlying `useQuery`
 
 If the path isn't found in the map, the hook throws:
@@ -157,25 +157,9 @@ If the path isn't found in the map, the hook throws:
 [kweri] No endpoint registered for GET /unknown-path
 ```
 
-## --bundle flag
-
-Some OpenAPI specs use `$ref` pointers to external files or URLs:
-
-```yaml
-components:
-  schemas:
-    User:
-      $ref: './schemas/user.yaml'
-```
-
-Pass `--bundle` to dereference all `$ref` pointers before generating:
-
-```bash
-kweri-gen ./openapi.yaml --bundle
-```
-
 ## Regenerating
 
-Re-run `kweri-gen` whenever your API spec changes. The output file is completely regenerated each time — don't edit `.generated/client.js` manually, changes will be overwritten.
-
-Add `.generated/` to your `.gitignore` if you prefer to generate on-the-fly, or commit it if you want deterministic builds without needing the API to be available.
+Re-run `kweri-gen` whenever your API spec changes. The output file is completely
+regenerated each time — don't edit `client.ts` by hand, your changes will be
+overwritten. Commit the regenerated file so builds are deterministic and don't
+depend on the API being reachable at build time.

@@ -1,0 +1,123 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`emitContract (integration with typed-openapi) emits schemas + EndpointByMethod, no client, no @ts-nocheck 1`] = `
+"
+  import { Type, type Static, type Endpoint, type Kweri } from "kweri";
+
+
+export type User = Static<typeof User>
+export const User = Type.Object({
+id: Type.String(),
+name: Type.String(),
+email: Type.Optional(Type.Union([
+Type.String(),
+Type.Undefined()
+]))
+})
+
+export type NewUser = Static<typeof NewUser>
+export const NewUser = Type.Object({
+name: Type.String(),
+email: Type.Optional(Type.Union([
+Type.String(),
+Type.Undefined()
+]))
+})
+
+type __ENDPOINTS_START__ = Static<typeof __ENDPOINTS_START__>
+const __ENDPOINTS_START__ = Type.Object({
+
+})
+
+export type get_ListUsers = Static<typeof get_ListUsers>
+export const get_ListUsers = Type.Object({
+method: Type.Literal("GET"),
+path: Type.Literal("/users"),
+requestFormat: Type.Literal("json"),
+parameters: Type.Object({
+query: Type.Partial(Type.Object({
+limit: Type.Number(),
+active: Type.Boolean(),
+sort: Type.Union([
+Type.Literal("asc"),
+Type.Literal("desc")
+]),
+tags: Type.Array(Type.String())
+}))
+}),
+responses: Type.Object({
+200: Type.Array(User)
+})
+})
+
+export type post_CreateUser = Static<typeof post_CreateUser>
+export const post_CreateUser = Type.Object({
+method: Type.Literal("POST"),
+path: Type.Literal("/users"),
+requestFormat: Type.Literal("json"),
+parameters: Type.Object({
+body: NewUser
+}),
+responses: Type.Object({
+201: User
+})
+})
+
+export type get_GetUser = Static<typeof get_GetUser>
+export const get_GetUser = Type.Object({
+method: Type.Literal("GET"),
+path: Type.Literal("/users/{id}"),
+requestFormat: Type.Literal("json"),
+parameters: Type.Object({
+path: Type.Object({
+id: Type.String()
+})
+}),
+responses: Type.Object({
+200: User
+})
+})
+
+export type delete_DeleteUser = Static<typeof delete_DeleteUser>
+export const delete_DeleteUser = Type.Object({
+method: Type.Literal("DELETE"),
+path: Type.Literal("/users/{id}"),
+requestFormat: Type.Literal("json"),
+parameters: Type.Object({
+path: Type.Object({
+id: Type.String()
+})
+}),
+responses: Type.Object({
+204: Type.Unknown()
+})
+})
+
+type __ENDPOINTS_END__ = Static<typeof __ENDPOINTS_END__>
+const __ENDPOINTS_END__ = Type.Object({
+
+})
+  
+     // <EndpointByMethod>
+     export const EndpointByMethod = {
+     get: {
+           "/users": get_ListUsers,
+"/users/{id}": get_GetUser
+         },
+post: {
+           "/users": post_CreateUser
+         },
+delete: {
+           "/users/{id}": delete_DeleteUser
+         }
+     }
+     export type EndpointByMethod = typeof EndpointByMethod;
+     // </EndpointByMethod>
+     
+
+    // <EndpointByMethod.Shorthands>
+    export type GetEndpoints = EndpointByMethod["get"]
+export type PostEndpoints = EndpointByMethod["post"]
+export type DeleteEndpoints = EndpointByMethod["delete"]
+    // </EndpointByMethod.Shorthands>"
+`;

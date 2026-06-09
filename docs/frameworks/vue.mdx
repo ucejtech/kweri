@@ -18,7 +18,7 @@ After running `kweri-gen`, bind composables to the generated `EndpointByMethod` 
 // src/composables/useKweri.ts
 import { ref, watch, onUnmounted } from 'vue'
 import { createVuePathHooks } from 'kweri'
-import { EndpointByMethod } from 'kweri/generated'
+import { EndpointByMethod } from '@/api/kweri/client'
 import { kweri } from '@/lib/kweri'
 
 export const { useGet, usePost, usePut, usePatch, useDelete } =

@@ -18,7 +18,7 @@ After running `kweri-gen`, bind hooks to the generated `EndpointByMethod` map. Y
 // src/hooks/useKweri.ts
 import { useSyncExternalStore } from 'react'
 import { createReactPathHooks } from 'kweri'
-import { EndpointByMethod } from 'kweri/generated'
+import { EndpointByMethod } from '@/api/kweri/client'
 import { kweri } from '@/lib/kweri'
 
 export const { useGet, usePost, usePut, usePatch, useDelete } =
