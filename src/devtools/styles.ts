@@ -70,8 +70,8 @@ export const devtoolsCss = `
   z-index: 999999;
   font-size: 13px;
 }
-.wrap.br { bottom: 20px; right: 20px; }
-.wrap.bl { bottom: 20px; left: 20px; }
+.wrap.br { bottom: 20px; right: 20px; display: flex; flex-direction: column; align-items: flex-end; }
+.wrap.bl { bottom: 20px; left: 20px; display: flex; flex-direction: column; align-items: flex-start; }
 
 /* --- Side-docked modes --- */
 .wrap.dock-right,
