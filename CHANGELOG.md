@@ -1,5 +1,13 @@
 # kweri
 
+## [0.5.1](https://github.com/ucejtech/kweri/compare/kweri-v0.5.0...kweri-v0.5.1) (2026-06-10)
+
+
+### Bug Fixes
+
+* **styles:** update wrap classes to use flexbox for better alignment ([6397ec5](https://github.com/ucejtech/kweri/commit/6397ec5d9b78da4b1186b918ce44d2d834361b59))
+* **styles:** update wrap classes to use flexbox for better alignment ([944ed26](https://github.com/ucejtech/kweri/commit/944ed26a914a993acf76831bc3c2fbd99604fa83))
+
 ## [0.5.0](https://github.com/ucejtech/kweri/compare/kweri-v0.4.4...kweri-v0.5.0) (2026-06-10)
 
 
