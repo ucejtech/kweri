@@ -12,9 +12,19 @@ const KWERI_IMPORT =
 const TYPEBOX_IMPORT_RE =
   /import\s*\{[^}]*\}\s*from\s*['"]@sinclair\/typebox['"];?/;
 
+// typed-openapi emits unused, non-exported section markers; with no @ts-nocheck
+// they trip `noUnusedLocals` in consumer builds.
+const ENDPOINT_MARKER_RE =
+  /(?:export\s+)?type\s+__ENDPOINTS_(?:START|END)__\s*=\s*Static<typeof\s+__ENDPOINTS_(?:START|END)__>\s*[\r\n]+(?:export\s+)?const\s+__ENDPOINTS_(?:START|END)__\s*=\s*Type\.Object\(\{[\s\S]*?\}\)\s*/g;
+
 /** Pure: rewrite the TypeBox import to kweri's. */
 export function rewriteImports(source) {
   return source.replace(TYPEBOX_IMPORT_RE, KWERI_IMPORT);
+}
+
+/** Pure: remove typed-openapi's dead `__ENDPOINTS_START__/END__` marker declarations. */
+export function stripMarkers(source) {
+  return source.replace(ENDPOINT_MARKER_RE, '');
 }
 
 /**
@@ -30,5 +40,5 @@ export function emitContract(mapped) {
     runtime: 'typebox',
     includeClient: false
   });
-  return rewriteImports(raw).trimEnd();
+  return stripMarkers(rewriteImports(raw)).trimEnd();
 }

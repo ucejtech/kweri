@@ -24,11 +24,6 @@ Type.Undefined()
 ]))
 })
 
-type __ENDPOINTS_START__ = Static<typeof __ENDPOINTS_START__>
-const __ENDPOINTS_START__ = Type.Object({
-
-})
-
 export type get_ListUsers = Static<typeof get_ListUsers>
 export const get_ListUsers = Type.Object({
 method: Type.Literal("GET"),
@@ -93,12 +88,7 @@ responses: Type.Object({
 })
 })
 
-type __ENDPOINTS_END__ = Static<typeof __ENDPOINTS_END__>
-const __ENDPOINTS_END__ = Type.Object({
-
-})
-  
-     // <EndpointByMethod>
+// <EndpointByMethod>
      export const EndpointByMethod = {
      get: {
            "/users": get_ListUsers,

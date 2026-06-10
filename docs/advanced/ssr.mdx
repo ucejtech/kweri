@@ -1,0 +1,90 @@
+---
+title: SSR
+description: Use kweri safely with server-side rendering (Nuxt, Vue SSR).
+icon: server
+---
+
+## The rule: one instance per request
+
+A `Kweri` instance owns a cache. On the server, a **module-level singleton is shared across every request**, so one user's data bleeds into another's. The fix is to create instances **per request** and provide them down the component tree — never at module scope.
+
+<Warning>
+`export const kweri = new Kweri(...)` (or a module-level `createKweriClients`) is safe in a client SPA but **unsafe in SSR**. Create instances inside a request scope instead.
+</Warning>
+
+## Nuxt
+
+A Nuxt plugin runs once per request on the server (and once on the client), which is the right place to instantiate.
+
+```ts
+// plugins/kweri.ts
+import { createKweriClients, createVuePathHooks, presets } from 'kweri'
+import { ref, watch, onUnmounted } from 'vue'
+import { EndpointByMethod as AuthEndpoints }   from '~/lib/api/auth'
+import { EndpointByMethod as StocksEndpoints } from '~/lib/api/stocks'
+
+export default defineNuxtPlugin((nuxtApp) => {
+  const cfg = useRuntimeConfig()
+
+  const clients = createKweriClients(
+    {
+      auth:   { baseURL: cfg.public.authUrl },
+      stocks: { baseURL: cfg.public.stocksUrl },
+    },
+    presets.ssr,
+  )
+
+  const vue = { ref, watch, onUnmounted }
+  const api = {
+    auth:   createVuePathHooks(vue, clients.auth,   AuthEndpoints),
+    stocks: createVuePathHooks(vue, clients.stocks, StocksEndpoints),
+  }
+
+  if (import.meta.server) {
+    nuxtApp.hook('app:rendered', () => clients.destroyAll())
+  }
+
+  return { provide: { kweri: api } }
+})
+```
+
+```ts
+// composables/useKweri.ts
+export const useKweri = () => useNuxtApp().$kweri
+```
+
+```vue
+<script setup lang="ts">
+const { auth, stocks } = useKweri()
+const { data } = auth.useGet('/me', {})
+</script>
+```
+
+### Why each piece
+
+- **`createKweriClients` and `createVuePathHooks` both live in the plugin**, not at module scope — the hook sets bind to a specific instance, so they must be request-scoped too. They don't touch `onUnmounted`/`watch` until a component calls a hook in `setup`, so this is safe.
+- **`presets.ssr`** uses a longer `staleTime` and `maxRetries: 0`, and sets no devtools.
+- **`destroyAll()` on `app:rendered`** releases the request's instances. It's optional — kweri's automatic GC only runs in the browser (it's gated on `document`), so no server-side timer is ever started.
+
+## Other frameworks
+
+The principle is identical: call `createKweriClients(...)` per request inside your handler/loader and pass it through context (Vue `app.provide`, a request-scoped DI container, etc.). Anything that creates an instance must run **inside** the request.
+
+## Data transfer (hydration)
+
+kweri does not yet ship built-in SSR cache transfer (serialize on the server → embed in the payload → restore on the client). Without it, the server fetches and renders, then the **client refetches** the same data on hydration — correct, just not optimal.
+
+To avoid the refetch today, bridge manually through your framework's payload (e.g. Nuxt `useState`):
+
+```ts
+// server: after data is fetched
+const cached = clients.auth.getCachedData(getMe, {})
+const state = useState('me', () => cached)
+
+// client: before first render
+clients.auth.setCachedData(getMe, {}, useState('me').value)
+```
+
+<Info>
+First-class `dehydrate()` / `hydrate()` helpers are planned. Until then, the manual bridge above (or simply accepting the client refetch) is the recommended approach.
+</Info>
