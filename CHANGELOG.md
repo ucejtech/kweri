@@ -1,5 +1,13 @@
 # kweri
 
+## [0.4.4](https://github.com/ucejtech/kweri/compare/kweri-v0.4.3...kweri-v0.4.4) (2026-06-10)
+
+
+### Bug Fixes
+
+* enhance kweri-gen with auto-generated banner, strip unused marke… ([029533e](https://github.com/ucejtech/kweri/commit/029533eed4e02a7db285bdef14e97314c66eeada))
+* enhance kweri-gen with auto-generated banner, strip unused markers, and add SSR documentation ([ef8cdb4](https://github.com/ucejtech/kweri/commit/ef8cdb48399ce6ad16c399437b6bad4e3d959c41))
+
 ## [0.4.3](https://github.com/ucejtech/kweri/compare/kweri-v0.4.2...kweri-v0.4.3) (2026-06-09)
 
 
