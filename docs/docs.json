@@ -60,6 +60,13 @@
         ]
       },
       {
+        "group": "Guides",
+        "icon": "book-open",
+        "pages": [
+          "guides/recipes"
+        ]
+      },
+      {
         "group": "Advanced",
         "icon": "sliders",
         "pages": [
