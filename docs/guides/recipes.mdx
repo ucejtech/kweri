@@ -1,0 +1,228 @@
+---
+title: Recipes
+description: Complete, copy-pasteable examples for common real-world patterns.
+icon: book-open
+---
+
+End-to-end examples for the patterns most apps need. They use Vue (path hooks); React is the same shape with plain values instead of refs.
+
+## Multiple APIs
+
+One instance per API, shared config via `createKweriClients`, one set of hooks per API. DevTools share a single switchable panel.
+
+```ts
+// src/lib/kweri.ts
+import { createKweriClients, presets } from 'kweri'
+import { EndpointByMethod as AuthEndpoints }   from '@/api/auth'
+import { EndpointByMethod as StocksEndpoints } from '@/api/stocks'
+
+export const clients = createKweriClients(
+  {
+    auth:   { baseURL: import.meta.env.VITE_AUTH_URL,   enableDevTools: true, devtools: { label: 'Auth' } },
+    stocks: { baseURL: import.meta.env.VITE_STOCKS_URL, enableDevTools: true, devtools: { label: 'Stocks' } },
+  },
+  presets.spa,
+)
+export const { auth, stocks } = clients
+export const Endpoints = { auth: AuthEndpoints, stocks: StocksEndpoints }
+```
+
+```ts
+// src/composables/useKweri.ts
+import { createVuePathHooks } from 'kweri'
+import { ref, watch, onUnmounted } from 'vue'
+import { auth, stocks, Endpoints } from '@/lib/kweri'
+
+const vue = { ref, watch, onUnmounted }
+const api = {
+  auth:   createVuePathHooks(vue, auth,   Endpoints.auth),
+  stocks: createVuePathHooks(vue, stocks, Endpoints.stocks),
+}
+export const useKweri = () => api
+```
+
+```vue
+<script setup lang="ts">
+import { useKweri } from '@/composables/useKweri'
+const { auth, stocks } = useKweri()
+
+const me = auth.useGet('/me', {})
+const prices = stocks.useGet('/prices', {})
+</script>
+```
+
+## Mutation with error handling
+
+Because the default fetcher throws on non-2xx, a failed write lands in `catch` with `err.status` and `err.detail`.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useKweri } from '@/composables/useKweri'
+import { auth as authClient } from '@/lib/kweri'
+
+const { auth } = useKweri()
+const create = auth.usePost('/users')
+const error = ref<string | null>(null)
+
+async function submit(body: { name: string; email: string }) {
+  error.value = null
+  try {
+    await create.mutateAsync({ body })
+    authClient.invalidateByPath('/users')
+  } catch (err) {
+    const e = err as { status?: number; detail?: any }
+    error.value = e?.status === 409
+      ? 'That email is already taken.'
+      : e?.detail?.message ?? 'Something went wrong.'
+  }
+}
+</script>
+
+<template>
+  <UserForm :loading="create.isLoading.value" @submit="submit" />
+  <p v-if="error" role="alert">{{ error }}</p>
+</template>
+```
+
+## Error handling without try/catch
+
+Queries surface errors reactively, and `mutate()` (fire-and-forget) sets `isError`/`error` without throwing — so most UIs need no `try/catch`.
+
+```vue
+<script setup lang="ts">
+import { watch } from 'vue'
+import { useKweri } from '@/composables/useKweri'
+import { auth as authClient } from '@/lib/kweri'
+
+const { auth } = useKweri()
+const create = auth.usePost('/users')
+
+// Run a side-effect on success without awaiting.
+watch(create.isSuccess, (ok) => { if (ok) authClient.invalidateByPath('/users') })
+</script>
+
+<template>
+  <button @click="create.mutate({ body: form })" :disabled="create.isLoading.value">Save</button>
+  <p v-if="create.isError.value" role="alert">{{ create.error.value?.message }}</p>
+  <button v-if="create.isError.value" @click="create.reset()">Dismiss</button>
+</template>
+```
+
+For success/error callbacks without any reactive state, use the low-level `kweri.mutate(endpoint, params, { onSuccess, onError })`.
+
+## List with loading / error / empty states
+
+```vue
+<script setup lang="ts">
+import { useKweri } from '@/composables/useKweri'
+const { auth } = useKweri()
+const { data, isLoading, isError, error, refetch } = auth.useGet('/users', {})
+</script>
+
+<template>
+  <p v-if="isLoading.value">Loading…</p>
+  <div v-else-if="isError.value" role="alert">
+    {{ error.value?.message }} <button @click="refetch()">Retry</button>
+  </div>
+  <p v-else-if="!data.value?.length">No users yet.</p>
+  <ul v-else>
+    <li v-for="u in data.value" :key="u.id">{{ u.name }}</li>
+  </ul>
+</template>
+```
+
+## Optimistic update
+
+Snapshot the cache, apply the change immediately, roll back on failure. (Path hooks don't take lifecycle callbacks, so do it inline.)
+
+```vue
+<script setup lang="ts">
+import { useKweri } from '@/composables/useKweri'
+import { auth as authClient } from '@/lib/kweri'
+
+const { auth } = useKweri()
+const users = auth.useGet('/users', {})
+const remove = auth.useDelete('/users/{id}')
+
+async function deleteUser(id: number) {
+  const prev = users.data.value ?? []
+  users.data.value = prev.filter(u => u.id !== id)   // optimistic
+  try {
+    await remove.mutateAsync({ path: { id: String(id) } })
+    authClient.invalidateByPath('/users')             // reconcile with server
+  } catch {
+    users.data.value = prev                           // rollback
+  }
+}
+</script>
+```
+
+## Dependent queries
+
+Wait for one query before firing another with `enabled`. Pass the params as a `computed` so the dependent query re-runs when the first resolves — a plain object would capture `undefined` once and never update.
+
+```vue
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useKweri } from '@/composables/useKweri'
+
+const { auth } = useKweri()
+const me = auth.useGet('/me', {})
+
+const params = computed(() => ({ query: { userId: me.data.value?.id } }))
+const orders = auth.useGet('/orders', params as any, {
+  enabled: computed(() => !!me.data.value?.id),
+})
+</script>
+```
+
+<Note>
+A `computed`/`ref` for `params` makes the query reactive (it re-fetches when the value changes — the basis for search and pagination too). The `as any` is currently needed because path-hook param types don't yet include refs.
+</Note>
+
+## Per-resource freshness
+
+Different data ages differently — override `staleTime`/`cacheTime` per call instead of one global.
+
+```ts
+const profile = auth.useGet('/me', {}, { staleTime: 5 * 60_000 })   // rarely changes
+const prices  = stocks.useGet('/prices', {}, { staleTime: 1_000 })  // changes constantly
+```
+
+## Search & pagination (reactive params)
+
+A `computed` params object re-fetches whenever it changes. Previously-seen pages stay cached, so paging back is instant.
+
+```vue
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { useKweri } from '@/composables/useKweri'
+
+const { auth } = useKweri()
+
+// Search — only fires once the query is non-trivial.
+const q = ref('')
+const searchParams = computed(() => ({ query: { q: q.value } }))
+const results = auth.useGet('/users', searchParams as any, {
+  enabled: computed(() => q.value.length >= 2),
+  staleTime: 30_000,
+})
+
+// Pagination — each page is cached independently.
+const page = ref(1)
+const pageParams = computed(() => ({ query: { page: page.value } }))
+const list = auth.useGet('/users', pageParams as any, { staleTime: 60_000 })
+</script>
+
+<template>
+  <input v-model="q" placeholder="Search…" />
+  <ul><li v-for="u in (q ? results : list).data.value" :key="u.id">{{ u.name }}</li></ul>
+  <button @click="page--" :disabled="page === 1">Prev</button>
+  <button @click="page++">Next</button>
+</template>
+```
+
+<Tip>
+kweri deduplicates in-flight requests, but doesn't debounce keystrokes — for fast typing, debounce `q` before binding it.
+</Tip>
