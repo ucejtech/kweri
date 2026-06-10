@@ -1,5 +1,18 @@
 # kweri
 
+## [0.5.0](https://github.com/ucejtech/kweri/compare/kweri-v0.4.4...kweri-v0.5.0) (2026-06-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* the built-in fetcher now rejects on 4xx/5xx (previously resolved with the error body as data). Custom fetchers are unaffected.
+
+### Features
+
+* add guides section with recipes for common patterns ([e3d1488](https://github.com/ucejtech/kweri/commit/e3d14886cf223ada08d785c018972ebf477fb50f))
+* throw on non-2xx responses in the default fetcher ([49327ec](https://github.com/ucejtech/kweri/commit/49327ec2881c1fec83de48e24198ec749ee06184))
+* throw on non-2xx responses in the default fetcher ([2205dc3](https://github.com/ucejtech/kweri/commit/2205dc3bd527d0cf8850238af4faa459aa4a2fd0))
+
 ## [0.4.4](https://github.com/ucejtech/kweri/compare/kweri-v0.4.3...kweri-v0.4.4) (2026-06-10)
 
 
