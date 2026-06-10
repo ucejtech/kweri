@@ -24,6 +24,24 @@ interface CachedError {
 }
 ```
 
+## HTTP errors throw by default
+
+The built-in fetcher **throws on any non-2xx response**, so `4xx`/`5xx` are treated as errors out of the box — your `catch` runs and hooks expose `isError`. The thrown error carries the parsed body and status:
+
+```ts
+try {
+  await kweri.mutate(login, { body })
+} catch (err) {
+  err.message  // body.message, or `HTTP 401 Unauthorized`
+  err.status   // 401
+  err.detail   // the parsed JSON (or text) body
+}
+```
+
+<Warning>
+This means a failed request **rejects** — code after `await mutateAsync(...)` won't run on a `4xx`/`5xx`. If you supply your own `fetcher`, you must re-add the `res.ok` check yourself; raw `fetch` does **not** reject on bad status.
+</Warning>
+
 ## Automatic retry
 
 Retries only fire for errors marked `retryable: true`. The delay uses **exponential backoff with jitter**:
@@ -109,7 +127,7 @@ Params are **not** validated at runtime. The endpoint `params` schema drives Typ
 
 ## Custom error handling with a custom fetcher
 
-If your API returns errors in a non-standard shape (e.g., `{ error: '...' }` with a `200` status), use a custom fetcher to normalize them:
+The default fetcher already throws on non-2xx. You only need a custom fetcher for non-standard error shapes — e.g. an API that returns `{ error: '...' }` with a `200` status. If you write one, keep the `res.ok` check (raw `fetch` won't reject on its own):
 
 ```ts
 const kweri = new Kweri({

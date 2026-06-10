@@ -94,11 +94,32 @@ export class Kweri {
 
   constructor(options: KweriOptions, timer?: TimerAdapter) {
     const defaultFetcher: Fetcher = async (opts) => {
-      return fetch(opts.url, {
+      const response = await fetch(opts.url, {
         method: opts.method,
         headers: opts.body ? { 'Content-Type': 'application/json' } : {},
         body: opts.body ? JSON.stringify(opts.body) : undefined
       });
+
+      if (!response.ok) {
+        let detail: unknown;
+        try {
+          detail = await response.clone().json();
+        } catch {
+          try { detail = await response.clone().text(); } catch { /* body unreadable */ }
+        }
+        const message =
+          detail && typeof detail === 'object' && typeof (detail as any).message === 'string'
+            ? (detail as any).message
+            : `HTTP ${response.status} ${response.statusText}`.trim();
+        throw Object.assign(new Error(message), {
+          status: response.status,
+          statusText: response.statusText,
+          detail,
+          response
+        });
+      }
+
+      return response;
     };
 
     this.store = new CacheStore();
