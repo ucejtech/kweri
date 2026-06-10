@@ -23,6 +23,7 @@ describe('emitContract (integration with typed-openapi)', () => {
 
     expect(out).not.toContain('@ts-nocheck');
     expect(out).not.toContain('@sinclair/typebox');
+    expect(out).not.toContain('__ENDPOINTS_'); // dead marker decls stripped
     expect(out).toContain('export const EndpointByMethod');
     expect(out).toContain('export const get_ListUsers');
     expect(out).toContain('export const User');

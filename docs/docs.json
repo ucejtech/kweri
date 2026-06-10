@@ -67,7 +67,8 @@
           "advanced/persistence",
           "advanced/custom-fetcher",
           "advanced/eviction",
-          "advanced/multiple-instances"
+          "advanced/multiple-instances",
+          "advanced/ssr"
         ]
       },
       {
