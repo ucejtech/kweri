@@ -40,10 +40,7 @@ export class QueryClient {
   invalidateByKey(key: string): void {
     const entry = this.store.get(key)
     if (!entry) return
-
-    const staleEntry: CacheEntry = { ...entry, updatedAt: 0 }
-    this.store.set(key, { updatedAt: 0 })
-    this.observers.notify(key, staleEntry)
+    this.markStale(key, entry)
   }
 
   /** Marks all entries whose key matches the pattern as stale. Pattern: substring (e.g. path prefix) or RegExp (tested against full key). */
@@ -55,10 +52,24 @@ export class QueryClient {
       if (!match(key)) continue
       const entry = this.store.get(key)
       if (!entry) continue
-      const staleEntry: CacheEntry = { ...entry, updatedAt: 0 }
-      this.store.set(key, { updatedAt: 0 })
-      this.observers.notify(key, staleEntry)
+      this.markStale(key, entry)
     }
+  }
+
+  /**
+   * A failed entry is reset to idle rather than merely marked stale, so the next
+   * fetch is a retry instead of a replay of the cached failure. Observers can
+   * then tell an invalidation apart from the error notification that follows a
+   * failed refetch, which is what keeps a retry from looping.
+   */
+  private markStale(key: string, entry: CacheEntry): void {
+    const patch: Partial<CacheEntry> =
+      entry.status === 'error'
+        ? { updatedAt: 0, status: 'idle', error: undefined, errorUpdatedAt: 0 }
+        : { updatedAt: 0 }
+
+    this.store.set(key, patch)
+    this.observers.notify(key, { ...entry, ...patch })
   }
 
   /** Removes the entry from the cache and notifies observers with an empty entry. */

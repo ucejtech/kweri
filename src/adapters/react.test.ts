@@ -359,3 +359,131 @@ describe('React Adapter — mutation state', () => {
     expect(useMutation(mutationEndpoint).status).toBe('success')
   })
 })
+
+describe('React Adapter — invalidation while mounted', () => {
+  function mountedQuery(fetcher: () => Promise<Response>) {
+    const kweri = new Kweri({ baseURL: 'https://api.test.com', fetcher })
+    const { useSyncExternalStore, state } = createHarness()
+    const { useQuery } = createReactQueryHooks(useSyncExternalStore, kweri)
+    return { kweri, state, useQuery }
+  }
+
+  it('refetches a mounted query after invalidateByPath', async () => {
+    let fetches = 0
+    const { kweri, useQuery } = mountedQuery(async () => {
+      fetches++
+      return new Response(JSON.stringify([{ id: 1, name: 'Test User' }]))
+    })
+
+    useQuery(testEndpoint, {})
+    await flush()
+    expect(fetches).toBe(1)
+
+    kweri.invalidateByPath('/users')
+    await flush()
+    expect(fetches).toBe(2)
+
+    kweri.destroy()
+  })
+
+  it('refetches a mounted query after invalidateQuery', async () => {
+    let fetches = 0
+    const { kweri, useQuery } = mountedQuery(async () => {
+      fetches++
+      return new Response(JSON.stringify([{ id: 1, name: 'Test User' }]))
+    })
+
+    useQuery(testEndpoint, {})
+    await flush()
+
+    kweri.invalidateQuery(testEndpoint, {})
+    await flush()
+    expect(fetches).toBe(2)
+
+    kweri.destroy()
+  })
+
+  it('does not loop when the refetch itself fails', async () => {
+    let fetches = 0
+    const { kweri, useQuery } = mountedQuery(async () => {
+      fetches++
+      throw new Error('boom')
+    })
+
+    useQuery(testEndpoint, {})
+    await flush()
+    expect(fetches).toBe(1)
+
+    await flush()
+    await flush()
+    expect(fetches).toBe(1)
+
+    kweri.destroy()
+  })
+
+  it('retries a failed query exactly once per invalidation', async () => {
+    let fetches = 0
+    const { kweri, useQuery } = mountedQuery(async () => {
+      fetches++
+      throw new Error('boom')
+    })
+
+    useQuery(testEndpoint, {})
+    await flush()
+    expect(fetches).toBe(1)
+
+    kweri.invalidateQuery(testEndpoint, {})
+    await flush()
+    expect(fetches).toBe(2)
+
+    await flush()
+    await flush()
+    expect(fetches).toBe(2)
+
+    kweri.destroy()
+  })
+
+  it('coalesces co-subscribers into a single refetch', async () => {
+    let fetches = 0
+    const kweri = new Kweri({
+      baseURL: 'https://api.test.com',
+      fetcher: async () => {
+        fetches++
+        return new Response(JSON.stringify([{ id: 1, name: 'Test User' }]))
+      },
+    })
+    const a = createHarness()
+    const b = createHarness()
+    const { useQuery } = createReactQueryHooks(a.useSyncExternalStore, kweri)
+    const hooksB = createReactQueryHooks(b.useSyncExternalStore, kweri)
+
+    useQuery(testEndpoint, {})
+    hooksB.useQuery(testEndpoint, {})
+    await flush()
+    const afterMount = fetches
+
+    kweri.invalidateQuery(testEndpoint, {})
+    await flush()
+    expect(fetches).toBe(afterMount + 1)
+
+    kweri.destroy()
+  })
+
+  it('does not refetch a disabled query on invalidation', async () => {
+    let fetches = 0
+    const { kweri, useQuery } = mountedQuery(async () => {
+      fetches++
+      return new Response(JSON.stringify([{ id: 1, name: 'Test User' }]))
+    })
+
+    kweri.setCachedData(testEndpoint, {}, [{ id: 1, name: 'Cached' }] as any)
+    useQuery(testEndpoint, {}, { enabled: false })
+    await flush()
+
+    kweri.invalidateQuery(testEndpoint, {})
+    await flush()
+    expect(fetches).toBe(0)
+
+    kweri.destroy()
+  })
+})

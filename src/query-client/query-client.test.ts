@@ -168,3 +168,45 @@ describe('QueryClient', () => {
     })
   })
 })
+
+describe('QueryClient — invalidation resets failed entries', () => {
+  it('clears the error so the next fetch is a retry, not a replay', () => {
+    const store = new CacheStore()
+    const observers = new ObserverRegistry()
+    const client = new QueryClient(store, observers)
+
+    const key = client.getQueryKey(getUsersEndpoint, {})
+    store.set(key, {
+      status: 'error',
+      error: { message: 'boom', type: 'network', retryable: true },
+      errorUpdatedAt: Date.now(),
+    })
+
+    const seen: any[] = []
+    client.subscribe(getUsersEndpoint, {}, (entry) => seen.push(entry))
+    client.invalidateQuery(getUsersEndpoint, {})
+
+    const notified = seen[seen.length - 1]
+    expect(notified.status).toBe('idle')
+    expect(notified.error).toBeUndefined()
+    expect(notified.updatedAt).toBe(0)
+
+    const stored = store.get(key)!
+    expect(stored.status).toBe('idle')
+    expect(stored.error).toBeUndefined()
+  })
+
+  it('preserves data and status when invalidating a successful entry', () => {
+    const store = new CacheStore()
+    const observers = new ObserverRegistry()
+    const client = new QueryClient(store, observers)
+
+    client.setCachedData(getUsersEndpoint, {}, [{ id: 1 }])
+    client.invalidateQuery(getUsersEndpoint, {})
+
+    const stored = store.get(client.getQueryKey(getUsersEndpoint, {}))!
+    expect(stored.status).toBe('success')
+    expect(stored.data).toEqual([{ id: 1 }])
+    expect(stored.updatedAt).toBe(0)
+  })
+})
