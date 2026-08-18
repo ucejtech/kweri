@@ -1,5 +1,13 @@
 # kweri
 
+## [0.5.2](https://github.com/ucejtech/kweri/compare/kweri-v0.5.1...kweri-v0.5.2) (2026-08-18)
+
+
+### Bug Fixes
+
+* **react:** stop re-subscribing and refetching on every render ([93ba378](https://github.com/ucejtech/kweri/commit/93ba378d251899edc2ab352186abf1859f25a463))
+* **react:** stop re-subscribing and refetching on every render ([cc98402](https://github.com/ucejtech/kweri/commit/cc984026e3bfbd9fab7ff032c58dbf22d11074bb))
+
 ## [0.5.1](https://github.com/ucejtech/kweri/compare/kweri-v0.5.0...kweri-v0.5.1) (2026-06-10)
 
 
