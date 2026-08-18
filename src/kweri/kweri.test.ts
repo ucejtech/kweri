@@ -168,17 +168,15 @@ describe('Kweri', () => {
 
       await expect(kweri.query(getUsers, {})).rejects.toBeInstanceOf(ValidationError)
 
+      expect(kweri.getCachedData(getUsers, {})).toBeUndefined()
+
       const key = kweri.getQueryKey(getUsers, {})
-      const cached = kweri.queryClient.getCachedData(getUsers, {})
-      // data should be undefined; check the raw entry via subscribe
-      const entries: any[] = []
-      kweri.subscribe(getUsers, {}, (e) => entries.push(e))
-      // trigger a notification by invalidating
-      kweri.invalidateQuery(getUsers, {})
-      expect(entries.length).toBeGreaterThan(0)
-      const lastEntry = entries[entries.length - 1]
-      expect(lastEntry.error?.type).toBe('validation')
-      expect(lastEntry.error?.retryable).toBe(false)
+      const cached = kweri
+        .getDevToolsSnapshot()
+        .cache.find((row) => row.key === key)?.entry
+
+      expect(cached?.error?.type).toBe('validation')
+      expect(cached?.error?.retryable).toBe(false)
     })
   })
 

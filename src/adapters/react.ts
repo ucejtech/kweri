@@ -63,6 +63,7 @@ interface QuerySnapshot {
 
 interface QueryBinding {
   refs: number;
+  queued: boolean;
   snapshot: QuerySnapshot;
   subscribe: (onStoreChange: () => void) => () => void;
   getSnapshot: () => QuerySnapshot;
@@ -82,13 +83,9 @@ interface MutationStore {
   set: (next: MutationSnapshot) => void;
 }
 
-/**
- * Runs `release` after the current task so React StrictMode's synchronous
- * unsubscribe/resubscribe doesn't drop a binding a mounted component still uses.
- */
-function deferRelease(release: () => void): void {
-  if (typeof queueMicrotask === 'function') queueMicrotask(release)
-  else release()
+function defer(fn: () => void): void {
+  if (typeof queueMicrotask === 'function') queueMicrotask(fn)
+  else fn()
 }
 
 function sameSnapshot(a: QuerySnapshot, b: QuerySnapshot): boolean {
@@ -108,7 +105,7 @@ function createMutationStore(onEmpty?: () => void): MutationStore {
       return () => {
         store.refs--
         listeners.delete(onStoreChange)
-        if (store.refs === 0 && onEmpty) deferRelease(onEmpty)
+        if (store.refs === 0 && onEmpty) defer(onEmpty)
       }
     },
     set: (next) => {
@@ -149,8 +146,38 @@ export function createReactQueryHooks(
     const readCached = () => kweri.getCachedData(endpoint, params)
     const cached = readCached()
 
+    const runQuery = () =>
+      kweri.query(endpoint, params, queryOpts).catch((err) => {
+        if (typeof console !== 'undefined') {
+          console.error('[kweri] background query failed:', err)
+        }
+      })
+
+    /**
+     * Invalidation marks the entry stale and notifies, but never fetches, so a
+     * mounted subscriber has to start the refetch itself — `subscribe` runs once
+     * per mount and cannot do it. `loading` and `error` are skipped so a failed
+     * refetch's own error notification doesn't retry itself forever; the query
+     * client resets errored entries to idle on invalidation so an explicit
+     * invalidation still retries them.
+     */
+    const refetchIfStale = (status: CacheEntryStatus, updatedAt: number) => {
+      if (!enabled || binding.queued) return
+      if (status === 'loading' || status === 'error') return
+      if (updatedAt !== 0) return
+
+      binding.queued = true
+      // Deferred so the fetch doesn't re-enter notify() mid-iteration, and so
+      // co-subscribers on this binding coalesce into a single call.
+      defer(() => {
+        binding.queued = false
+        runQuery()
+      })
+    }
+
     const binding: QueryBinding = {
       refs: 0,
+      queued: false,
       snapshot: {
         data: cached,
         status: cached !== undefined ? 'success' : 'idle',
@@ -172,6 +199,7 @@ export function createReactQueryHooks(
             }
             if (!sameSnapshot(binding.snapshot, next)) binding.snapshot = next
             onStoreChange()
+            refetchIfStale(entry.status, entry.updatedAt)
           })
 
           // The cache can gain a fresh entry between the render that created
@@ -184,18 +212,14 @@ export function createReactQueryHooks(
             }
           }
 
-          kweri.query(endpoint, params, queryOpts).catch((err) => {
-            if (typeof console !== 'undefined') {
-              console.error('[kweri] background query failed:', err)
-            }
-          })
+          runQuery()
         }
 
         return () => {
           binding.refs--
           unsubscribe()
           if (binding.refs > 0) return
-          deferRelease(() => {
+          defer(() => {
             if (binding.refs === 0 && queryBindings.get(bindingKey) === binding) {
               queryBindings.delete(bindingKey)
             }
