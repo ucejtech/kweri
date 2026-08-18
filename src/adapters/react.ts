@@ -2,6 +2,7 @@ import { Type } from '@sinclair/typebox'
 import type { Endpoint, InferParams, InferResponse } from '../contract/index.js'
 import type { Kweri, QueryOptions } from '../kweri/index.js'
 import type { CacheEntryStatus } from '../cache/cache-entry.js'
+import { defer } from './defer.js'
 
 export interface UseSyncExternalStore {
   <Snapshot>(
@@ -81,11 +82,6 @@ interface MutationStore {
   subscribe: (onStoreChange: () => void) => () => void;
   getSnapshot: () => MutationSnapshot;
   set: (next: MutationSnapshot) => void;
-}
-
-function defer(fn: () => void): void {
-  if (typeof queueMicrotask === 'function') queueMicrotask(fn)
-  else fn()
 }
 
 function sameSnapshot(a: QuerySnapshot, b: QuerySnapshot): boolean {

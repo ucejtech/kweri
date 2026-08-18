@@ -3,6 +3,7 @@ import type { Ref } from 'vue'
 import type { Endpoint, InferParams, InferResponse } from '../contract/index.js'
 import type { Kweri } from '../kweri/index.js'
 import type { CacheEntryStatus } from '../cache/cache-entry.js'
+import { defer } from './defer.js'
 
 // Internal structural interface for accepting Vue's reactive primitives
 // without a hard runtime dependency on vue
@@ -60,12 +61,45 @@ export function createVueQueryHooks(vue: VueEffectAPI, kweri: Kweri) {
     const isError = vue.ref(false);
 
     let unsubscribe: (() => void) | undefined;
+    let refetchQueued = false;
 
     const enabled = typeof options.enabled === 'object' ? options.enabled : vue.ref(options.enabled ?? true);
     const queryOpts = {
       staleTime: options.staleTime,
       cacheTime: options.cacheTime,
       maxRetries: options.maxRetries,
+    };
+
+    const runQuery = (currentParams: InferParams<E>) => {
+      kweri.query(endpoint, currentParams, queryOpts).catch((err) => {
+        if (typeof console !== 'undefined') {
+          console.error('[kweri] background query failed:', err)
+        }
+      });
+    };
+
+    /**
+     * Invalidation marks the entry stale and notifies, but never fetches, and
+     * the subscription is only re-established when params or `enabled` change,
+     * so a mounted query has to start the refetch from the notification itself.
+     * `loading` and `error` are skipped so a failed refetch's own error
+     * notification doesn't retry itself forever; the query client resets errored
+     * entries to idle on invalidation so an explicit invalidation still retries.
+     */
+    const refetchIfStale = (
+      currentParams: InferParams<E>,
+      entryStatus: CacheEntryStatus,
+      updatedAt: number
+    ) => {
+      if (!enabled.value || refetchQueued) return;
+      if (entryStatus === 'loading' || entryStatus === 'error') return;
+      if (updatedAt !== 0) return;
+
+      refetchQueued = true;
+      defer(() => {
+        refetchQueued = false;
+        if (enabled.value) runQuery(currentParams);
+      });
     };
 
     // Intentionally NOT async: the only async work (the background query) is
@@ -89,13 +123,10 @@ export function createVueQueryHooks(vue: VueEffectAPI, kweri: Kweri) {
         isLoading.value = entry.status === 'loading';
         isSuccess.value = entry.status === 'success';
         isError.value = entry.status === 'error';
+        refetchIfStale(currentParams, entry.status, entry.updatedAt);
       });
 
-      kweri.query(endpoint, currentParams, queryOpts).catch((err) => {
-        if (typeof console !== 'undefined') {
-          console.error('[kweri] background query failed:', err)
-        }
-      });
+      runQuery(currentParams);
     };
 
     const getCurrentParams = () => {

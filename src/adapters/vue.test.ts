@@ -155,3 +155,162 @@ describe('Vue Adapter', () => {
     })
   })
 })
+function vueApi() {
+  const unmounts: Function[] = []
+  return {
+    api: {
+      ref: (initialValue: any) => ({ value: initialValue }),
+      watch: (source: any, callback: Function, options?: any) => {
+        if (options?.immediate) callback(source?.value, undefined)
+        return () => {}
+      },
+      onUnmounted: (callback: Function) => { unmounts.push(callback) },
+    } as any,
+    unmount: () => unmounts.forEach((fn) => fn()),
+  }
+}
+
+const flushVue = () => new Promise((r) => setTimeout(r, 20))
+
+describe('Vue Adapter — invalidation while mounted', () => {
+  it('refetches a mounted query after invalidateByPath', async () => {
+    let fetches = 0
+    const kweri = new Kweri({
+      baseURL: 'https://api.test.com',
+      fetcher: async () => {
+        fetches++
+        return new Response(JSON.stringify([{ id: 1, name: 'Test User' }]))
+      },
+    })
+    const { api } = vueApi()
+    const { useQuery } = createVueQueryHooks(api, kweri)
+
+    useQuery(testEndpoint, {})
+    await flushVue()
+    const afterMount = fetches
+    expect(afterMount).toBeGreaterThan(0)
+
+    kweri.invalidateByPath('/users')
+    await flushVue()
+    expect(fetches).toBe(afterMount + 1)
+
+    kweri.destroy()
+  })
+
+  it('surfaces the refetched data on the returned refs', async () => {
+    let call = 0
+    const kweri = new Kweri({
+      baseURL: 'https://api.test.com',
+      fetcher: async () => {
+        call++
+        return new Response(JSON.stringify([{ id: call, name: `User ${call}` }]))
+      },
+    })
+    const { api } = vueApi()
+    const { useQuery } = createVueQueryHooks(api, kweri)
+
+    const result: any = useQuery(testEndpoint, {})
+    await flushVue()
+    const first = result.data.value
+
+    kweri.invalidateQuery(testEndpoint, {})
+    await flushVue()
+
+    expect(result.status.value).toBe('success')
+    expect(result.data.value).not.toEqual(first)
+
+    kweri.destroy()
+  })
+
+  it('does not loop when the refetch itself fails', async () => {
+    let fetches = 0
+    const kweri = new Kweri({
+      baseURL: 'https://api.test.com',
+      fetcher: async () => { fetches++; throw new Error('boom') },
+    })
+    const { api } = vueApi()
+    const { useQuery } = createVueQueryHooks(api, kweri)
+
+    useQuery(testEndpoint, {})
+    await flushVue()
+    const afterMount = fetches
+
+    await flushVue()
+    await flushVue()
+    expect(fetches).toBe(afterMount)
+
+    kweri.destroy()
+  })
+
+  it('retries a failed query exactly once per invalidation', async () => {
+    let fetches = 0
+    const kweri = new Kweri({
+      baseURL: 'https://api.test.com',
+      fetcher: async () => { fetches++; throw new Error('boom') },
+    })
+    const { api } = vueApi()
+    const { useQuery } = createVueQueryHooks(api, kweri)
+
+    useQuery(testEndpoint, {})
+    await flushVue()
+    const afterMount = fetches
+
+    kweri.invalidateQuery(testEndpoint, {})
+    await flushVue()
+    expect(fetches).toBe(afterMount + 1)
+
+    await flushVue()
+    await flushVue()
+    expect(fetches).toBe(afterMount + 1)
+
+    kweri.destroy()
+  })
+
+  it('does not refetch a disabled query on invalidation', async () => {
+    let fetches = 0
+    const kweri = new Kweri({
+      baseURL: 'https://api.test.com',
+      fetcher: async () => {
+        fetches++
+        return new Response(JSON.stringify([{ id: 1, name: 'Test User' }]))
+      },
+    })
+    kweri.setCachedData(testEndpoint, {}, [{ id: 1, name: 'Cached' }] as any)
+
+    const { api } = vueApi()
+    const { useQuery } = createVueQueryHooks(api, kweri)
+
+    useQuery(testEndpoint, {}, { enabled: false })
+    await flushVue()
+
+    kweri.invalidateQuery(testEndpoint, {})
+    await flushVue()
+    expect(fetches).toBe(0)
+
+    kweri.destroy()
+  })
+
+  it('stops refetching after unmount', async () => {
+    let fetches = 0
+    const kweri = new Kweri({
+      baseURL: 'https://api.test.com',
+      fetcher: async () => {
+        fetches++
+        return new Response(JSON.stringify([{ id: 1, name: 'Test User' }]))
+      },
+    })
+    const { api, unmount } = vueApi()
+    const { useQuery } = createVueQueryHooks(api, kweri)
+
+    useQuery(testEndpoint, {})
+    await flushVue()
+    const afterMount = fetches
+
+    unmount()
+    kweri.invalidateQuery(testEndpoint, {})
+    await flushVue()
+    expect(fetches).toBe(afterMount)
+
+    kweri.destroy()
+  })
+})
