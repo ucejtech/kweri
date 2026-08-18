@@ -3,6 +3,9 @@ name: Release
 on:
   push:
     branches: [main]
+  # Manual escape hatch: republish the version currently on main when the
+  # publish job failed after release-please already tagged the release.
+  workflow_dispatch:
 
 jobs:
   # Opens/updates a "release PR" based on Conventional Commits since the last
@@ -25,7 +28,7 @@ jobs:
   publish:
     name: Publish to npm
     needs: release-please
-    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    if: ${{ needs.release-please.outputs.release_created == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -40,12 +43,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           registry-url: https://registry.npmjs.org
-
-      # Trusted publishing requires npm >= 11.5.1; Node 20 ships npm 10.x.
-      - name: Upgrade npm
-        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: bun install
