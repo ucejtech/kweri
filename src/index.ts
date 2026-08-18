@@ -56,6 +56,6 @@ export type { MountKweriDevToolsOptions } from './devtools/index.js'
 
 // Framework adapters (optional; pass your framework's APIs)
 export { createReactQueryHooks, createReactPathHooks } from './adapters/react.js'
-export type { UseSyncExternalStore, ReactQueryOptions, ReactQueryResult, ReactMutationResult } from './adapters/react.js'
+export type { UseSyncExternalStore, UseRef, ReactHooks, ReactQueryOptions, ReactQueryResult, ReactMutationResult } from './adapters/react.js'
 export { createVueQueryHooks, createVuePathHooks } from './adapters/vue.js'
 export type { VueRef, VueEffectAPI, VueQueryOptions, VueQueryResult, VueMutationResult } from './adapters/vue.js'

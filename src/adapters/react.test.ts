@@ -114,3 +114,248 @@ describe('React Adapter', () => {
     })
   })
 })
+
+/**
+ * Models what React actually does with useSyncExternalStore: re-runs `subscribe`
+ * only when its identity changes, and re-reads `getSnapshot` on every render.
+ * Holds one hook slot, so each harness drives a single hook call site.
+ */
+function createHarness() {
+  const state = {
+    subscribeFns: [] as Function[],
+    snapshots: [] as any[],
+    subscribeCount: 0,
+    current: null as Function | null,
+    unsubscribe: null as (() => void) | null,
+    onStoreChange: null as (() => void) | null,
+  }
+
+  const useSyncExternalStore = ((subscribe: any, getSnapshot: any) => {
+    state.subscribeFns.push(subscribe)
+    const snapshot = getSnapshot()
+    state.snapshots.push(snapshot)
+    if (subscribe !== state.current) {
+      state.unsubscribe?.()
+      state.current = subscribe
+      state.subscribeCount++
+      state.unsubscribe = subscribe(() => state.onStoreChange?.())
+    }
+    return snapshot
+  }) as any
+
+  return { useSyncExternalStore, state }
+}
+
+function createRefSlots() {
+  const slots: any[] = []
+  let cursor = 0
+  const useRef = ((initialValue: any) => {
+    if (cursor >= slots.length) slots.push({ current: initialValue })
+    return slots[cursor++]
+  }) as any
+  return { useRef, startRender: () => { cursor = 0 } }
+}
+
+const flush = () => new Promise((r) => setTimeout(r, 10))
+
+describe('React Adapter — render stability', () => {
+  let kweri: Kweri
+  let fetchCount: number
+
+  beforeEach(() => {
+    fetchCount = 0
+    kweri = new Kweri({
+      baseURL: 'https://api.test.com',
+      fetcher: async () => {
+        fetchCount++
+        return new Response(JSON.stringify([{ id: 1, name: 'Test User' }]))
+      },
+    })
+  })
+
+  afterEach(async () => {
+    kweri.destroy()
+    await new Promise((r) => setTimeout(r, 0))
+  })
+
+  it('returns an identical snapshot across renders once the store is quiet', async () => {
+    const { useSyncExternalStore, state } = createHarness()
+    const { useQuery } = createReactQueryHooks(useSyncExternalStore, kweri)
+
+    useQuery(testEndpoint, {})
+    await flush()
+
+    state.snapshots.length = 0
+    for (let i = 0; i < 5; i++) useQuery(testEndpoint, {})
+
+    expect(state.snapshots).toHaveLength(5)
+    for (const snapshot of state.snapshots) {
+      expect(snapshot).toBe(state.snapshots[0])
+    }
+  })
+
+  it('keeps subscribe identity stable so React never re-subscribes', () => {
+    const { useSyncExternalStore, state } = createHarness()
+    const { useQuery } = createReactQueryHooks(useSyncExternalStore, kweri)
+
+    for (let i = 0; i < 5; i++) useQuery(testEndpoint, {})
+
+    const first = state.subscribeFns[0]
+    for (const fn of state.subscribeFns) {
+      expect(fn).toBe(first as Function)
+    }
+    expect(state.subscribeCount).toBe(1)
+  })
+
+  it('issues one request for many renders of the same query', async () => {
+    const { useSyncExternalStore } = createHarness()
+    const { useQuery } = createReactQueryHooks(useSyncExternalStore, kweri)
+
+    for (let i = 0; i < 10; i++) useQuery(testEndpoint, {})
+    await flush()
+
+    expect(fetchCount).toBe(1)
+  })
+
+  it('is unaffected by fresh param objects of equal shape', () => {
+    const { useSyncExternalStore, state } = createHarness()
+    const { useQuery } = createReactQueryHooks(useSyncExternalStore, kweri)
+
+    for (let i = 0; i < 3; i++) useQuery(testEndpoint, { query: {} } as any)
+
+    expect(state.subscribeCount).toBe(1)
+  })
+
+  it('re-subscribes when params change', () => {
+    const { useSyncExternalStore, state } = createHarness()
+    const { useQuery } = createReactQueryHooks(useSyncExternalStore, kweri)
+
+    useQuery(testEndpoint, { query: { page: 1 } } as any)
+    useQuery(testEndpoint, { query: { page: 2 } } as any)
+
+    expect(state.subscribeCount).toBe(2)
+  })
+
+  it('re-subscribes when enabled flips', () => {
+    const { useSyncExternalStore, state } = createHarness()
+    const { useQuery } = createReactQueryHooks(useSyncExternalStore, kweri)
+
+    useQuery(testEndpoint, {}, { enabled: false })
+    expect(fetchCount).toBe(0)
+
+    useQuery(testEndpoint, {}, { enabled: true })
+    expect(state.subscribeCount).toBe(2)
+  })
+
+  it('keeps the resolved status across later renders', async () => {
+    const { useSyncExternalStore } = createHarness()
+    const { useQuery } = createReactQueryHooks(useSyncExternalStore, kweri)
+
+    useQuery(testEndpoint, {})
+    await flush()
+
+    const result = useQuery(testEndpoint, {})
+    expect(result.status).toBe('success')
+    expect(result.isSuccess).toBe(true)
+    expect(result.data).toEqual([{ id: 1, name: 'Test User' }] as any)
+  })
+
+  it('starts from cached data instead of idle', async () => {
+    kweri.setCachedData(testEndpoint, {}, [{ id: 9, name: 'Cached' }])
+
+    const { useSyncExternalStore } = createHarness()
+    const { useQuery } = createReactQueryHooks(useSyncExternalStore, kweri)
+
+    const result = useQuery(testEndpoint, {})
+    expect(result.status).toBe('success')
+    expect(result.data).toEqual([{ id: 9, name: 'Cached' }] as any)
+  })
+
+  it('hands back a stable refetch across renders', () => {
+    const { useSyncExternalStore } = createHarness()
+    const { useQuery } = createReactQueryHooks(useSyncExternalStore, kweri)
+
+    const first = useQuery(testEndpoint, {})
+    const second = useQuery(testEndpoint, {})
+
+    expect(second.refetch).toBe(first.refetch)
+  })
+
+  it('does not subscribe or fetch when disabled', async () => {
+    const { useSyncExternalStore } = createHarness()
+    const { useQuery } = createReactQueryHooks(useSyncExternalStore, kweri)
+
+    const result = useQuery(testEndpoint, {}, { enabled: false })
+    await flush()
+
+    expect(result.status).toBe('idle')
+    expect(fetchCount).toBe(0)
+  })
+})
+
+describe('React Adapter — mutation state', () => {
+  let kweri: Kweri
+
+  beforeEach(() => {
+    kweri = new Kweri({
+      baseURL: 'https://api.test.com',
+      fetcher: async () => new Response(JSON.stringify({ id: 1, name: 'Test User' })),
+    })
+  })
+
+  afterEach(async () => {
+    kweri.destroy()
+    await new Promise((r) => setTimeout(r, 0))
+  })
+
+  it('survives re-renders and reports success', async () => {
+    const { useSyncExternalStore } = createHarness()
+    const { useRef, startRender } = createRefSlots()
+    const { useMutation } = createReactQueryHooks({ useSyncExternalStore, useRef }, kweri)
+
+    startRender()
+    const first = useMutation(mutationEndpoint)
+    expect(first.status).toBe('idle')
+
+    await first.mutateAsync({ body: { name: 'Ada' } } as any)
+
+    startRender()
+    const second = useMutation(mutationEndpoint)
+    expect(second.status).toBe('success')
+    expect(second.isSuccess).toBe(true)
+
+    second.reset()
+    startRender()
+    expect(useMutation(mutationEndpoint).status).toBe('idle')
+  })
+
+  it('reports errors', async () => {
+    const failing = new Kweri({
+      baseURL: 'https://api.test.com',
+      fetcher: async () => { throw new Error('boom') },
+    })
+    const { useSyncExternalStore } = createHarness()
+    const { useRef, startRender } = createRefSlots()
+    const { useMutation } = createReactQueryHooks({ useSyncExternalStore, useRef }, failing)
+
+    startRender()
+    await useMutation(mutationEndpoint).mutateAsync({ body: { name: 'Ada' } } as any).catch(() => {})
+
+    startRender()
+    const result = useMutation(mutationEndpoint)
+    expect(result.status).toBe('error')
+    expect(result.error?.message).toBe('boom')
+
+    failing.destroy()
+  })
+
+  it('still tracks status when only useSyncExternalStore is injected', async () => {
+    const { useSyncExternalStore } = createHarness()
+    const { useMutation } = createReactQueryHooks(useSyncExternalStore, kweri)
+
+    const first = useMutation(mutationEndpoint)
+    await first.mutateAsync({ body: { name: 'Ada' } } as any)
+
+    expect(useMutation(mutationEndpoint).status).toBe('success')
+  })
+})

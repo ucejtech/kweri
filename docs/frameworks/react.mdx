@@ -16,19 +16,25 @@ After running `kweri-gen`, bind hooks to the generated `EndpointByMethod` map. Y
 
 ```ts
 // src/hooks/useKweri.ts
-import { useSyncExternalStore } from 'react'
+import { useRef, useSyncExternalStore } from 'react'
 import { createReactPathHooks } from 'kweri'
 import { EndpointByMethod } from '@/api/kweri/client'
 import { kweri } from '@/lib/kweri'
 
 export const { useGet, usePost, usePut, usePatch, useDelete } =
-  createReactPathHooks(useSyncExternalStore, kweri, EndpointByMethod)
+  createReactPathHooks({ useSyncExternalStore, useRef }, kweri, EndpointByMethod)
 
 export { kweri }
 ```
 
 <Note>
 Create the hook factory once and export it. Don't call `createReactPathHooks` inside a component.
+</Note>
+
+<Note>
+Passing `useSyncExternalStore` on its own still works. Adding `useRef` gives each
+mutation hook call its own status; without it, components mutating the same
+endpoint share one status.
 </Note>
 
 ### useGet
@@ -110,12 +116,12 @@ Use `useQuery` and `useMutation` when you're defining endpoints manually with `d
 
 ```ts
 // src/hooks/useKweri.ts
-import { useSyncExternalStore } from 'react'
+import { useRef, useSyncExternalStore } from 'react'
 import { createReactQueryHooks } from 'kweri'
 import { kweri } from '@/lib/kweri'
 
 export const { useQuery, useMutation } =
-  createReactQueryHooks(useSyncExternalStore, kweri)
+  createReactQueryHooks({ useSyncExternalStore, useRef }, kweri)
 
 export { kweri }
 ```
@@ -141,9 +147,16 @@ function useQuery<E extends Endpoint>(
 
 ```ts
 interface ReactQueryOptions {
-  enabled?: boolean  // default: true — set false to skip the fetch
+  enabled?: boolean    // default: true — set false to skip the fetch
+  staleTime?: number   // per-query override of the instance default
+  cacheTime?: number
+  maxRetries?: number
 }
 ```
+
+Hooks sharing an endpoint, params and options share one subscription, so a query
+is issued once per mount rather than once per render — passing a fresh params
+object each render is fine, since keys are derived from the serialized params.
 
 ### ReactQueryResult
 
