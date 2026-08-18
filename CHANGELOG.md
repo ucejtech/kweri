@@ -1,5 +1,13 @@
 # kweri
 
+## [0.5.3](https://github.com/ucejtech/kweri/compare/kweri-v0.5.2...kweri-v0.5.3) (2026-08-18)
+
+
+### Bug Fixes
+
+* **react:** refetch mounted queries when their entry is invalidated ([77622ae](https://github.com/ucejtech/kweri/commit/77622ae06ea25908b032f788a77b70ad04441b30))
+* **vue:** refetch mounted queries when their entry is invalidated ([8de83b4](https://github.com/ucejtech/kweri/commit/8de83b44b386ccb816fc25bcd0e2c5f23024777c))
+
 ## [0.5.2](https://github.com/ucejtech/kweri/compare/kweri-v0.5.1...kweri-v0.5.2) (2026-08-18)
 
 
