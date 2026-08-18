@@ -42,14 +42,14 @@ await api.getUser({ path: { id: '123' } })
 
 // Or path-based hooks:
 export const { useGet, usePost, usePut, usePatch, useDelete } =
-  createReactPathHooks(useSyncExternalStore, kweri, EndpointByMethod)
+  createReactPathHooks({ useSyncExternalStore, useRef }, kweri, EndpointByMethod)
 ```
 
 **Without an OpenAPI spec**, define endpoints manually:
 
 ```ts
 export const { useQuery, useMutation } =
-  createReactQueryHooks(useSyncExternalStore, kweri)
+  createReactQueryHooks({ useSyncExternalStore, useRef }, kweri)
 ```
 
 ## Documentation
