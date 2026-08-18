@@ -1,4 +1,4 @@
-import { Type, type TSchema, type Static } from '@sinclair/typebox'
+import type { TSchema, Static } from '@sinclair/typebox'
 import type { HttpMethod } from '../types/index.js'
 
 export interface Endpoint<
